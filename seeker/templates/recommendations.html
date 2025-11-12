@@ -2,108 +2,101 @@
 {% load static %}
 
 {% block body %}
-      
-      
-        <!-- CONTENT START -->
-        <div class="page-content">
+<!-- CONTENT START -->
+<div class="page-content">
 
-            <!-- INNER PAGE BANNER -->
-            <div class="wt-bnr-inr overlay-wraper bg-center" style="background-image:url('{% static 'images/banner/1.jpeg' %}');">
-                <div class="overlay-main site-bg-white opacity-01"></div>
-                <div class="container">
-                    <div class="wt-bnr-inr-entry">
-                        <div class="banner-title-outer">
-                            <div class="banner-title-name">
-                                <h2 class="wt-title">Recommended Jobs for You</h2>
-                            </div>
-                        </div>
-                        <!-- BREADCRUMB ROW -->                            
-                        
-                            <div>
-                                <ul class="wt-breadcrumb breadcrumb-style-2">
-                                    <li><a href="{%url 'home'%}">Home</a></li>
-                                    <li>Jobs List</li>
-                                </ul>
-                            </div>
-                        
-                        <!-- BREADCRUMB ROW END -->                        
+    <!-- INNER PAGE BANNER -->
+    <div class="wt-bnr-inr overlay-wraper bg-center"
+        style="background-image:url('{% static 'images/banner/1.jpeg' %}');">
+        <div class="overlay-main site-bg-white opacity-01"></div>
+        <div class="container">
+            <div class="wt-bnr-inr-entry">
+                <div class="banner-title-outer">
+                    <div class="banner-title-name">
+                        <h2 class="wt-title">Recommended Jobs for You</h2>
                     </div>
+                </div>
+                <div>
+                    <ul class="wt-breadcrumb breadcrumb-style-2">
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li>Jobs List</li>
+                    </ul>
                 </div>
             </div>
-            <!-- INNER PAGE BANNER END -->
+        </div>
+    </div>
+    <!-- INNER PAGE BANNER END -->
 
+    <!-- OUR BLOG START -->
+    <div class="section-full p-t120 p-b90 site-bg-white">
+        <div class="container">
+            <div class="row">
+                <div class="product-filter-wrap d-flex justify-content-between align-items-center m-b30">
+                    <span class="woocommerce-result-count-left">Showing Top Recommended Jobs</span>
+                    <form class="woocommerce-ordering twm-filter-select" method="get">
+                        <span class="woocommerce-result-count">Your Dream Job Awaits!</span>
+                    </form>
+                </div>
 
-            <!-- OUR BLOG START -->
-            <div class="section-full p-t120  p-b90 site-bg-white">
-                
-
-                <div class="container">
-                    <div class="row">
-                        
-    
-                                <!--Filter Short By-->
-                                <div class="product-filter-wrap d-flex justify-content-between align-items-center m-b30">
-                                    <span class="woocommerce-result-count-left">Showing Top 5 jobs</span>
-                                   
-                                    <form class="woocommerce-ordering twm-filter-select" method="get">
-                                        <span class="woocommerce-result-count">Your Dream Job Awaits!</span>
-
-                                    </form>
-    
-                                </div>
-    
-                                <div class="twm-jobs-list-wrap">
-                                    {% if jobs %}
-                                    <ul>
-                                        {% for job in jobs %}
-                                         <li>
-                                             <div class="twm-jobs-list-style1 mb-5">
-                                                 <div class="twm-media">
-                                                     <img src="{{ job.employee.logo.url }}" alt="#">
-                                                 </div>
-                                                 <div class="twm-mid-content">
-                                                     <a href="{{ job.get_absolute_url }}" class="twm-job-title">
-                                                         <h4>{{ job.title }}<span class="twm-job-post-duration">/ {{ job.created_at|timesince }} days ago</span></h4>
-                                                       
-                                                     </a>
-                                                     <p class="twm-job-address">{{ job.job_location }}</p>
-                                                     <p class="twm-job-address">{{ job.employee.company_name }}</p>
-                                                     <a href="https://themeforest.net/user/thewebmax/portfolio" class="twm-job-websites site-text-primary">https://thewebmax.com</a>
-                                                 </div>
-                                                 <div class="twm-right-content">
-                                                     <div class="twm-jobs-category green"><span class="twm-bg-green">Recommend</span></div>
-                                                     <div class="twm-jobs-amount"><span>Vacancies: {{ job.no_of_vacancy }}</span> </div>
-                                                     <a href="{% url 'job_detail' job.id %}" class="twm-jobs-browse site-text-primary">Browse Job</a>
-                                                 </div>
-                                             </div>
-                                         </li>
-                                         {% endfor %}
-                                         
-                                    </ul>
+                <div class="twm-jobs-list-wrap">
+                    {% if jobs %}
+                    <ul>
+                        {% for item in jobs %}
+                        <li>
+                            <div class="twm-jobs-list-style1 mb-5">
+                                <div class="twm-media">
+                                    {% if item.job.employee.logo %}
+                                    <img src="{{ item.job.employee.logo.url }}" alt="{{ item.job.title }}">
                                     {% else %}
-                                        <p>No job recommendations found. Try updating your resume.</p>
+                                    <img src="{% static 'images/default-job.png' %}" alt="Job Image">
                                     {% endif %}
                                 </div>
-   
-                    </div>
+                                <div class="twm-mid-content">
+                                    <a href="{{ item.job.get_absolute_url }}" class="twm-job-title">
+                                        <h4>{{ item.job.title }}
+                                            <span class="twm-job-post-duration">/ {{ item.job.created_at|timesince }} ago</span>
+                                        </h4>
+                                    </a>
+                                    <p class="twm-job-address">{{ item.job.job_location }}</p>
+                                    <p class="twm-job-address">{{ item.job.employee.company_name }}</p>
+                                    
+                                    <!-- 🔥 Show matched skills -->
+                                    {% if item.matches %}
+                                    <p class="text-success">
+                                        <strong>Matches:</strong> {{ item.matches|join:", " }}
+                                    </p>
+                                    {% endif %}
+                                </div>
+                                <div class="twm-right-content">
+                                    <div class="twm-jobs-category green">
+                                        <span class="twm-bg-green">Recommended</span>
+                                    </div>
+                                    <div class="twm-jobs-amount">
+                                        <span>Vacancies: {{ item.job.no_of_vacancy }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>No job recommendations found. Try updating your resume.</p>
+                    {% endif %}
                 </div>
-            </div>   
-            <!-- OUR BLOG END -->
-              
-     
+
+            </div>
         </div>
-        <!-- CONTENT END -->
+    </div>
+    <!-- OUR BLOG END -->
+
+</div>
+<!-- CONTENT END -->
+{% endblock %}
 
 
 
 
-
-
-{% endblock %} 
-
-
-
-
+{% comment %} 
 
 <h2>Recommended Jobs for You</h2>
 
@@ -121,3 +114,18 @@
 {% endif %}
 
 
+
+
+<h2>Job Recommendations</h2>
+<ul>
+  {% for item in jobs %}
+    <li>
+      
+      <strong>{{ item.job.title }}</strong><br>
+      Matches: {{ item.matches|join:", " }}
+    </li>
+  {% empty %}
+    <li>No job matches found. Try adding more skills to your resume.</li>
+  {% endfor %}
+</ul>
+ {% endcomment %}
