@@ -1,0 +1,346 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+      
+        <!-- CONTENT START -->
+        <div class="page-content">
+
+            <!-- INNER PAGE BANNER -->
+            <div class="wt-bnr-inr overlay-wraper bg-center" style="background-image:url('{% static 'images/banner/1.jpeg' %}');">
+                <div class="overlay-main site-bg-white opacity-01"></div>
+                <div class="container">
+                    <div class="wt-bnr-inr-entry">
+                        <div class="banner-title-outer">
+                            <div class="banner-title-name">
+                                <h2 class="wt-title">Company Manage jobs</h2>
+                            </div>
+                        </div>
+                        <!-- BREADCRUMB ROW -->                            
+                        
+                            <div>
+                                <ul class="wt-breadcrumb breadcrumb-style-2">
+                                    <li><a href="index.html">Home</a></li>
+                                    <li>Company Manage jobs</li>
+                                </ul>
+                            </div>
+                        
+                        <!-- BREADCRUMB ROW END -->                        
+                    </div>
+                </div>
+            </div>
+            <!-- INNER PAGE BANNER END -->
+
+
+            <!-- OUR BLOG START -->
+            <div class="section-full p-t120  p-b90 site-bg-white">
+                
+
+                <div class="container">
+                    <div class="row">
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-12 rightSidebar m-b30">
+
+                            <div class="side-bar-st-1">
+                                
+                                
+                                <div class="dashboard-profile-pic">
+                                    <div class="dashboard-profile-photo">
+                                        <img src="{{ profile.logo.url }}" alt=""> 
+                                        <div class="upload-btn-wrapper">
+                                            <div id="upload-image-grid"></div>
+                                            <button class="site-button button-sm">Upload Photo</button>
+                                            <input type="file" name="myfile" id="file-uploader" accept=".jpg, .jpeg, .png">
+                                        </div>
+                                    </div>
+                                   
+                                </div> 
+
+                                
+                                
+                                <script>
+                                    document.getElementById("file-uploader").addEventListener("change", function(event) {
+                                        var file = event.target.files[0];
+                                        if (file) {
+                                            var reader = new FileReader();
+                                            reader.onload = function(){
+                                                document.getElementById("logo-preview").src = reader.result;
+                                            };
+                                            reader.readAsDataURL(file);
+                                    
+                                            // Upload the file automatically using AJAX
+                                            var formData = new FormData();
+                                            formData.append("logo", file);
+                                            formData.append("csrfmiddlewaretoken", "{{ csrf_token }}"); // CSRF token
+                                    
+                                            fetch("{% url 'employer_profile_edit' %}", {  // Using the same view
+                                                method: "POST",
+                                                body: formData
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    document.getElementById("logo-preview").src = data.logo_url;  // Update preview
+                                                } else {
+                                                    alert("Failed to upload logo. Please try again.");
+                                                }
+                                            })
+                                            .catch(error => console.error("Error uploading logo:", error));
+                                        }
+                                    });
+                                </script> 
+
+
+                                <div class="twm-mid-content ">
+                                    <a href="candidate-detail.html" class="twm-job-title">
+                                        <h4>{{ profile.company_name }}</h4>
+                                    </a>
+                                    <p>{{ profile.founded_date }}</p>
+                                </div>
+                               
+                                <div class="twm-nav-list-1">
+                                    <ul>
+                                        <li><a href="{% url 'employer_profile' %}"><i class="fa fa-user"></i> View Profile</a></li>
+                                        <li ><a href="{% url 'employer_profile_edit' %}"><i class="fas fa-user-edit"></i> Edit Profile</a></li>                             
+                                        <li class="active"><a href="{% url 'manage-job' %}"><i class="fa fa-suitcase"></i> Manage Jobs</a></li>
+                                        <li><a href="{% url 'create_job' %}"><i class="fa fa-book-reader"></i> Post A Jobs</a></li>
+                                        <li><a href="{% url 'password_change' %}"><i class="fa fa-fingerprint"></i> Change Passeord</a></li>
+                                        <li><a href="{% url 'custom_logout' %}"><i class="fa fa-share-square"></i> Logout</a></li>
+
+                                    </ul>
+                                </div>
+                                
+                            </div>
+
+                        </div>
+
+                        <div class="col-xl-9 col-lg-8 col-md-12 m-b30">
+                            <!--Filter Short By-->
+                            <div class="twm-right-section-panel site-bg-gray">
+                                <form>
+                                    <!--Basic Information-->
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading wt-panel-heading p-a20">
+                                            <h4 class="panel-tittle m-a0"><i class="fa fa-suitcase"></i>Manage jobs</h4>
+                                        </div>
+                                        {% if messages %}
+                                            <div class="alert-container">
+                                                {% for message in messages %}
+                                                    <div class="alert alert-{% if message.tags %}{{ message.tags }}{% else %}info{% endif %}" role="alert">
+                                                        {{ message }}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+ 
+                                        <div class="panel-body wt-panel-body m-b30 ">
+                                            <div class="twm-D_table p-a20 table-responsive">
+                                                
+                                                    <table id="jobs_bookmark_table" class="table table-bordered twm-bookmark-list-wrap">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Job Title</th>
+                                                                <th>Category</th>
+                                                                <th>Job Types</th>
+                                                                <th>Applications</th>
+                                                                <th>Status</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for job in job_posts %}
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="twm-bookmark-list">
+                                                                        
+                                                                        <div class="twm-mid-content">
+                                                                            <a href="{{ job.get_absolute_url }}" class="twm-job-title">
+                                                                                <h4>{{ job.title }}</h4>
+                                                                                <p class="twm-bookmark-address">
+                                                                                    <i class="feather-map-pin"></i> {{ job.job_location }}
+                                                                                </p>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td>{{ job.job_category.name }}</td>
+                                                                <td>
+                                                                    <div class="twm-jobs-category">
+                                                                        {% if job.job_type == 'Full Time' %}
+                                                                            <span class="twm-bg-green">{{ job.job_type }}</span>
+                                                                        {% elif job.job_type == 'Part Time' %}
+                                                                            <span class="twm-bg-sky">{{ job.job_type }}</span>
+                                                                        {% elif job.job_type == 'Contractual' %}
+                                                                            <span class="twm-bg-purple">{{ job.job_type }}</span>
+                                                                        {% elif job.job_type == 'Internship' %}
+                                                                            <span class="twm-bg-purple">{{ job.job_type }}</span>
+                                                                        {% else %}
+                                                                            <span class="twm-bg-gray">{{ job.job_type }}</span>  {# For null values or unexpected cases #}
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </td>
+                                                                
+                                                                <td>
+                                                                    <a href="{% url 'job_applicants' job.id %}" class="site-text-primary">
+                                                                        {{ job.applications.count }} Applied
+                                                                    </a>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="twm-jobs-category">
+                                                                        {% if job.status|lower == 'published' %}
+                                                                            <span class="twm-bg-green">{{ job.status }}</span>
+                                                                        {% elif job.status|lower == 'rejected' %}
+                                                                            <span class="twm-bg-red">{{ job.get_status_display }}</span>
+                                                                        {% elif job.status|lower == 'pending' %}
+                                                                            <span class="twm-bg-purple">{{ job.get_status_display }}</span>
+                                                                        {% else %}
+                                                                            <span class="twm-bg-gray">{{ job.get_status_display }}</span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="twm-table-controls">
+                                                                        <ul class="twm-DT-controls-icon list-unstyled">
+                                                                            <li>
+                                                                                <a href="{{ job.get_absolute_url }}" class="twm-job-title" title="View Job" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                                                    <span class="fa fa-eye"></span>
+                                                                                </a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="{% url 'delete_job' job.id %}" 
+                                                                                   onclick="return confirm('Are you sure you want to delete this job?');"
+                                                                                   title="Delete" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                                                    <span class="far fa-trash-alt"></span>
+                                                                                </a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                            </div>             
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>   
+            <!-- OUR BLOG END -->
+          
+            
+     
+        </div>
+        <!-- CONTENT END -->
+{% endblock %}
+
+{% comment %} {% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+
+        <!-- Page Content Holder -->
+        <div id="content">
+
+            <div class="content-admin-main">
+
+            	<div class="wt-admin-right-page-header clearfix">
+                    <h2>Manage Jobs</h2>
+                    <div class="breadcrumbs"><a href="#">Home</a><a href="#">Dasboard</a><span>My Job Listing</span></div>
+                </div>
+
+                <!--Basic Information-->
+                <div class="panel panel-default">
+                    <div class="panel-heading wt-panel-heading p-a20">
+                        <h4 class="panel-tittle m-a0"><i class="fa fa-suitcase"></i> Job Details</h4>
+                    </div>
+                    <div class="panel-body wt-panel-body p-a20 m-b30 ">
+                        <div class="twm-D_table p-a20 table-responsive">
+                            <table id="jobs_bookmark_table" class="table table-bordered twm-bookmark-list-wrap">
+                                <thead>
+                                    <tr>
+                                        <th>Job Title</th>
+                                        <th>Category</th>
+                                        <th>Job Types</th>
+                                        <th>Applications</th>
+                                        <th>Created & Expired</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for job in job_posts %}
+                                    <tr>
+                                        <td>
+                                            <div class="twm-bookmark-list">
+                                                <div class="twm-media">
+                                                    <div class="twm-media-pic">
+                                                        <img src="{{ profile.logo.url }}" alt="#">
+                                                    </div>
+                                                </div>
+                                                <div class="twm-mid-content">
+                                                    <a href="{{ job.get_absolute_url }}" class="twm-job-title">
+                                                        <h4>{{ job.title }}</h4>
+                                                        <p class="twm-bookmark-address">
+                                                            <i class="feather-map-pin"></i> {{ job.job_location }}
+                                                        </p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{ job.job_category.name }}</td>
+                                        <td>
+                                            <div class="twm-jobs-category">
+                                                <span class="twm-bg-green">{{ job.job_type }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="javascript:;" class="site-text-primary">{{ job.applications.count }} Applied</a>
+                                        </td>
+                                        <td>
+                                            <div>{{ job.created_at|date:"d/m/Y" }}</div>
+                                            <div>{{ job.application_deadline|date:"d/m/Y" }}</div>
+                                        </td>
+                                        <td>
+                                            <div class="twm-table-controls">
+                                                <ul class="twm-DT-controls-icon list-unstyled">
+                                                    <li>
+                                                        <button title="View Job" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                            <span class="fa fa-eye"></span>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                            <span class="far fa-edit"></span>
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button title="Delete" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                            <span class="far fa-trash-alt"></span>
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            
+                        </div>             
+                    </div>
+                </div>
+
+            </div>
+
+    	</div>
+
+
+	</div>
+
+    {% endblock %}  {% endcomment %}

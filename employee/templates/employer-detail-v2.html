@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+{% load static %}
+<br> <br>
+{% block body %}
+        <!-- CONTENT START -->
+        <div class="page-content">
+
+            <!-- Employer Detail START -->
+            <div class="section-full  p-t0 p-b90 bg-white">
+                <!--Top Wide banner Start-->
+                <br></VR> 
+                <div class="twm-top-wide-banner overlay-wraper" style="background-image:url('{% static 'images/detail-pic/company-bnr1.jpeg' %}' );">
+                    <div class="overlay-main site-bg-primary opacity-09"></div>
+                    
+                    <div class="twm-top-wide-banner-content container ">
+
+                        <div class="twm-mid-content">
+                            <div class="twm-employer-self-top">
+                                <div class="twm-media">
+                                    {% if profile.logo %}
+                                        <img src="{{ profile.logo.url }}" alt="Company Logo" id="logo-preview" class="img-fluid rounded shadow-sm" style="max-height: 150px;">
+                                    {% else %}
+                                        <img src="https://via.placeholder.com/150?text=No+Logo" alt="No Logo" id="logo-preview" class="img-fluid rounded shadow-sm" style="max-height: 150px;">
+                                    {% endif %}
+                                </div>
+
+                                <h3 class="twm-job-title">{{ profile.company_name }}</h3>
+                                <p class="twm-employer-address"><i class="feather-map-pin"></i>{{ profile.location }}</p>
+
+                                <a href="https://themeforest.net/user/thewebmax/portfolio" class="twm-employer-websites">{{ profile.company_website }}</a>
+
+                                <div class="twm-ep-detail-tags">
+                                    <button class="de-info twm-bg-green"><i class="fa fa-check"></i> Verified</button>
+                                    <button class="de-info twm-bg-brown"><i class="fa fa-heart"></i> Add To Favorite</button>
+                                    <button class="de-info twm-bg-purple"><i class="fa fa-hand-o-right"></i> Add Review</button>
+                                    <button class="de-info twm-bg-sky"><i class="fa fa-eye"></i> Viewed</button>
+                                </div>
+                                
+
+                            </div>
+
+                            <div class="twm-employer-self-bottom">
+                                <div class="twm-social-btns">
+                                    <a class="btn facebook" href="{{ profile.facebook_link }}"><i class="fab fa-facebook-f"></i></a>
+                                    <a class="btn twitter" href="{{ profile.twitter_link }}"><i class="fab fa-twitter"></i></a>
+                                    <a class="btn google" href="{{ profile.google_link }}"><i class="fab fa-google"></i></a>
+                                    <a class="btn linkedin" href="{{ profile.linkedin_link }}"><i class="fab fa-linkedin-in"></i></a>
+                                    <a class="btn skype" href="javascript:void(0)"><i class="fab fa-skype"></i></a>
+                                </div>
+                                <div class="twm-employer-btn-controls">
+                                    <a href="javascript:;" class="site-button outline-white">Add Review</a>
+                                    <a href="javascript:;" class="site-button secondry">Follow Us</a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="ani-circle-1 rotate-center"></div>
+                    <div class="ani-circle-2 rotate-center"></div>
+                        
+                </div>
+                
+                <!--Top Wide banner End-->
+                <div class="container">
+                    <div class="section-content">
+                        <div class="row d-flex justify-content-center">
+
+                            <div class="col-lg-4 col-md-12 rightSidebar">
+
+                                <div class="side-bar-2">
+
+                                    <div class="twm-s-info-wrap mb-5">
+                                        <h4 class="section-head-small mb-4">Profile Info</h4> 
+                                        <div class="twm-s-info-3">
+                                            <ul>
+
+                                                {% comment %} <li>
+                                                    <div class="twm-s-info-inner">
+                                                        <i class="fas fa-money-bill-wave"></i>
+                                                        <span class="twm-title">Offered Salary</span>
+                                                        <div class="twm-s-info-discription">$20 / Day</div>
+                                                    </div>
+                                                </li> {% endcomment %}
+                                                {% if total_experience is not None %}
+                                                <li>
+                                                    <div class="twm-s-info-inner">
+                                                        <i class="fas fa-clock"></i>
+                                                        <span class="twm-title">Experience</span>
+                                                        <div class="twm-s-info-discription">{{ total_experience }} years</div>
+                                                    </div>
+                                                </li>
+                                                
+                                                <li>
+                                                    <div class="twm-s-info-inner">
+                                                        <i class="fas fa-venus-mars"></i>
+                                                        <span class="twm-title">Founded Date</span>
+                                                        <div class="twm-s-info-discription">{{ profile.founded_date }}</div>
+                                                    </div>
+                                                </li>
+                                                {% endif %}
+                                                <li>
+                                                    <div class="twm-s-info-inner">
+                                                        <i class="fas fa-mobile-alt"></i>
+                                                        <span class="twm-title">Phone</span>
+                                                        <div class="twm-s-info-discription">{{ profile.phone }}</div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="twm-s-info-inner">
+                                                        <i class="fas fa-at"></i>
+                                                        <span class="twm-title">Email</span>
+                                                        <div class="twm-s-info-discription">{{ profile.email }}</div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="twm-s-info-inner">
+                                                        <i class="fas fa-book-reader"></i>
+                                                        <span class="twm-title">Qualification</span>
+                                                        <div class="twm-s-info-discription">Developer</div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="twm-s-info-inner">
+                                                        
+                                                        <i class="fas fa-map-marker-alt"></i>
+                                                        <span class="twm-title">Address</span>
+                                                        <div class="twm-s-info-discription">{{ profile.location}}</div>
+                                                    </div>
+                                                </li>
+
+                                            </ul>
+                                            
+                                        </div>
+                                    </div>
+    
+                                    
+
+                                    <div class="twm-s-contact-wrap mb-5">
+                                        <h4 class="section-head-small mb-4">Contact us</h4> 
+                                        <div class="twm-s-contact twm-s-contact-2">
+                                            <div class="row">
+
+                                                <div class="col-lg-12">
+                                                    <div class="form-group mb-3">
+                                                        <input name="username" type="text" required class="form-control" placeholder="Name">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-12">
+                                                    <div class="form-group mb-3">
+                                                        <input name="email" type="text" class="form-control" required placeholder="Email">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-12">
+                                                    <div class="form-group mb-3">
+                                                        <input name="phone" type="text" class="form-control" required placeholder="Phone">
+                                                    </div>
+                                                </div>
+                                                
+                                                
+                                                <div class="col-lg-12">
+                                                    <div class="form-group mb-3">
+                                                        <textarea name="message" class="form-control" rows="3" placeholder="Message"></textarea>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-md-12">
+                                                    <button type="submit" class="site-button">Submit Now</button>
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+        
+                            </div>
+                        
+                            <div class="col-lg-8 col-md-12">
+                                <!-- Candidate detail START -->
+                                <div class="cabdidate-de-info">
+
+                                    <h4 class="twm-s-title m-t0">About Company</h4>
+
+                                    <p>{{ profile.company_description }} </p>
+
+                                    <h4 class="twm-s-title">Responsabilities</h4>
+                                    <ul class="description-list-2">
+                                        <li>
+                                            <i class="feather-check"></i>
+                                            Establish and promote design guidelines, best practices and standards.
+                                        </li>
+                                        <li>
+                                            <i class="feather-check"></i>
+                                            Accurately estimate design tickets during planning sessions.
+                                        </li>
+                                        <li>
+                                            <i class="feather-check"></i>
+                                            Partnering with product and engineering to translate business and user goals.
+                                        </li>
+                                     
+                                    </ul>
+                                    
+                                    <div class="twm-two-part-section">
+                                        <div class="row">                  
+
+                                            <div class="col-lg-12 col-md-12 m-b30">
+                                                <div class="video-yt-section">
+                                                    {% if profile.get_embed_url %}
+                                                        <iframe title="Job Video" width="660" height="371" 
+                                                                src="{{ profile.get_embed_url }}" 
+                                                                frameborder="0" 
+                                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                                                allowfullscreen>
+                                                        </iframe>
+                                                    {% else %}
+                                                        <p>No video available for this job.</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+
+                                            
+                                        </div>
+                                    </div>
+
+                                    <h4 class="twm-s-title">More Jobs from This Company</h4>
+
+                                    <div class="twm-jobs-list-wrap">
+                                        <div class="row">
+                                            {% for job in jobs %}
+                                            <!--Block one-->
+                                            <div class="col-lg-6 col-md-12 m-b30">
+                                                <div class="twm-jobs-grid-style1" onclick="window.location.href='{% url 'job_detail' job.id %}';" style="cursor: pointer;">
+                                                    <div class="twm-media">
+                                                        <img src="{% if job.employee.logo %}{{ job.employee.logo.url }}{% else %}images/jobs-company/default.jpg{% endif %}" alt="Company Logo">
+                                                    </div>
+                                                    <span class="twm-job-post-duration">{{ job.created_at|timesince }} ago</span>
+                                                    {% if job.exclusive_job %}
+                                                    <div class="twm-jobs-category green"><span class="twm-bg-green">Exclusive</span></div>
+                                                    {% else %}
+                                                    <div class="twm-jobs-category green"><span class="twm-bg-green">New</span></div>
+                                                    {% endif %}
+                                                    <div class="twm-mid-content">
+                                                        <a href="{% url 'job_detail' job.id %}" class="twm-job-title">
+                                                            <h4>{{ job.title }}</h4>
+                                                        </a>
+                                                        <p class="twm-job-address">{{ job.job_location }} <br>{{ job.employee.company_name}}</p>   
+                                                    </div>
+                                                    <div class="twm-right-content">
+                                                        <a href="{% url 'job_detail' job.id %}" class="twm-jobs-browse site-text-primary">Browse Job</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}                                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+            </div>   
+            <!-- Employer Detail END -->          
+            
+        </div>
+        <!-- CONTENT END -->
+
+{% endblock %}

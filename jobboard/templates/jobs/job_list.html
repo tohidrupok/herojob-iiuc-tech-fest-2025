@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+      
+        <!-- CONTENT START -->
+        <div class="page-content">
+
+            <!-- INNER PAGE BANNER -->
+            <div class="wt-bnr-inr overlay-wraper bg-center" style="background-image:url('{% static 'images/banner/1.jpeg' %}');">
+                <div class="overlay-main site-bg-white opacity-01"></div>
+                <div class="container">
+                    <div class="wt-bnr-inr-entry">
+                        <div class="banner-title-outer">
+                            <div class="banner-title-name">
+                                <h2 class="wt-title">The Most Exciting Jobs</h2>
+                            </div>
+                        </div>
+                        <!-- BREADCRUMB ROW -->                            
+                        
+                            <div>
+                                <ul class="wt-breadcrumb breadcrumb-style-2">
+                                    <li><a href="{% url 'home' %}">Home</a></li>
+                                    <li>Jobs Grid</li>
+                                </ul>
+                            </div>
+                        
+                        <!-- BREADCRUMB ROW END -->                        
+                    </div>
+                </div>
+            </div>
+            <!-- INNER PAGE BANNER END -->
+
+
+            <!-- OUR BLOG START -->
+            <div class="section-full p-t120  p-b90 site-bg-white">
+                
+
+                <div class="container">
+                    <div class="row">
+                        
+                        <div class="col-lg-4 col-md-12 rightSidebar">
+
+                            <div class="side-bar">
+                                
+                                <div class="sidebar-elements search-bx">
+                                
+                                    <form method="get">
+                                        <div class="form-group mb-4">
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <h4 class="section-head-small">Category</h4>
+                                            
+                                                {% if selected_category or keyword or location or selected_date_filter %}
+                                                    <div class="d-flex align-items-center flex-wrap">
+                                                       
+                                                        <ul class="list-inline mb-0">
+                                                            {% if selected_category_name %}
+                                                                <div class="d-flex align-items-center justify-content-between flex-wrap mb-3">                                                                   
+                                                                    <ul class="list-inline mb-0">
+                                                                        <li class="list-inline-item badge bg-light text-dark px-3 py-2">
+                                                                             {{ selected_category_name }}
+                                                                            <a href="?{% for key, value in query_params.items %}{% if key != 'category' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" 
+                                                                            class="text-danger ms-2" title="Remove Category Filter">
+                                                                                <i class="fas fa-times"></i>
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            {% endif %}
+                                                            {% if keyword %}
+                                                                <li class="list-inline-item badge bg-light text-dark">
+                                                                    "{{ keyword }}"
+                                                                    <a href="?{% for key, value in query_params.items %}{% if key != 'keyword' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="text-danger ms-1">
+                                                                        <i class="fas fa-times"></i>
+                                                                    </a>
+                                                                </li>
+                                                            {% endif %}
+                                                            {% if location %}
+                                                                <li class="list-inline-item badge bg-light text-dark">
+                                                                    "{{ location }}"
+                                                                    <a href="?{% for key, value in query_params.items %}{% if key != 'location' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="text-danger ms-1">
+                                                                        <i class="fas fa-times"></i>
+                                                                    </a>
+                                                                </li>
+                                                            {% endif %}
+                                                            {% if selected_date_filter %}
+                                                                <li class="list-inline-item badge bg-light text-dark">
+                                                                     {{ selected_date_filter }}
+                                                                    <a href="?{% for key, value in query_params.items %}{% if key != 'date_filter' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="text-danger ms-1">
+                                                                        <i class="fas fa-times"></i>
+                                                                    </a>
+                                                                </li>
+                                                            {% endif %}
+                                                        </ul>
+                                            
+                                                        <!-- Clear All Button -->
+                                                        <a href="?clear_all=1" class="btn btn-sm btn-outline-danger ms-2">Clear All</a>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                             
+                                            
+                                            <select class="wt-select-bar-large selectpicker" name="category" data-live-search="true" data-bv-field="size" onchange="this.form.submit()">
+                                                <option value="" {% if not selected_category %}selected{% endif %}>All Category</option>
+                                                {% for cat in category %}
+                                                    <option value="{{ cat.id }}" {% if cat.id|stringformat:"s" == selected_category %}selected{% endif %}>{{ cat.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="form-group mb-4">
+                                            <h4 class="section-head-small mb-4">Keyword</h4>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="keyword" placeholder="Job Title or Keyword" value="{{ keyword|default:'' }}">
+                                                <button class="btn" type="submit"><i class="feather-search"></i></button>
+                                            </div>
+                                        </div> 
+                                    
+                                        <div class="form-group mb-4">
+                                            <h4 class="section-head-small mb-4">Location</h4>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="location" placeholder="Search location" value="{{ location|default:'' }}">
+                                                <button class="btn" type="submit"><i class="feather-map-pin"></i></button>
+                                            </div>
+                                        </div> 
+                                    
+                                        <div class="twm-sidebar-ele-filter">
+                                            <h4 class="section-head-small mb-4">Date Posts</h4>
+                                            <ul>
+                                                {% for value, label in date_filter_options.items %}
+                                                <li>
+                                                    <div class="form-check">
+                                                        <input type="radio" class="form-check-input" name="date_filter" value="{{ value }}" id="date_filter_{{ value }}"
+                                                            {% if selected_date_filter == value %}checked{% endif %} onchange="this.form.submit()">
+                                                        <label class="form-check-label" for="date_filter_{{ value }}">{{ label }}</label>
+                                                    </div>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        
+                                        <!-- Keep sorting and pagination filters -->
+                                        <input type="hidden" name="sort_by" value="{{ sort_by }}">
+                                        <input type="hidden" name="show_count" value="{{ show_count }}">
+                                        
+                                        <!-- Optional submit button if needed for other inputs -->
+                                        <!-- <button type="submit" class="btn btn-primary">Filter</button> -->
+                                    </form>
+                                    
+                                    
+                                    
+                                </div>
+
+                                <div class="widget tw-sidebar-tags-wrap">
+                                    <h4 class="section-head-small mb-4">Tags</h4>
+                                    
+                                    <div class="tagcloud">
+                                        <a href="job-list.html">General</a>
+                                        <a href="job-list.html">Jobs </a>
+                                        <a href="job-list.html">Payment</a>                                            
+                                        <a href="job-list.html">Application </a>
+                                        <a href="job-list.html">Work</a>
+                                        <a href="job-list.html">Recruiting</a>
+                                        <a href="job-list.html">Employer</a>
+                                        <a href="job-list.html">Income</a>
+                                        <a href="job-list.html">Tips</a>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+
+                            <div class="twm-advertisment" style="background-image:url(images/add-bg.jpg);">
+                               <div class="overlay"></div>
+                               <h4 class="twm-title">Recruiting?</h4>
+                               <p>Get Best Matched Jobs On your <br>
+                                Email. Add Resume NOW!</p>
+                                <a href="about-1.html" class="site-button white">Read More</a> 
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-8 col-md-12">
+                            <!--Filter Short By-->
+                            <div class="product-filter-wrap d-flex justify-content-between align-items-center m-b30">
+                                <span class="woocommerce-result-count-left">Showing {{ total_jobs }} jobs</span>
+                            
+                                <form class="woocommerce-ordering twm-filter-select" method="get">
+                                    <!-- Sorting -->
+                                    <span class="woocommerce-result-count">Sort By</span>
+                                    <select class="wt-select-bar-2 selectpicker" name="sort_by" data-live-search="true" data-bv-field="size" onchange="this.form.submit()">
+                                        <option value="most_recent" {% if sort_by == "most_recent" %}selected{% endif %}>Most Recent</option>
+                                        <option value="full_time" {% if sort_by == "full_time" %}selected{% endif %}>Full Time</option>
+                                        <option value="internship" {% if sort_by == "internship" %}selected{% endif %}>Internship</option>
+                                        <option value="part_time" {% if sort_by == "part_time" %}selected{% endif %}>Part Time</option>                                       
+                                        <option value="contractual" {% if sort_by == "contractual" %}selected{% endif %}>Contractual</option>
+                                    </select>
+                            
+                                    <!-- Show Count -->
+                                    <select class="wt-select-bar-2 selectpicker" name="show_count" data-live-search="true" data-bv-field="size" onchange="this.form.submit()">
+                                        <option value="10" {% if show_count == 10 %}selected{% endif %}>Show 10</option>
+                                        <option value="20" {% if show_count == 20 %}selected{% endif %}>Show 20</option>
+                                        <option value="30" {% if show_count == 30 %}selected{% endif %}>Show 30</option>
+                                        <option value="40" {% if show_count == 40 %}selected{% endif %}>Show 40</option>
+                                        <option value="50" {% if show_count == 50 %}selected{% endif %}>Show 50</option>
+                                        <option value="60" {% if show_count == 60 %}selected{% endif %}>Show 60</option>
+                                    </select>
+                                    
+                                    {% if selected_category  %}
+                                     <input type="hidden" name="category" value="{{ selected_category }}">
+                                    {% endif %} 
+                                    {% if keyword  %}
+                                     <input type="hidden" name="keyword" value="{{ keyword }}">
+                                    {% endif %} 
+                                    {% if location  %}
+                                     <input type="hidden" name="location" value="{{ location }}">
+                                    {% endif %} 
+                                    
+                                </form>
+                            </div>
+
+                            <div class="row"> 
+                                {% for job in jobs %}
+                                <!--Block one-->
+                                <div class="col-lg-6 col-md-12 m-b30">
+                                    <div class="twm-jobs-grid-style1" onclick="window.location.href='{% url 'job_detail' job.id %}';" style="cursor: pointer;">
+                                        <div class="twm-media">
+                                            <img src="{% if job.employee.logo %}{{ job.employee.logo.url }}{% else %}images/jobs-company/default.jpg{% endif %}" alt="Company Logo">
+                                        </div>
+                                        <span class="twm-job-post-duration">{{ job.created_at|timesince }} ago</span>
+                                        {% if job.exclusive_job %}
+                                        <div class="twm-jobs-category green"><span class="twm-bg-green">Exclusive</span></div>
+                                        {% else %}
+                                        <div class="twm-jobs-category green"><span class="twm-bg-green">New</span></div>
+                                        {% endif %}
+                                        <div class="twm-mid-content">
+                                            <a href="{% url 'job_detail' job.id %}" class="twm-job-title">
+                                                <h4>{{ job.title|truncatechars:36 }}</h4>
+                                            </a>
+                                            <p class="twm-job-address">{{ job.job_location }} <br>{{ job.employee.company_name}}</p>   
+                                           {% comment %} <p>{{ job.job_category }}  </p>     
+                                            <p>{{ job.job_type }}  </p>  
+                                            <p>{{ job.status }}  </p>   {% endcomment %}
+                                        </div>
+                                        <div class="twm-right-content">
+                                            <a href="{% url 'job_detail' job.id %}" class="twm-jobs-browse site-text-primary">Browse Job</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+               
+                            </div>
+                            <div class="pagination-outer">
+                                <div class="pagination-style1">
+                                    <ul class="clearfix">
+                                        <!-- Previous Page -->
+                                        {% if jobs.has_previous %}
+                                            <li class="prev">
+                                                <a href="?page={{ jobs.previous_page_number }}"><span><i class="fa fa-angle-left"></i></span></a>
+                                            </li>
+                                        {% else %}
+                                            <li class="prev disabled"><a href="javascript:void(0);"><span><i class="fa fa-angle-left"></i></span></a></li>
+                                        {% endif %}
+                            
+                                        <!-- Page Numbers -->
+                                        {% for num in jobs.paginator.page_range %}
+                                            {% if jobs.number == num %}
+                                                <li class="active"><a href="javascript:void(0);">{{ num }}</a></li>
+                                            {% elif num > jobs.number|add:"-3" and num < jobs.number|add:"3" %}
+                                                <li><a href="?page={{ num }}">{{ num }}</a></li>
+                                            {% elif num == 1 or num == jobs.paginator.num_pages %}
+                                                <li><a href="?page={{ num }}">{{ num }}</a></li>
+                                            {% elif num == jobs.number|add:"-3" or num == jobs.number|add:"3" %}
+                                                <li><a href="javascript:void(0);"><i class="fa fa-ellipsis-h"></i></a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                            
+                                        <!-- Next Page -->
+                                        {% if jobs.has_next %}
+                                            <li class="next">
+                                                <a href="?page={{ jobs.next_page_number }}"><span><i class="fa fa-angle-right"></i></span></a>
+                                            </li>
+                                        {% else %}
+                                            <li class="next disabled"><a href="javascript:void(0);"><span><i class="fa fa-angle-right"></i></span></a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                            
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>   
+            <!-- OUR BLOG END -->          
+     
+        </div>
+        <!-- CONTENT END -->
+
+{% endblock %}
+
+
+

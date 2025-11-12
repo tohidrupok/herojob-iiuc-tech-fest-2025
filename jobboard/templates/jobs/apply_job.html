@@ -1,0 +1,38 @@
+<h2>Apply for {{ job.title }}</h2>
+
+<form method="POST" enctype="multipart/form-data" onsubmit="return validateSalary()">
+    {% csrf_token %}
+    
+    <label>Current Resume:</label>
+    {% if seeker.resume %}
+        <p><a href="{{ seeker.resume.url }}" target="_blank">View Resume</a></p>
+    {% else %}
+        <p>No resume uploaded yet.</p>
+    {% endif %}
+    
+    <label>Upload New Resume (Optional):</label>
+    {{ form.resume }}
+
+    <label>Expected Salary (Optional, must be > 1000 if entered):</label>
+    {{ form.expected_Salary }}
+    <p id="salary-error" style="color: red; display: none;">If entered, expected salary must be greater than 1000.</p>
+
+    <button type="submit">Apply</button>
+</form>
+
+<a href="{% url 'job_detail' job.id %}">Back to Job</a>
+
+<script>
+function validateSalary() {
+    let salaryInput = document.querySelector("input[name='expected_Salary']");
+    let salaryError = document.getElementById("salary-error");
+    let salary = salaryInput.value.trim();
+
+    if (salary !== "" && (isNaN(salary) || parseInt(salary, 10) <= 1000)) {
+        salaryError.style.display = "block";
+        return false;
+    }
+    salaryError.style.display = "none";
+    return true;
+}
+</script>

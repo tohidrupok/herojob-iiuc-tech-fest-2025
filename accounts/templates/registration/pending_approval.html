@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+      
+        <!-- CONTENT START -->
+        <div class="page-content">
+
+            <!-- INNER PAGE BANNER -->
+            <div class="wt-bnr-inr overlay-wraper bg-center" style="background-image:url('{% static 'images/banner/1.jpeg' %}');">
+                <div class="overlay-main site-bg-white opacity-01"></div>
+                <div class="container">
+                    <div class="wt-bnr-inr-entry">
+                        <div class="banner-title-outer">
+                            <div class="banner-title-name">
+                                <h2 class="wt-title">Find Top Talent for Your Company Today!</h2>
+                            </div>
+                        </div>
+                        <!-- BREADCRUMB ROW -->                             
+                        <div>
+                            <ul class="wt-breadcrumb breadcrumb-style-2">
+                                <li><a href="{% url 'job_list' %}">All Jobs</a></li>
+                                <li>Browse Top Candidates for Your Open Positions</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- BREADCRUMB ROW END -->                        
+                    </div>
+                </div>
+            </div>
+            <!-- INNER PAGE BANNER END -->
+          
+
+            <!-- OUR BLOG START -->
+            <div class="section-full p-t120 p-b90">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="twm-right-section-panel p-4 rounded shadow text-center" 
+                                 style="background: #f8f9fa; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);">
+                                
+                                <div class="p-3 mb-3" 
+                                     style="background: #ffebee; border-left: 5px solid #d32f2f; border-radius: 5px;">
+                                    <h2 style="color: #d32f2f; font-weight: bold;">Your Account is Pending Approval</h2>
+                                </div>
+                        
+                                <p style="font-size: 16px; color: #333;">Your registration as an employer is under review.</p>
+                                <p style="font-size: 16px; color: #333;">Please wait for admin approval.</p>
+                        
+                                <div class="mt-3">
+                                    <a href="" class="btn btn-danger" 
+                                       style="border-radius: 5px; padding: 10px 20px;">wait</a>
+                                </div>
+                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <!-- OUR BLOG END -->          
+     
+        </div>
+        <!-- CONTENT END -->
+
+{% endblock %}
+
+
+
+
+
+
+
+
+

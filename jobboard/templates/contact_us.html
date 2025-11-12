@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+        <!-- CONTENT START -->
+        <div class="page-content">
+
+            <!-- INNER PAGE BANNER -->
+            <div class="wt-bnr-inr overlay-wraper bg-center" style="background-image:url('{% static 'images/banner/1.jpeg' %}');">
+                <div class="overlay-main site-bg-white opacity-01"></div>
+                <div class="container">
+                    <div class="wt-bnr-inr-entry">
+                        <div class="banner-title-outer">
+                            <div class="banner-title-name">
+                                <h2 class="wt-title">Contact Us</h2>
+                            </div>
+                        </div>
+                        <!-- BREADCRUMB ROW -->                            
+                        
+                            <div>
+                                <ul class="wt-breadcrumb breadcrumb-style-2">
+                                    <li><a href="{% url 'home' %}">Home</a></li>
+                                    <li>Contact Us</li>
+                                </ul>
+                            </div>
+                        
+                        <!-- BREADCRUMB ROW END -->                        
+                    </div>
+                </div>
+            </div>
+            <!-- INNER PAGE BANNER END -->
+           
+            <!-- CONTACT FORM -->
+            <div class="section-full twm-contact-one">   
+                <div class="section-content">
+                    <div class="container">
+                            
+                        <!-- CONTACT FORM-->
+                        <div class="contact-one-inner">
+                            <div class="row">
+
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="contact-form-outer">
+
+                                        <!-- TITLE START-->
+                                        <div class="section-head left wt-small-separator-outer">
+                                            <h2 class="wt-title">Send Us a Message</h2>
+                                            <p>Feel free to contact us and we will get back to you as soon as we can.</p>
+                                        </div>
+                                        <!-- TITLE END--> 
+
+                                        <form  class="cons-contact-form" method="post" action="form-handler2.php">
+                                            <div class="row">
+
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="form-group mb-3">
+                                                        <input name="username" type="text" required class="form-control" placeholder="Name">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="form-group mb-3">
+                                                    <input name="email" type="text" class="form-control" required placeholder="Email">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="form-group mb-3">
+                                                        <input name="phone" type="text" class="form-control" required placeholder="Phone">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-6 col-md-6">
+                                                    <div class="form-group mb-3">
+                                                        <input name="subject" type="text" class="form-control" required placeholder="Subject">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-12">
+                                                    <div class="form-group mb-3">
+                                                    <textarea name="message" class="form-control" rows="3" placeholder="Message"></textarea>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-md-12">
+                                                    <button type="submit" class="site-button">Submit Now</button>
+                                                </div>
+                                                
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div> 
+
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="contact-info-wrap">
+
+                                        <div class="contact-info">
+                                            <div class="contact-info-section">  
+                                                    
+                                                    <div class="c-info-column">
+                                                        <div class="c-info-icon"><i class=" fas fa-map-marker-alt"></i></div>
+                                                        <h3 class="twm-title">In the bay area?</h3>
+                                                        <p>Kumira, Chattogram-4318, Bangladesh</p>
+                                                    </div>  
+
+                                                    <div class="c-info-column">
+                                                        <div class="c-info-icon custome-size"><i class="fas fa-mobile-alt"></i></div>
+                                                        <h3 class="twm-title">Feel free to contact us</h3>
+                                                        <p><a href="tel:+216-761-8331">+8801889262042</a></p>
+                                                        <p><a href="tel:+216-761-8331">+8801889262042</a></p>
+                                                    </div>
+
+                                                    <div class="c-info-column">
+                                                        <div class="c-info-icon"><i class="fas fa-envelope"></i></div>
+                                                        <h3 class="twm-title">Support</h3>
+                                                        <p>herojobinfo@gmail.com</p>
+                                                    </div>
+                                            
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="gmap-outline">
+                <div class="google-map">
+                    <div style="width: 100%">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d277189.89935874636!2d90.33953540613838!3d23.77449968866444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c796c76c1a8b%3A0x7ff1d179fba4c47c!2sPRAN%20CENTER!5e1!3m2!1sen!2sbd!4v1742278895759!5m2!1sen!2sbd" width="600" height="460" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                       
+                </div>
+            </div>
+      
+
+        </div>
+        <!-- CONTENT END -->
+
+
+{% endblock %}
+
+
+

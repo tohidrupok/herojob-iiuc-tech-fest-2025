@@ -1,0 +1,16 @@
+<div class="container mt-4">
+    <h2>Profile Details</h2>
+    <p><strong>Username:</strong> {{ profile.user.username }}</p>
+    {% if profile.user.is_employer %}
+        <p><strong>Company Name:</strong> {{ profile.company_name }}</p>
+        <p><strong>Company Website:</strong> <a href="{{ profile.company_website }}">{{ profile.company_website }}</a></p>
+        <p><strong>Description:</strong> {{ profile.description }}</p>
+    {% elif profile.user.is_seeker %}
+        <p><strong>Skills:</strong> {{ profile.skills }}</p>
+        <p><strong>Experience:</strong> {{ profile.experience }}</p>
+        {% if profile.resume %}
+            <p><strong>Resume:</strong> <a href="{{ profile.resume.url }}">Download Resume</a></p>
+        {% endif %}
+    {% endif %}
+    <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+</div>

@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+      
+        <!-- CONTENT START -->
+        <div class="page-content">
+
+            <!-- INNER PAGE BANNER -->
+            <div class="wt-bnr-inr overlay-wraper bg-center" style="background-image:url('{% static 'images/banner/1.jpeg' %}');">
+                <div class="overlay-main site-bg-white opacity-01"></div>
+                <div class="container">
+                    <div class="wt-bnr-inr-entry">
+                        <div class="banner-title-outer">
+                            <div class="banner-title-name">
+                                <h2 class="wt-title">Candidate Resume</h2>
+                            </div>
+                        </div>
+                        <!-- BREADCRUMB ROW -->                            
+                        
+                            <div>
+                                <ul class="wt-breadcrumb breadcrumb-style-2">
+                                    <li><a href="index.html">Home</a></li>
+                                    <li>Candidate Resume</li>
+                                </ul>
+                            </div>
+                        
+                        <!-- BREADCRUMB ROW END -->                        
+                    </div>
+                </div>
+            </div>
+            <!-- INNER PAGE BANNER END -->
+
+
+            <!-- OUR BLOG START -->
+            <div class="section-full p-t120  p-b90 site-bg-white">
+                
+
+                <div class="container">
+                    <div class="row">
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-12 rightSidebar m-b30">
+
+                            <div class="side-bar-st-1">
+                                
+                                 
+                                <div class="dashboard-profile-pic">
+                                    <div class="dashboard-profile-photo">
+                                        <img src="{{ resume.image.url }}" alt=""> 
+                                        <div class="upload-btn-wrapper">
+                                            <div id="upload-image-grid"></div>
+                                            <button class="site-button button-sm">Upload Photo</button>
+                                            <input type="file" name="myfile" id="file-uploader" accept=".jpg, .jpeg, .png">
+                                        </div>
+                                    </div>
+                                   
+                                </div> 
+
+                                
+                                
+                                <script>
+                                    document.getElementById("file-uploader").addEventListener("change", function(event) {
+                                        var file = event.target.files[0];
+                                        if (file) {
+                                            var reader = new FileReader();
+                                            reader.onload = function(){
+                                                document.getElementById("logo-preview").src = reader.result;
+                                            };
+                                            reader.readAsDataURL(file);
+                                    
+                                            // Upload the file automatically using AJAX
+                                            var formData = new FormData();
+                                            formData.append("logo", file);
+                                            formData.append("csrfmiddlewaretoken", "{{ csrf_token }}"); // CSRF token
+                                    
+                                            fetch("{% url 'my_resume' %}", {  // Using the same view
+                                                method: "POST",
+                                                body: formData
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    document.getElementById("logo-preview").src = data.logo_url;  // Update preview
+                                                } else {
+                                                    alert("Failed to upload logo. Please try again.");
+                                                }
+                                            })
+                                            .catch(error => console.error("Error uploading logo:", error));
+                                        }
+                                    });
+                                </script> 
+
+                                
+                                <div class="twm-mid-content ">
+                                    <a href="candidate-detail.html" class="twm-job-title">
+                                        <h4>{{ resume.name }} </h4>
+                                    </a>
+                                    <p>{{ resume.title }}</p>
+                                </div>
+                               
+                                <div class="twm-nav-list-1">
+                        
+                                    <ul>
+                                        <li><a href="{% url 'view_profile' %}"><i class="fa fa-user"></i> Profile View</a></li>
+                                        <li ><a href="{% url 'dashboard' %}"><i class="fa fa-tachometer-alt"></i> Dashboard</a></li>         
+                                        <li class="active" ><a href="{% url 'upload_resume' %}"><i class="fa fa-upload"></i> Upload Resume</a></li>
+                                        <li ><a href="{% url 'my_resume' %}"><i class="fa fa-receipt"></i> My Resume</a></li>
+                                        <li><a href="{% url 'dashboard' %}"><i class="fa fa-suitcase"></i> Applied Jobs</a></li>
+                                        <li><a href="#"><i class="fa fa-file-download"></i> Saved Jobs</a></li>
+                                        <li><a href="#"><i class="fa fa-bell"></i> Job Alerts</a></li>
+                                        <li><a href="{% url 'password_change' %}"><i class="fa fa-fingerprint"></i> Change Passeord</a></li>
+                                        <li><a href="{% url 'custom_logout' %}"><i class="fa fa-share-square"></i> Logout</a></li>
+                                    </ul> 
+
+                                </div>
+                                
+                            </div>
+
+                        </div>
+
+                        <div class="col-xl-9 col-lg-8 col-md-12 m-b30">
+                            <div class="twm-right-section-panel site-bg-gray">
+                                
+                                <div class="container mt-5">
+                                    <div class="card shadow-sm p-4">
+                                        <h2 class="text-center mb-4">Upload Your Resume</h2>
+                                        
+                                        <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                                            {% csrf_token %}
+                                            
+                                            <div class="mb-3">
+                                                <label for="id_resume" class="form-label fw-bold">Upload Resume (PDF, DOCX)</label>
+                                                <div class="input-group">
+                                                    <input type="file" class="form-control" id="id_resume" name="resume" required>
+                                                    <label class="input-group-text" for="id_resume">📂 Choose File</label>
+                                                </div>
+                                                <div class="form-text text-muted">Accepted formats: PDF, DOCX. Max size: 2MB</div>
+                                            </div>
+                                
+                                            <button type="submit" class="btn btn-primary w-100">📤 Upload Resume</button>
+                                        </form>
+                                
+                                        {% if user.seeker_profile.resume %}
+                                        <div class="alert alert-success mt-4 text-center">
+                                            <p class="mb-1">✅ Resume Uploaded Successfully!</p>
+                                            <p>Current Resume: <a href="{{ user.seeker_profile.resume.url }}" target="_blank" class="fw-bold">Download 📥</a></p>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <!-- Bootstrap 5 JavaScript for better form validation -->
+                                <script>
+                                    (function () {
+                                        'use strict';
+                                        var forms = document.querySelectorAll('.needs-validation');
+                                        Array.prototype.slice.call(forms).forEach(function (form) {
+                                            form.addEventListener('submit', function (event) {
+                                                if (!form.checkValidity()) {
+                                                    event.preventDefault();
+                                                    event.stopPropagation();
+                                                }
+                                                form.classList.add('was-validated');
+                                            }, false);
+                                        });
+                                    })();
+                                </script>
+                                
+                                  
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>   
+            <!-- OUR BLOG END -->
+                         
+        </div>
+        <!-- CONTENT END -->
+
+
+
+
+
+
+{% endblock %}

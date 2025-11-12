@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+      
+        <!-- CONTENT START -->
+        <div class="page-content">
+
+            <!-- INNER PAGE BANNER -->
+            <div class="wt-bnr-inr overlay-wraper bg-center" style="background-image:url('{% static 'images/banner/1.jpeg' %}');">
+                <div class="overlay-main site-bg-white opacity-01"></div>
+                <div class="container">
+                    <div class="wt-bnr-inr-entry">
+                        <div class="banner-title-outer">
+                            <div class="banner-title-name">
+                                <h2 class="wt-title">Candidate Resume</h2>
+                            </div>
+                        </div>
+                        <!-- BREADCRUMB ROW -->                            
+                        
+                            <div>
+                                <ul class="wt-breadcrumb breadcrumb-style-2">
+                                    <li><a href="index.html">Home</a></li>
+                                    <li>Candidate Resume</li>
+                                </ul>
+                            </div>
+                        
+                        <!-- BREADCRUMB ROW END -->                        
+                    </div>
+                </div>
+            </div>
+            <!-- INNER PAGE BANNER END -->
+
+
+            <!-- OUR BLOG START -->
+            <div class="section-full p-t120  p-b90 site-bg-white">
+                
+
+                <div class="container">
+                    <div class="row">
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-12 rightSidebar m-b30">
+
+                            <div class="side-bar-st-1">
+                                
+                                 
+                                <div class="dashboard-profile-pic">
+                                    <div class="dashboard-profile-photo">
+                                        <img src="{{ resume.image.url }}" alt=""> 
+                                        <div class="upload-btn-wrapper">
+                                            <div id="upload-image-grid"></div>
+                                            <button class="site-button button-sm">Upload Photo</button>
+                                            <input type="file" name="myfile" id="file-uploader" accept=".jpg, .jpeg, .png">
+                                        </div>
+                                    </div>
+                                   
+                                </div> 
+
+                                
+                                
+                                <script>
+                                    document.getElementById("file-uploader").addEventListener("change", function(event) {
+                                        var file = event.target.files[0];
+                                        if (file) {
+                                            var reader = new FileReader();
+                                            reader.onload = function(){
+                                                document.getElementById("logo-preview").src = reader.result;
+                                            };
+                                            reader.readAsDataURL(file);
+                                    
+                                            // Upload the file automatically using AJAX
+                                            var formData = new FormData();
+                                            formData.append("logo", file);
+                                            formData.append("csrfmiddlewaretoken", "{{ csrf_token }}"); // CSRF token
+                                    
+                                            fetch("{% url 'my_resume' %}", {  // Using the same view
+                                                method: "POST",
+                                                body: formData
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    document.getElementById("logo-preview").src = data.logo_url;  // Update preview
+                                                } else {
+                                                    alert("Failed to upload logo. Please try again.");
+                                                }
+                                            })
+                                            .catch(error => console.error("Error uploading logo:", error));
+                                        }
+                                    });
+                                </script> 
+
+                                
+                                <div class="twm-mid-content ">
+                                    <a href="candidate-detail.html" class="twm-job-title">
+                                        <h4>{{ resume.name }} </h4>
+                                    </a>
+                                    <p>{{ resume.title }}</p>
+                                </div>
+                               
+                                <div class="twm-nav-list-1">
+                                    <ul>
+                                        <li><a href="{% url 'view_profile' %}"><i class="fa fa-user"></i> Profile View</a></li>
+                                        <li class="active" ><a href="{% url 'dashboard' %}"><i class="fa fa-tachometer-alt"></i> Dashboard</a></li>         
+                                        <li ><a href="{% url 'upload_resume' %}"><i class="fa fa-upload"></i> Upload Resume</a></li>
+                                        <li ><a href="{% url 'my_resume' %}"><i class="fa fa-receipt"></i> My Resume</a></li>
+                                        <li><a href="{% url 'dashboard' %}"><i class="fa fa-suitcase"></i> Applied Jobs</a></li>
+                                        <li><a href="{% url 'recommendations' %}"><i class="fa fa-brain"></i> Job Recommended</a></li>
+                                        <li><a href="{% url 'password_change' %}"><i class="fa fa-fingerprint"></i> Change Passeord</a></li>
+                                        <li><a href="{% url 'custom_logout' %}"><i class="fa fa-share-square"></i> Logout</a></li>
+                                    </ul>
+                                </div>
+                                
+                            </div>
+
+                        </div>
+
+                        <div class="col-xl-9 col-lg-8 col-md-12 m-b30">
+                            <!--Filter Short By-->
+                            <div class="twm-right-section-panel site-bg-gray">
+                                <div class="wt-admin-right-page-header">
+                                    <h2>{{ resume.name }}</h2>
+                                    <p>{{ resume.title }}</p>
+                                </div>
+                
+                                <div class="twm-dash-b-blocks mb-5">
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body wt-panel-body dashboard-card-2 block-gradient">
+                                                    <div class="wt-card-wrap-2">
+                                                        <div class="wt-card-icon-2"><i class="flaticon-job"></i></div>
+                                                        <div class="wt-card-right wt-total-active-listing counter ">{{ total_jobs }}</div>
+                                                        <div class="wt-card-bottom-2 ">
+                                                            <h4 class="m-b0">Posted Jobs</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body wt-panel-body dashboard-card-2 block-gradient-2">
+                                                    <div class="wt-card-wrap-2">
+                                                        <div class="wt-card-icon-2"><i class="flaticon-resume"></i></div>
+                                                        <div class="wt-card-right  wt-total-listing-view counter ">{{ total_applications }}</div>
+                                                        <div class="wt-card-bottom-2">
+                                                            <h4 class="m-b0">Total Applications</h4> 
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body wt-panel-body dashboard-card-2 block-gradient-3">
+                                                    <div class="wt-card-wrap-2">
+                                                        <div class="wt-card-icon-2"><i class="fas fa-briefcase"></i></div>
+                                                        <div class="wt-card-right wt-total-listing-review counter ">{{last_month_jobs}}</div>
+                                                        <div class="wt-card-bottom-2">
+                                                            <h4 class="m-b0">Last Month Total Posted Jobs</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-12 mb-3">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body wt-panel-body dashboard-card-2 block-gradient-4">
+                                                    <div class="wt-card-wrap-2">
+                                                        <div class="wt-card-icon-2"><i class="fas fa-user-tie"></i></div>
+                                                        <div class="wt-card-right wt-total-listing-bookmarked counter ">{{last_month_applications}}</div>
+                                                        <div class="wt-card-bottom-2">
+                                                            <h4 class="m-b0">Last Month Total Applications</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </div>
+                
+                                <div class="twm-pro-view-chart-wrap">
+                                    <div class="row">
+
+                                        <div class="product-filter-wrap d-flex justify-content-between align-items-center">
+                                            <span class="woocommerce-result-count-left">Applied {{ total_applications }} jobs</span>
+                                        
+                                            
+        
+                                        </div>
+        
+                                        <div class="twm-jobs-list-wrap">
+                                            <ul>
+                                                {% for application in applications %}
+                                                <li>
+                                                    <div class="twm-jobs-list-style1 mb-5">
+                                                        <div class="twm-media">
+                                                            <img src="{{ application.job.employee.logo.url }}" alt="#">  
+                                                        </div>
+                                                        <div class="twm-mid-content">
+                                                            <a href="{% url 'job_detail' application.job.id %}" class="twm-job-title">
+                                                                <h4>{{ application.job.title }} 
+                                                                    <span class="twm-job-post-duration">/ {{ application.applied_at|timesince }} ago </span>
+                                                                </h4>
+                                                            </a>
+                                                            <p class="twm-job-address">{{ application.job.job_location }}</p>
+                                                            <a href="{{ application.job.employee.company_website }}" class="twm-job-websites site-text-primary">
+                                                                {{ application.job.employee.company_website }}
+                                                            </a>
+                                                        </div>
+                                                        <div class="twm-right-content">
+                                                            <div class="twm-jobs-category green"><span class="twm-bg-green">{{ application.status }}</span></div>
+                                                            {% if application.expected_Salary %}
+                                                                <div class="twm-jobs-amount">{{ application.expected_Salary }} BDT <span>/ Month</span></div>
+                                                            {%else %}
+                                                            <div class="twm-jobs-amount">Not Mention</span></div>
+                                                            {% endif %}
+                                                            <a href="{% url 'job_detail' application.job.id %}" class="twm-jobs-browse site-text-primary">View Job</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                {% empty %}
+                                                <p>You haven't applied for any jobs yet.</p>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+        
+                                        
+
+
+                
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                </div>
+            </div>   
+            <!-- OUR BLOG END -->
+                         
+        </div>
+        <!-- CONTENT END -->
+
+
+
+
+
+
+{% endblock %}

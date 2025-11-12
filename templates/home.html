@@ -1,0 +1,697 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+        <!-- CONTENT START -->
+    <div class="page-content">
+            <!--Banner Start-->
+            <div class="twm-home7-banner-section site-bg-white bg-cover" style="background-image: url({% static 'images/main-slider/slider1/herojob banner.png' %});">
+                <div class="container">
+                    <div class="twm-home7-inner-section">
+                        <div class="twm-bnr-mid-section">
+                            <div class="twm-bnr-title-large">Find Top <span class="text-clr-pink">Jobs</span></div>
+                            <div class="twm-bnr-title-light">For Talent People's</div>
+                            <div class="twm-bnr-search-bar">
+                                <form method="GET" action="{% url 'job_list' %}">
+                                    <div class="row">
+                                        <!--Keyword-->
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6">
+                                            <label>Keyword</label>
+                                            <div class="twm-inputicon-box">
+                                                <input name="keyword" type="text" class="form-control" placeholder="Keyword" value="{{ keyword|default:'' }}">
+                                            </div>
+                                        </div>
+                                
+                                        <!--Category-->
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6">
+                                            <label>Type</label>
+                                            <select name="category" class="wt-search-bar-select selectpicker" data-live-search="true" title="">
+                                                <option disabled selected value="">Select Category</option>
+                                                <option value="">All Category</option>
+                                                {% for category in top_categories %}
+                                                <option value="{{ category.id }}" {% if category.id|stringformat:"s" == selected_category|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                
+                                        <!--Location-->
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6">
+                                            <label>Location</label>
+                                            <div class="twm-inputicon-box">
+                                                <input name="location" type="text" class="form-control" placeholder="Location" value="{{ location|default:'' }}">
+                                                <i class="twm-input-icon fas fa-map-marker-alt"></i>
+                                            </div>
+                                        </div>
+                                
+                                        <!--Find job btn-->
+                                        <div class="form-group col-xl-3 col-lg-6 col-md-6">
+                                            <button type="submit" class="site-button">Find Job</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                
+                            </div>
+                            <div class="twm-bnr-discription">Enter a keyword and hit Search to find your perfect job.</div>
+                        </div>
+                        
+                    </div>
+                    <div class="twm-bnr-bottom-section">
+                        <div class="twm-browse-jobs style="color: #000; font-weight: 600; font-size: 18px;">IIUC! P HERO!</div>
+                    </div>
+                </div>
+
+                <div class="twm-bnr-h-page7-jobs">
+                    <div class="twm-hed-title">
+                        <h4 class="twm-title">jobs at a glance</h4>
+                    </div>
+                    <div class="twm-bnr-h7-carousal">
+                        <div class="swiper h-page7-jobs-slider">
+                            <div class="swiper-wrapper">
+                              <div class="swiper-slide">
+                                <!--1-->
+                                <div class="job-categories-home-7">
+                                    <div class="job-categories-home-7-top">
+                                        <div class="twm-media cat-bg-clr-3">
+                                            <div class="flaticon-hr"></div>
+                                        </div>                                   
+                                        <div class="twm-content">
+                                            <div class="twm-jobs-available">45 Jobs</div>
+                                        </div>
+                                    </div>
+                                    <a href="#">Human Resource</a>                              
+                                </div>
+                              </div>
+                              <div class="swiper-slide">
+                                <!--2-->
+                                <div class="job-categories-home-7">
+                                    <div class="job-categories-home-7-top">
+                                        <div class="twm-media cat-bg-clr-3">
+                                            <div class="flaticon-user"></div>
+                                        </div>                                   
+                                        <div class="twm-content">
+                                            <div class="twm-jobs-available">70 Jobs</div>
+                                        </div>
+                                    </div>
+                                    <a href="#">Management</a>                              
+                                </div>
+                              </div>
+
+                              <div class="swiper-slide">
+                                <!--3-->
+                                <div class="job-categories-home-7">
+                                    <div class="job-categories-home-7-top">
+                                        <div class="twm-media cat-bg-clr-3">
+                                            <div class="flaticon-bank"></div>
+                                        </div>                                   
+                                        <div class="twm-content">
+                                            <div class="twm-jobs-available">65 Jobs</div>
+                                        </div>
+                                    </div>
+                                    <a href="#">Accountant</a>                              
+                                </div>
+                              </div>
+                              <div class="swiper-slide">
+                                <!--4-->
+                                <div class="job-categories-home-7">
+                                    <div class="job-categories-home-7-top">
+                                        <div class="twm-media cat-bg-clr-3">
+                                            <div class="flaticon-dashboard"></div>
+                                        </div>                                   
+                                        <div class="twm-content">
+                                            <div class="twm-jobs-available">55 Jobs</div>
+                                        </div>
+                                    </div>
+                                    <a href="#">Software</a>                              
+                                </div>
+                              </div>
+
+                              <div class="swiper-slide">
+                                <!--5-->
+                                <div class="job-categories-home-7">
+                                    <div class="job-categories-home-7-top">
+                                        <div class="twm-media cat-bg-clr-3">
+                                            <div class="flaticon-dashboard"></div>
+                                        </div>                                   
+                                        <div class="twm-content">
+                                            <div class="twm-jobs-available">55 Jobs</div>
+                                        </div>
+                                    </div>
+                                    <a href="#">Software</a>                              
+                                </div>
+                              </div>
+                              <div class="swiper-slide">
+                                <!--6-->
+                                <div class="job-categories-home-7">
+                                    <div class="job-categories-home-7-top">
+                                        <div class="twm-media cat-bg-clr-3">
+                                            <div class="flaticon-bars"></div>
+                                        </div>                                   
+                                        <div class="twm-content">
+                                            <div class="twm-jobs-available">55 Jobs</div>
+                                        </div>
+                                    </div>
+                                    <a href="#">Marketing & Sales</a>                              
+                                </div>
+                              </div>
+
+                              <div class="swiper-slide">
+                                <!--7-->
+                                <div class="job-categories-home-7">
+                                    <div class="job-categories-home-7-top">
+                                        <div class="twm-media cat-bg-clr-3">
+                                            <div class="flaticon-project-management"></div>
+                                        </div>                                   
+                                        <div class="twm-content">
+                                            <div class="twm-jobs-available">86 Jobs</div>
+                                        </div>
+                                    </div>
+                                    <a href="#">Educational</a>                              
+                                </div>
+                              </div>
+                              <div class="swiper-slide">
+                                <!--8-->
+                                <div class="job-categories-home-7">
+                                    <div class="job-categories-home-7-top">
+                                        <div class="twm-media cat-bg-clr-3">
+                                            <div class="flaticon-project-management"></div>
+                                        </div>                                   
+                                        <div class="twm-content">
+                                            <div class="twm-jobs-available">86 Jobs</div>
+                                        </div>
+                                    </div>
+                                    <a href="#">Educational</a>                              
+                                </div>
+                              </div>
+
+                              <div class="swiper-slide">
+                                <!--9-->
+                                <div class="job-categories-home-7">
+                                    <div class="job-categories-home-7-top">
+                                        <div class="twm-media cat-bg-clr-3">
+                                            <div class="flaticon-coding"></div>
+                                        </div>                                   
+                                        <div class="twm-content">
+                                            <div class="twm-jobs-available">86 Jobs</div>
+                                        </div>
+                                    </div>
+                                    <a href="#">UI/UX Designer</a>                              
+                                </div>
+                              </div>
+
+                              <div class="swiper-slide">
+                                <!--10-->
+                                <div class="job-categories-home-7">
+                                    <div class="job-categories-home-7-top">
+                                        <div class="twm-media cat-bg-clr-3">
+                                            <div class="flaticon-camera-tripod"></div>
+                                        </div>                                   
+                                        <div class="twm-content">
+                                            <div class="twm-jobs-available">86 Jobs</div>
+                                        </div>
+                                    </div>
+                                    <a href="#">Media Reporter</a>                              
+                                </div>
+                              </div>
+
+                              
+                              
+                            </div>
+                            
+                          </div>
+                    </div>
+                </div>
+
+               
+            </div>
+            <!--Banner End-->
+
+            <!-- Recommended Jobs SECTION START -->
+            <div class="section-full p-t120 p-b90 site-bg-white twm-recommended-Jobs-wrap7">
+                <div class="container">
+                    <div class="wt-separator-two-part">
+                        <div class="row wt-separator-two-part-row">
+                            <div class="col-xl-6 col-lg-6 col-md-12 wt-separator-two-part-left">
+                                <!-- TITLE START-->
+                                <div class="section-head left wt-small-separator-outer">
+                                    <div class="wt-small-separator text-danger">
+                                        <div>Jobs Deadline ({{ jobs_today_deadline_count }})</div>                                
+                                    </div>
+                                    <h3 class="wt-title">Apply Today – {{ jobs_today_deadline_count }} Job{% if jobs_today_deadline_count != 1 %}s{% endif %} Closing!</h3>
+                                    
+                                </div>                 
+                                <!-- TITLE END-->
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-12 wt-separator-two-part-right text-right">
+                                <a href="{% url 'job_list' %}" class="site-button">All Jobs</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    function updateCountdown() {
+                        const now = new Date();
+                        const endOfDay = new Date();
+                        endOfDay.setHours(23, 59, 59, 999);
+                
+                        const diff = endOfDay - now;
+                
+                        if (diff > 0) {
+                            const hours = Math.floor(diff / (1000 * 60 * 60));
+                            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                            document.getElementById("countdown-today").innerHTML =
+                                `${hours}h ${minutes}m ${seconds}s remaining`;
+                        } else {
+                            document.getElementById("countdown-today").innerHTML = "Time's up!";
+                        }
+                    }
+                
+                    // Update every second
+                    setInterval(updateCountdown, 1000);
+                    updateCountdown(); // Initial call
+                </script>
+                         
+                <div class="twm-recommended-Jobs-mid-wrap">
+                    <div class="twm-recommended-Jobs-mid">
+                        <div class="container">
+                            <div class="filter-carousal">
+                                <!-- Filter Menu -->
+                                <div class="twm-jobs-filter">
+                                    <ul class="btn-filter-wrap">
+                                        <h4>Countdown to End of Today:</h4>
+                                        <li id="countdown-today"></li>
+                                    </ul>
+                                </div>
+                                <!-- Filter Menu -->
+            
+                                <!-- IMAGE CAROUSEL START -->
+                                <div class="section-content ">
+                                    <div class="owl-carousel owl-carousel-filter mfp-gallery owl-btn-vertical-center">
+                                        {% for job in job %}
+                                        <div class="item">
+                                            <div class="hpage-7-featured-block">
+                                                <div class="inner-content">
+                                                    <div class="top-content-wrap">
+                                                        <div class="top-content">
+                                                            <span class="job-time">{{ job.job_type }}</span>
+                                                            <span class="job-post-time">{{ job.created_at|timesince }} ago</span>
+                                                        </div>
+                                                        <div class="mid-content">
+                                                            <div class="company-logo">
+                                                                <img src="{{ job.employee.logo.url }}" alt="#">
+                                                            </div>
+                                                            <div class="company-info">
+                                                                <a href="{% url 'job_detail' job.id %}" class="company-name">{{ job.employee.company_name }}</a>
+                                                                <p class="company-address">{{ job.job_location }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="bottom-content">
+                                                        <h4 class="job-name-title">{{ job.title|truncatechars:26 }}</h4>
+                                                        <div class="job-payment">
+                                                            <span>Vacancies: {{ job.no_of_vacancy }}</span> available
+                                                        </div>
+                                                    </div>
+                                                    <div class="aply-btn-area">
+                                                        <a href="{% url 'job_detail' job.id %}" class="aplybtn">
+                                                            <i class="fa fa-paper-plane"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            
+            <!-- Recommended Jobs SECTION END --> 
+            
+
+
+            <!-- JOBS CATEGORIES SECTION START -->
+            <div class="section-full p-t120 p-b90 site-bg-white twm-job-categories-hpage-6-area">
+                <!-- TITLE START-->
+                <div class="section-head center wt-small-separator-outer">
+                    <div class="wt-small-separator site-text-primary">
+                                                       
+                    </div>
+                    <h2 class="wt-title">Browse Categories That Interest You</h2>
+                </div>                  
+                <!-- TITLE END--> 
+                
+                <div class="container">
+
+                    <div class="twm-job-cat-hpage-6-wrap">
+                       
+                        <div class="job-cat-block-hpage-6-section m-b30">
+                            <div class="row">
+                                {% for category in top_categories %}
+                                    <div class="col">
+                                        <div class="job-cat-block-hpage-6 m-b30">
+                                            <div class="twm-media">
+                                                <!-- Optional: Add logic to vary icon class if you want dynamic icons -->
+                                                <div class="flaticon-dashboard"></div> 
+                                            </div>                                   
+                                            <div class="twm-content">
+                                                <a href="{% url 'job_list' %}?category={{ category.id }}">{{ category.name }}</a>
+                                                <div class="twm-jobs-available">
+                                                    <span>{{ category.job_count }}</span> Posted new job{{ category.job_count|pluralize:"s" }}
+                                                </div>
+                                                <div class="circle-line-wrap">
+                                                    <a class="circle-line-btn" href="{% url 'job_list' %}?category={{ category.id }}">
+                                                        <i class="fa fa-arrow-right"></i>
+                                                    </a>
+                                                </div>
+                                            </div>                               
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            
+                        </div>
+
+                        <div class="text-center job-categories-btn">
+                            <a href="{% url 'job_list' %}" class=" site-button">All Categories</a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>   
+            <!-- JOBS CATEGORIES SECTION END -->
+
+            <!-- Recruiters START -->
+            <div class="section-full p-t120 p-b90 site-bg-white">
+                <div class="container">
+                    
+                    <!-- TITLE START-->
+                    <div class="section-head center wt-small-separator-outer">
+                        <div class="wt-small-separator site-text-primary">
+                            <div>Top Recruiters</div>                                
+                        </div>
+                        <h2 class="wt-title">Discover Jobs by Top Companies</h2>
+                        
+                    </div>                  
+                    <!-- TITLE END-->
+
+
+                    <div class="section-content">
+                        <div class="twm-recruiters5-wrap">
+                            <div class="twm-column-5 m-b30">
+                                <ul class="company-list">
+                                    {% for company_info in company_data %}
+                                        <li class="company-item">
+                                            <div class="twm-recruiters5-box">
+                                                <div class="twm-rec-top">
+                                                    <div class="twm-rec-media">
+                                                        <!-- Display a default image for the job or create a custom image field in the model -->
+                                                        <img src="{% if company_info.company.logo %}{{ company_info.company.logo.url }}{% else %}images/jobs-company/default.jpg{% endif %}" alt="Company Logo">
+                                                    </div>
+                                                    <div class="twm-rec-jobs">{{ company_info.published_jobs.count }} Jobs</div> <!-- Job category name -->
+                                                </div>
+                                                <p style="color: blue;">{{ company_info.company.company_name }}</p>
+                                                <div class="twm-rec-content">
+                                                    <div class="job-list">
+                                                        {% for job in company_info.published_jobs %}
+                                                            <div class="job-item">
+                                                                <p class="job-title">
+                                                                    <span class="job-counter">{{ forloop.counter }}.</span>
+                                                                    <a href="{% url 'job_detail' job.id %}">
+                                                                        {{ job.title|truncatechars:26 }}
+                                                                    </a>
+                                                                </p>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% empty %}
+                                        <li>No jobs found.</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                    
+                            <div class="text-center m-b30">
+                                <a href="{% url 'job_list' %}" class="site-button">View All</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <style>
+                        /* Initially hide all job items except the first 4 */
+                        .job-item {
+                            display: none;
+                        }
+
+                        .job-item:nth-child(-n+4) {
+                            display: block;
+                        }
+
+                        /* Show all job items when hovering over the company item */
+                        .company-item:hover .job-item {
+                            display: block;
+                        } 
+
+                        .company-list {
+                            display: flex;
+                            flex-wrap: wrap;
+                            gap: 20px; /* Adjust the gap between items as needed */
+                        }
+                        
+                        /* Each company item */
+                        .company-item {
+                            flex: 1 1 calc(25% - 20px); /* 4 items per row (25% width) with gap adjustment */
+                            box-sizing: border-box; /* Ensure padding and border are included in the width */
+                            max-width: calc(25% - 20px); /* Ensure it doesn't exceed 25% width */
+                        }
+                        
+                        /* Responsive adjustments for smaller screens */
+                        @media (max-width: 1200px) {
+                            .company-item {
+                                flex: 1 1 calc(33.33% - 20px); /* 3 items per row on smaller screens */
+                                max-width: calc(33.33% - 20px);
+                            }
+                        }
+                        
+                        @media (max-width: 768px) {
+                            .company-item {
+                                flex: 1 1 calc(50% - 20px); /* 2 items per row on mobile */
+                                max-width: calc(50% - 20px);
+                            }
+                        }
+                        
+                        @media (max-width: 480px) {
+                            .company-item {
+                                flex: 1 1 100%; /* 1 item per row on very small screens */
+                                max-width: 100%;
+                            }
+                        }
+                    </style>
+                                   
+                    
+                </div>
+            </div>
+            <!-- Recruiters END --> 
+            <!-- TOP COMPANIES START -->
+            <div class="section-full p-t120  site-bg-white twm-companies-wrap">
+                  
+                <!-- TITLE START-->
+                <div class="section-head center wt-small-separator-outer">
+                    <div class="wt-small-separator site-text-primary">
+                       <div>Top Companies</div>                                
+                    </div>
+                    <h2 class="wt-title">Get hired in top companies</h2>
+                </div>                  
+                <!-- TITLE END-->
+
+                <div class="container">
+                    <div class="section-content">
+                        <div class="owl-carousel home-client-carousel2 owl-btn-vertical-center">
+                            {% for company_info in company_data %}
+                            <div class="item">
+                                <div class="ow-client-logo">
+                                    <div class="client-logo client-logo-media">
+                                        <a href="#"><img src="{% if company_info.company.logo %}{{ company_info.company.logo.url }}{% else %}images/jobs-company/default.jpg{% endif %}" alt="Company Logo"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            {%endfor%}
+                        
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="twm-company-approch-outer">
+                    <div class="twm-company-approch">
+                        <div class="row">
+
+                            <!--block 1-->
+                            <div class="col-lg-4 col-md-12">
+                                <div class="counter-outer-two">
+                                    <div class="icon-content">
+                                        <div class="tw-count-number text-clr-sky">
+                                            <span class="counter">{{ total_users }}</span></div>
+                                        <p class="icon-content-info">Daily active users</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--block 2-->
+                            <div class="col-lg-4 col-md-12">
+                                <div class="counter-outer-two">
+                                    <div class="icon-content">
+                                        <div class="tw-count-number text-clr-pink">
+                                            <span class="counter">{{ total_job_posts }}</span></div>
+                                        <p class="icon-content-info">Open job positions</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--block 3-->
+                            <div class="col-lg-4 col-md-12">
+                                <div class="counter-outer-two">
+                                    <div class="icon-content">
+                                        <div class="tw-count-number text-clr-green">
+                                            <span class="counter">{{ total_vacancies }}</span></div>
+                                        <p class="icon-content-info">Total Vacancies Now</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                           
+        </div>
+        <!-- TOP COMPANIES END -->
+            <!-- HOW IT WORK SECTION START -->
+            <div class="section-full p-t120 p-b90 twm-how-it-work-area" style="background-image: url({% static 'images/main-slider/slider1/hiw-bg.jpeg' %});">
+            
+                <div class="container">
+
+                    <!-- TITLE START-->
+                    <div class="section-head center wt-small-separator-outer  content-white">
+                        <div class="wt-small-separator">
+                            <div>Workflow Process</div>                                
+                        </div>
+                        <h2 class="wt-title">Follow our steps, and we'll guide you.</h2>
+                        
+                    </div>                  
+                    <!-- TITLE END-->
+
+                    <div class="twm-how-it-work-section3">
+                        <div class="row">
+                            <div class="col-xl-4 col-lg-6 col-md-6">
+                                <div class="twm-w-process-steps-h-page-7">
+                                    <div class="twm-w-pro-top">
+                                        <div class="twm-media">
+                                            <span><img src="{% static 'images/work-process/icon1.png' %}" alt="icon1"></span>
+                                        </div>
+                                        <span class="twm-large-number  text-clr-sky">01</span>
+                                    </div>
+                                    <h4 class="twm-title">Register Your Account</h4>
+                                    <p>Start by registering your account to unlock job opportunities.</p>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-lg-6 col-md-6">
+                                <div class="twm-w-process-steps-h-page-7">
+                                    <div class="twm-w-pro-top">
+                                        <div class="twm-media">
+                                            <span><img src="{% static 'images/work-process/icon3.png' %}" alt="icon1"></span>
+                                        </div>
+                                        <span class="twm-large-number  text-clr-green">02</span>
+                                    </div>
+                                    <h4 class="twm-title">Make or Upload Your Resume</h4>
+                                    <p>Create or upload your resume to showcase your skills.</p>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-lg-6 col-md-6">
+                                <div class="twm-w-process-steps-h-page-7">
+                                    <div class="twm-w-pro-top">
+                                        <div class="twm-media">
+                                            <span><img src="{% static 'images/work-process/icon2.png' %}" alt="icon1"></span>
+                                        </div>
+                                        <span class="twm-large-number text-clr-pink">03</span>
+                                    </div>
+                                    <h4 class="twm-title">Search and Apply Dream Job</h4>
+                                    <p>Browse jobs and Submit your application for your desired job role.</p>
+                                </div>
+                            </div>
+
+                            
+
+                        </div>
+                    </div>                  
+                </div>
+
+            </div>   
+            <!-- HOW IT WORK SECTION END -->
+
+
+            
+            <!-- OUR BLOG START -->
+            <div class="section-full p-t120 p-b90 site-bg-white">
+                <div class="container">
+                   
+                    <!-- TITLE START-->
+                    <div class="section-head center wt-small-separator-outer">
+                        <div class="wt-small-separator site-text-primary">
+                           <div>Career Tips & News</div>                                
+                        </div>
+                        <h2 class="wt-title">Latest Article</h2>
+                        
+                    </div>                  
+                    <!-- TITLE END-->
+
+                    
+                    <div class="section-content">
+                        <div class="twm-blog-post-3-outer-wrap">
+                            <div class="row d-flex justify-content-center"> 
+                                {% for post in recentblog %}
+                                <div class="col-lg-4 col-md-6 col-sm-12">        
+                                    <!--Block one-->
+                                    <div class="blog-post twm-blog-post-3-outer">
+                                        <div class="wt-post-media">
+                                            <a href="{% url 'blog_detail' post.id %}"><img src="{{ post.image.url }}" alt=""></a>
+                                        </div>                                    
+                                        <div class="wt-post-info">
+                                            <div class="wt-post-meta ">
+                                                <ul>
+                                                    <li class="post-date">{{ post.created_at }}</li>
+                                                    <li class="post-author"><a href="{% url 'blog_detail' post.id %}">{{ post.writer_name }}</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="wt-post-title ">
+                                                <h4 class="post-title">
+                                                    <a href="{% url 'blog_detail' post.id %}">{{ post.title|truncatechars:60 }}</a>
+                                                </h4>
+                                            </div>
+                                                                                  
+                                        </div>                                
+                                    </div>
+                                </div>
+                                {% endfor %}                                                       
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+            <!-- OUR BLOG END -->
+
+
+    </div>
+        <!-- CONTENT END -->
+
+
+{% endblock %}

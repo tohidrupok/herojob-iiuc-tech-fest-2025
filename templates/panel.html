@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+
+    <!-- META -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="" />
+    <meta name="author" content="" />
+    <meta name="robots" content="" />    
+    <meta name="description" content="" />
+    
+    <!-- FAVICONS ICON -->
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}" />
+    
+    <!-- PAGE TITLE HERE -->
+    <title>JagoJop</title>
+    
+    <!-- MOBILE SPECIFIC -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"><!-- BOOTSTRAP STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}"><!-- FONTAWESOME STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/feather.css' %}"><!-- FEATHER ICON SHEET -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/owl.carousel.min.css' %}"><!-- OWL CAROUSEL STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/magnific-popup.min.css' %}"><!-- MAGNIFIC POPUP STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/lc_lightbox.css' %}"><!-- Lc light box popup -->     
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-select.min.css' %}"><!-- BOOTSTRAP SELECT BOX STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dataTables.bootstrap5.min.css' %}"><!-- DATA TABLE STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/select.bootstrap5.min.css' %}"><!-- DASHBOARD SELECT BOOTSTRAP STYLE SHEET -->     
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dropzone.css' %}"><!-- DROPZONE STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/scrollbar.css' %}"><!-- CUSTOM SCROLL BAR STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/datepicker.css' %}"><!-- DATEPICKER STYLE SHEET -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/flaticon.css' %}"><!-- FLATICON -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/swiper-bundle.min.css' %}"><!-- SWIPER SLIDER -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"><!-- MAIN STYLE SHEET -->
+
+    <!-- THEME COLOR CHANGE STYLE SHEET -->
+    <link rel="stylesheet" class="skin" type="text/css" href="{% static 'css/skins-type/skin-6.css' %}">
+    
+</head>
+
+<body>
+
+    <!-- LOADING AREA START ===== -->
+    <div class="loading-area">
+        <div class="loading-box"></div>
+        <div class="loading-pic">
+            <div class="wrapper">
+                <div class="cssload-loader"></div>
+            </div>
+        </div>
+    </div>
+    <!-- LOADING AREA  END ====== -->    
+
+	<div class="page-wraper">
+    
+        <header id="header-admin-wrap" class="header-admin-fixed">
+        
+            <!-- Header Start -->
+            <div id="header-admin">
+                <div class="container">
+                    
+                    <!-- Left Side Content -->
+                    <div class="header-left">
+                        <div class="nav-btn-wrap">
+                            <a class="nav-btn-admin" id="sidebarCollapse">
+                                <span class="fa fa-angle-left"></span>
+                            </a>                           
+                        </div>
+                    </div>
+                    <!-- Left Side Content End -->
+                    
+                    <!-- Right Side Content -->
+                    <div class="header-right">
+                        <ul class="header-widget-wrap">
+                            
+                            <!--Account-->
+                            <li class="header-widget">
+								<div class="dashboard-user-section">
+                                	<div class="listing-user">
+                                        <div class="dropdown">
+                                            <a href="javascript:;" class="dropdown-toggle" id="ID-ACCOUNT_dropdown" data-bs-toggle="dropdown">
+                                                <div class="user-name text-black">
+                                                    <span>
+                                                        <img src="{% static 'images/HeroJob-logo.png' %}" alt="">
+                                                    </span>HeroJob
+                                                </div> 
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="ID-ACCOUNT_dropdown">
+                                                  
+                                                <ul>
+                                                    <li><a href=""><i class="fa fa-home"></i>Dashboard</a></li>
+                                                    <li><a href="{% url 'employer_profile_edit' %}"><i class="fa fa-user"></i> Profile</a></li>
+                                                    <li><a href="{% url 'custom_logout' %}"><i class="fa fa-share-square"></i> Logout</a></li>
+                                                </ul>
+                                                    
+                                                
+                                            </div>
+                                        </div>
+
+                                    </div>                                
+                               </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <!-- Right Side Content End -->
+        
+                </div>
+            </div>
+            <!-- Header End -->
+        
+        </header>            
+    	
+        <!-- Sidebar Holder -->
+        <nav id="sidebar-admin-wraper">
+            <div class="page-logo">
+                <a href="index.html">
+                    <img src="{% static 'images/herojob.png' %}" alt="" width="100" height="auto">
+                </a>
+            </div>
+            
+            <div class="admin-nav scrollbar-macosx">
+                <ul> 
+                    {% comment %} class="active" {% endcomment %}
+                    <li   >
+                        <a href="{% url 'superuser_dashboard' %}"><i class="fa fa-home"></i><span class="admin-nav-text">Dashboard</span></a> 
+                    </li>
+
+                    <li>
+                        <a href="{% url 'approve_job_post_list' %}"> <i class="fa fa-hourglass-half pulse-rotate-icon"></i>
+                            <span class="admin-nav-text pulse-text">Pending Jobs </span>
+                        </a>
+                    </li>
+                 
+                    <li>
+                        <a href="{% url 'job_post_list' %}"><i class="fa fa-user-tie"></i><span class="admin-nav-text">Manage Jobs</span></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'post_job' %}"><i class="fa fa-suitcase"></i><span class="admin-nav-text">Post a New Jobs</span></a>
+                    </li>
+                                        
+                    <li>
+                        <a href="{% url 'all_seeker_profiles' %}"><i class="fa fa-user-friends"></i><span class="admin-nav-text">Candidates</span></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'all_employee_profiles' %}"><i class="fa fa-tasks"></i><span class="admin-nav-text">Employee Review</span></a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'add_employer' %}"><i class="fa fa-user-plus"></i><span class="admin-nav-text">Add Employee</span></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'category_page' %}"><i class="fa fa-tags"></i><span class="admin-nav-text">Job category List </span></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'blog_create' %}"><i class="fa fa-plus"></i><span class="admin-nav-text">Add Blog</span></a>
+                    </li>  
+
+                    <li>
+                        <a href="{% url 'blog_list' %}"><i class="fa fa-th-list"></i><span class="admin-nav-text">Blog List</span></a>
+                    </li>  
+                    
+
+                    <li>
+                        <a href="{% url 'password_change' %}"><i class="fa fa-fingerprint"></i><span class="admin-nav-text">Change Password</span></a>
+                    </li>
+          
+                    <li>
+                        <a href="{% url 'custom_logout' %}" data-bs-toggle="modal" data-bs-target="#logout-dash-profile">
+                            <i class="fa fa-share-square"></i><span class="admin-nav-text">Logout</span>
+                        </a>
+                    </li>                   
+                    
+                </ul> 
+                <style>
+                    .pulse-rotate-icon {
+                        animation: pulseRotate 1.5s infinite;
+                        color: #e74c3c; /* Red color */
+                    }
+                
+                    @keyframes pulseRotate {
+                        0% {
+                            transform: scale(1) rotate(0deg);
+                            opacity: 1;
+                        }
+                        50% {
+                            transform: scale(1.2) rotate(10deg);
+                            opacity: 0.7;
+                        }
+                        100% {
+                            transform: scale(1) rotate(0deg);
+                            opacity: 1;
+                        }
+                    }
+                
+                    .pulse-text {
+                        animation: pulseText 1.5s infinite;
+                        color: #e74c3c; /* Red color */
+                    }
+                
+                    @keyframes pulseText {
+                        0% { transform: scale(1); opacity: 1; }
+                        50% { transform: scale(1.1); opacity: 0.8; }
+                        100% { transform: scale(1); opacity: 1; }
+                    }
+                </style>
+                
+            </div>   
+        </nav>
+
+        {% block body %}
+        {% endblock %}
+
+        <!--Delete Profile Popup-->
+        <div class="modal fade twm-model-popup" id="delete-dash-profile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="modal-title">Do you want to delete your profile?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="site-button" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="site-button outline-primary">Yes</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+        {% comment %} <!--Logout Profile Popup-->
+        <div class="modal fade twm-model-popup" id="logout-dash-profile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="modal-title">Do you want to Logout your profile?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="site-button" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="site-button outline-primary">Yes</button>
+                </div>
+            </div>
+            </div>
+        </div>  {% endcomment %}
+
+        <!-- Logout Profile Popup -->
+        <div class="modal fade twm-model-popup" id="logout-dash-profile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h4 class="modal-title">Do you want to Logout your profile?</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="site-button" data-bs-dismiss="modal">No</button>
+                        <a href="{% url 'custom_logout' %}" class="site-button outline-primary">Yes</a>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+          
+
+	</div>
+
+
+<!-- JAVASCRIPT FILES ========================================= --> 
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script><!-- JQUERY.MIN JS -->
+<script src="{% static 'js/popper.min.js' %}"></script><!-- POPPER.MIN JS -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script><!-- BOOTSTRAP.MIN JS -->
+<script src="{% static 'js/magnific-popup.min.js' %}"></script><!-- MAGNIFIC-POPUP JS -->
+<script src="{% static 'js/waypoints.min.js' %}"></script><!-- WAYPOINTS JS -->
+<script src="{% static 'js/counterup.min.js' %}"></script><!-- COUNTERUP JS -->
+<script src="{% static 'js/waypoints-sticky.min.js' %}"></script><!-- STICKY HEADER -->
+<script src="{% static 'js/isotope.pkgd.min.js' %}"></script><!-- MASONRY -->
+<script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script><!-- MASONRY -->
+<script src="{% static 'js/owl.carousel.min.js' %}"></script><!-- OWL SLIDER -->
+<script src="{% static 'js/theia-sticky-sidebar.js' %}"></script><!-- STICKY SIDEBAR -->
+<script src="{% static 'js/lc_lightbox.lite.js' %}"></script><!-- IMAGE POPUP -->
+<script src="{% static 'js/bootstrap-select.min.js' %}"></script><!-- Form js -->
+<script src="{% static 'js/dropzone.js' %}"></script><!-- IMAGE UPLOAD -->
+<script src="{% static 'js/jquery.scrollbar.js' %}"></script><!-- scroller -->
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script><!-- scroller -->
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script><!-- Datatable -->
+<script src="{% static 'js/dataTables.bootstrap5.min.js' %}"></script><!-- Datatable -->
+<script src="{% static 'js/chart.js' %}"></script><!-- Chart -->
+<script src="{% static 'js/bootstrap-slider.min.js' %}"></script><!-- Price range slider -->
+<script src="{% static 'js/swiper-bundle.min.js' %}"></script><!-- Swiper JS -->
+<script src="{% static 'js/custom.js' %}"></script><!-- CUSTOM FUNCTIONS -->
+ 
+
+
+
+
+
+
+
+</script>
+
+</body>
+
+</html>

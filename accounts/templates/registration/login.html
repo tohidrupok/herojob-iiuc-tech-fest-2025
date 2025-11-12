@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+      
+        <!-- CONTENT START -->
+        <div class="page-content">
+
+            <!-- INNER PAGE BANNER -->
+            <div class="wt-bnr-inr overlay-wraper bg-center" style="background-image:url('{% static 'images/banner/1.jpeg' %}');">
+                <div class="overlay-main site-bg-white opacity-01"></div>
+                <div class="container">
+                    <div class="wt-bnr-inr-entry">
+                        <div class="banner-title-outer">
+                            <div class="banner-title-name">
+                                <h2 class="wt-title">Discover Your Dream Job Today!</h2>
+                            </div>
+                        </div>
+                        <!-- BREADCRUMB ROW -->                            
+                        
+                        <div>
+                            <ul class="wt-breadcrumb breadcrumb-style-2">
+                                <li><a href="{% url 'job_list' %}">All Jobs</a></li>
+                                <li>Explore Top Career Opportunities</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- BREADCRUMB ROW END -->                        
+                    </div>
+                </div>
+            </div>
+            <!-- INNER PAGE BANNER END -->
+          
+
+            <!-- OUR BLOG START -->
+            <div class="section-full p-t120 p-b90">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <div class="twm-right-section-panel p-4 rounded shadow" 
+                                 style="background: white; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);">
+                                <h2 class="text-center mb-4" style="color:rgb(255, 43, 43);">HeroJob Login</h2>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        {{ form.as_p }}
+                                    </div>
+                                    <button type="submit" class="btn w-100" 
+                                            style="background: #FF5722; color: white; font-size: 18px; border-radius: 5px;">
+                                        Login
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <!-- OUR BLOG END -->          
+     
+        </div>
+        <!-- CONTENT END -->
+
+{% endblock %}
+
+
+
+

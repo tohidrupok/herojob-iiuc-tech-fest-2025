@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+        <!-- CONTENT START -->
+        <div class="page-content">
+
+            <!-- INNER PAGE BANNER -->
+            <div class="wt-bnr-inr overlay-wraper bg-center" style="background-image:url('{% static 'images/banner/1.jpeg' %}');">
+                <div class="overlay-main site-bg-white opacity-01"></div>
+                <div class="container">
+                    <div class="wt-bnr-inr-entry">
+                        <div class="banner-title-outer">
+                            <div class="banner-title-name">
+                                <h2 class="wt-title">Career Tips & News</h2>
+                            </div>
+                        </div>
+                        <!-- BREADCRUMB ROW -->                            
+                        
+                            <div>
+                                <ul class="wt-breadcrumb breadcrumb-style-2">
+                                    <li><a href="{% url 'home' %}">Home</a></li>
+                                    <li>Career Tips & News</li>
+                                </ul>
+                            </div>
+                        
+                        <!-- BREADCRUMB ROW END -->                        
+                    </div>
+                </div>
+            </div>
+            <!-- INNER PAGE BANNER END -->
+
+
+            <!-- OUR BLOG START -->
+            <div class="section-full p-t120  p-b90 site-bg-white">
+                
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-12">
+
+                            <div class="masonry-wrap row d-flex">
+                                <!--Block one--> 
+                                {% for post in page_obj %}
+                                <div class="masonry-item col-lg-6 col-md-12">
+
+                                    <div class="blog-post twm-blog-post-1-outer">
+                                        <div class="wt-post-media">
+                                            {% if post.image %}
+                                                <a href="{% url 'home_blog_detail' post.id %}"><img src="{{ post.image.url }}" alt="{{ post.title }}"></a>
+                                            {% else %}
+                                                
+                                                <p>No image available</p>
+                                            {% endif %}
+                                        </div>
+                                                                               
+                                        <div class="wt-post-info">
+                                            <div class="wt-post-meta ">
+                                                <ul>
+                                                    <li class="post-date">{{ post.created_at }}</li>
+                                                    <li class="post-author"><a href="{% url 'home_blog_detail' post.id %}">{{ post.writer_name }} </a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="wt-post-title ">
+                                                <h4 class="post-title">
+                                                    <a href="{% url 'home_blog_detail' post.id %}">{{ post.title|truncatechars:60  }}</a>
+                                                </h4>
+                                            </div>
+                                            <div class="wt-post-text ">
+                                                <p>{{ post.content|truncatechars:220 }}</p>
+
+                                            </div>
+                                            <div class="wt-post-readmore ">
+                                                <a href="{% url 'home_blog_detail' post.id %}" class="site-button-link site-text-primary">বিস্তারিত</a>
+                                            </div>                                        
+                                        </div>                                
+                                    </div>
+
+                                </div>
+                                {%endfor%}
+                                
+
+                            </div>
+
+                            <div class="pagination-outer">
+                                <div class="pagination-style1">
+                                    <ul class="clearfix">
+                                        {% if page_obj.has_previous %}
+                                            <li class="prev">
+                                                <a href="?page={{ page_obj.previous_page_number }}">
+                                                    <span> <i class="fa fa-angle-left"></i> </span>
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="prev disabled">
+                                                <a href="javascript:;">
+                                                    <span> <i class="fa fa-angle-left"></i> </span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                            
+                                        <!-- Loop through all pages for custom pagination -->
+                                        {% for num in page_obj.paginator.page_range %}
+                                            {% if page_obj.number == num %}
+                                                <li class="active">
+                                                    <a href="javascript:;">{{ num }}</a>
+                                                </li>
+                                            {% else %}
+                                                <li><a href="?page={{ num }}">{{ num }}</a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                            
+                                        {% if page_obj.has_next %}
+                                            <li class="next">
+                                                <a href="?page={{ page_obj.next_page_number }}">
+                                                    <span> <i class="fa fa-angle-right"></i> </span>
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="next disabled">
+                                                <a href="javascript:;">
+                                                    <span> <i class="fa fa-angle-right"></i> </span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-4 col-md-12 rightSidebar">
+
+                            <div class="side-bar">
+                                <div class="widget search-bx">
+                                                                            
+                                    <form role="search" method="post">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Search">
+                                            <button class="btn" type="button" id="button-addon2"><i class="feather-search"></i></button>
+                                        </div>
+                                    </form>
+                                    
+                                </div>
+
+                                <div class="widget all_services_list">
+                                    <h4 class="section-head-small mb-4">Categories</h4> 
+                                    <div class="all_services m-b30">
+                                        <ul>
+                                            {% for category in blogCategory %} 
+                                                <li><a href="#">{{ category.name }}</a> <span class="badge">{{ category.post_count }}</span></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="widget recent-posts-entry">
+                                    <h4 class="section-head-small mb-4">Recent Article</h4>
+                                    <div class="section-content">
+                                        <div class="widget-post-bx">
+                                            {% for post in recentjob %}
+                                            <div class="widget-post clearfix">
+                                                <div class="wt-post-media">
+                                                    <img src="{{ post.image.url }}" alt="">
+                                                </div>
+                                                <div class="wt-post-info">
+                                                    <div class="wt-post-header">
+                                                        <span class="post-date">{{ post.created_at }}</span>
+                                                        <span class="post-title"> 
+                                                            <a href="blog-single.html">{{ post.title|truncatechars:50 }}</a>
+                                                        </span>
+                                                    </div>                                                    
+                                                </div>
+                                            </div> 
+                                            {% endfor %}
+                                                
+                                        </div>
+                                    </div>
+                                </div>
+ 
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>   
+            <!-- OUR BLOG END -->
+          
+            
+     
+        </div>
+        <!-- CONTENT END -->
+
+{% endblock %}
+
+
+
+ 
+
+
+<h1>All Blog Posts</h1>
+{% for post in page_obj %}
+    <div>
+        <h2><a href="{% url 'home_blog_detail' post.id %}">{{ post.title }}</a></h2>
+        <p>By {{ post.writer_name }} on {{ post.created_at }}</p>
+        <img src="{{ post.image.url }}" width="200" alt="{{ post.title }}">
+        <p>{{ post.content|truncatechars:200 }}</p>
+    </div>
+{% endfor %}
+
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+    {% endif %}
+</div>

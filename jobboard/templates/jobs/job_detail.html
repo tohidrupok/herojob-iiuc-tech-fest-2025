@@ -1,0 +1,476 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block body %}
+
+        <br><br><br>
+        <!-- CONTENT START -->
+        <div class="page-content">
+
+            <!-- Job Detail V.2 START -->
+            <div class="section-full  p-t50 p-b90 bg-white">
+                <div class="container">
+                    <div class="twm-job-detail-2-wrap">
+                    <!-- BLOG SECTION START -->
+                    <div class="section-content">
+                        <div class="twm-job-self-wrap twm-job-detail-v2">
+                            <div class="twm-job-self-info">
+                                <div class="twm-job-self-top">
+                                    
+                                    
+                                    <div class="twm-mid-content">
+
+                                        <div class="twm-media">
+                                            <img src="{{ job.employee.logo.url }}" alt="#">
+                                        </div>
+
+                                        <h4 class="twm-job-title">{{ job.title }} <span class="twm-job-post-duration">/ {{ job.created_at|timesince }} ago</span></h4>
+                                        <p class="twm-job-address"><i class="feather-map-pin"></i>{{ job.job_location }}</p>
+                                        <div class="twm-job-self-mid">
+                                            <div class="twm-job-self-mid-left">
+                                                <a href="{{ job.employee.company_website }}" class="twm-job-websites site-text-primary">{{ job.employee.company_website }}</a>
+                                            </div>
+                                            <div class="twm-job-apllication-area">Application Deadline:
+                                                <span class="twm-job-apllication-date">{{ job.application_deadline }}</span>
+                                            </div>
+                                        </div>
+
+                                        
+                                    </div>
+                                </div>
+                                {% if seeker %}
+                                {% if not has_applied %}
+                                    <div class="twm-media-bg">
+                                        <div class="twm-jobs-category green"><span class="twm-bg-green">New</span></div>
+                                        <div style="text-align: right;">
+                                            <a class="site-button" data-bs-toggle="modal" href="#apply_job_popup" role="button">
+                                                Apply Now
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-warning text-center" role="alert">
+                                        <i class="fas fa-exclamation-circle"></i> You already applied for this job.
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="alert alert-info text-center">
+                                    <i class="fas fa-info-circle"></i> Log in as a seeker to apply for this job.
+                                    <button class="btn btn-outline-primary px-3 py-1 rounded" 
+                                        data-bs-target="#sign_up_popup2" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-dismiss="modal">
+                                        Log in here
+                                    </button>
+                                </div>
+                            {% endif %}
+                                
+                            </div>
+                        </div>
+                      
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-lg-4 col-md-12 rightSidebar">
+
+                                    <div class="side-bar mb-4">
+                                        <div class="twm-s-info2-wrap mb-5">
+                                            <div class="twm-s-info2">
+                                                <h4 class="section-head-small mb-4">Job Information</h4>
+                                                
+                                                <ul class="twm-job-hilites2">
+        
+                                                    <li>
+                                                        <div class="twm-s-info-inner">
+                                                            <i class="fas fa-calendar-alt"></i>
+                                                            <span class="twm-title">Date Posted</span>
+                                                            <div class="twm-s-info-discription">{{ job.created_at }}</div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="twm-s-info-inner">
+                                                            
+                                                            <i class="fas fa-money-bill-wave"></i>
+                                                            <span class="twm-title">Vacancy</span>
+                                                            <div class="twm-s-info-discription">{{ job.no_of_vacancy }}</div>
+                                                        </div>
+                                                    </li> 
+                                                    
+                                                    <li>
+                                                        <div class="twm-s-info-inner">
+                                                            <i class="fas fa-map-marker-alt"></i>
+                                                            <span class="twm-title">Location</span>
+                                                            <div class="twm-s-info-discription">{{ job.job_location }}</div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="twm-s-info-inner">
+                                                            <i class="fas fa-user-tie"></i>
+                                                            <span class="twm-title">Salary Range</span>
+                                                            <div class="twm-s-info-discription">{{ job.salary_range }}</div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="twm-s-info-inner">
+                                                            <i class="fas fa-clock"></i>
+                                                            <span class="twm-title">Experience</span>
+                                                            <div class="twm-s-info-discription">{{ job.experience_required }}</div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="twm-s-info-inner">
+                                                            <i class="fas fa-clock"></i>
+                                                            <span class="twm-title">Job Type</span>
+                                                            <div class="twm-s-info-discription">{{ job.job_type }}</div>
+                                                        </div>
+                                                    </li>
+                                                    
+                                                    <li>
+                                                        <div class="twm-s-info-inner">
+                                                            <i class="fas fa-venus-mars"></i>
+                                                            <span class="twm-title">Gender</span>
+                                                            <div class="twm-s-info-discription">{{ job.gender }}</div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="twm-s-info-inner">
+                                                            <i class="fas fa-suitcase"></i>
+                                                            <span class="twm-title">Others</span>
+                                                            <div class="twm-s-info-discription">{{ job.others_qualification }}</div>
+                                                        </div>
+                                                    </li> 
+
+                                                   
+        
+                                                </ul>
+                                                
+                                            </div>
+                                        </div>
+        
+                                        {% comment %} <div class="widget tw-sidebar-tags-wrap">
+                                            <h4 class="section-head-small mb-4">Job Skills</h4>
+                                            
+                                            <div class="tagcloud">
+                                                <a href="javascript:void(0)">Html</a>
+                                                <a href="javascript:void(0)">Python</a>
+                                                <a href="javascript:void(0)">WordPress</a>                                            
+                                                <a href="javascript:void(0)">JavaScript</a>
+                                                <a href="javascript:void(0)">Figma</a>
+                                                <a href="javascript:void(0)">Angular</a>
+                                                <a href="javascript:void(0)">Reactjs</a>
+                                                <a href="javascript:void(0)">Drupal</a>
+                                                <a href="javascript:void(0)">Joomla</a>
+                                            </div>
+                                        </div> {% endcomment %}
+
+                                    </div>
+
+                                    <div class="twm-advertisment m-b0" style="background-image:url(images/add-bg.jpg);">
+                                        <div class="overlay"></div>
+                                        <h4 class="twm-title">Recruiting?</h4>
+                                        <p>Get Best Matched Jobs On your <br>
+                                        Email. Add Resume NOW!</p>
+                                        <a href="javascript:;" class="site-button white">Read More</a> 
+                                    </div>
+                                   
+        
+                                </div>
+                            
+                                <div class="col-lg-8 col-md-12">
+                                    <!-- Candidate detail START -->
+                                    <div class="cabdidate-de-info">
+
+                                        <h4 class="twm-s-title m-t0">Company Description:</h4>
+
+                                        <p>
+                                            {{ job.job_description }}
+                                        </p>
+
+                                        
+                                        
+                                        <h4 class="twm-s-title">Requirments:</h4>
+                                        <ul class="description-list-2">
+                                            {% for requirement in job.job_requirements.splitlines %}
+                                                {% if requirement %}
+                                                <li>
+                                                    <i class="feather-check"></i>
+                                                    {{ requirement }}
+                                                </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+
+                                        <h4 class="twm-s-title">Responsabilities:</h4>
+                                        <ul class="description-list-2">
+                                            {% for responsibility in job.job_responsibilities.splitlines %}
+                                                {% if responsibility %}
+                                                <li>
+                                                    <i class="feather-check"></i>
+                                                    {{ responsibility }}
+                                                </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+
+                                        <h4 class="twm-s-title">Benefits:</h4>
+                                        <ul class="description-list-2">
+                                            {% for responsibility in job.other_benefits.splitlines %}
+                                                {% if responsibility %}
+                                                <li>
+                                                    <i class="feather-check"></i>
+                                                    {{ responsibility }}
+                                                </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                        <h4 class="twm-s-title">Employment Information:</h4>
+                                               <ul class="description-list">
+                                                 <li> <i class="feather-check"></i> {{ job.job_level }} Job</li>
+                                                 <li> <i class="feather-check"></i> {{ job.cv_receive_method }} Job</li>                                               
+                                        </ul>
+                                                                            
+                                        <h4 class="twm-s-title">Share Profile</h4>
+                                        <div class="twm-social-tags">
+                                            <!-- Facebook Share -->
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ job_url }}" class="fb-clr" target="_blank">Facebook</a>
+                                            
+                                            <!-- Twitter Share -->
+                                            <a href="https://twitter.com/intent/tweet?url={{ job_url }}&text=Check%20out%20this%20job%20posting!" class="tw-clr" target="_blank">Twitter</a>
+                                            
+                                            <!-- LinkedIn Share -->
+                                            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ job_url }}" class="link-clr" target="_blank">Linkedin</a>
+                                            
+                                            <!-- WhatsApp Share -->
+                                            <a href="https://api.whatsapp.com/send?text={{ job_url }}" class="whats-clr" target="_blank">Whatsapp</a>
+                                            
+                                        </div>
+
+                                        {% comment %} <h4 class="twm-s-title">Location</h4>
+                                        <div class="twm-m-map mb-5">
+                                            <div class="twm-m-map-iframe">
+                                                <iframe height="310" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3304.8534521658976!2d-118.2533646842856!3d34.073270780600225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c6fd9829c6f3%3A0x6ecd11bcf4b0c23a!2s1363%20Sunset%20Blvd%2C%20Los%20Angeles%2C%20CA%2090026%2C%20USA!5e0!3m2!1sen!2sin!4v1620815366832!5m2!1sen!2sin"></iframe>
+                                            </div>
+                                        </div> {% endcomment %}
+
+                                        {% comment %} <h4 class="twm-s-title">Office Photos</h4>
+                                        <div class="tw-sidebar-gallery-2">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-3 col-sm-6">
+                                                    <div class="tw-service-gallery-thumb">
+                                                        <a class="elem" href="images/gallery/pic1.jpg" title="Title 1" data-lcl-author="" data-lcl-thumb="images/gallery/thumb/pic1.jpg">
+                                                            <img src="images/gallery/thumb/pic1.jpg" alt="">
+                                                            <i class="fa fa-file-image"></i>     
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-3 col-md-3 col-sm-6">
+                                                    <div class="tw-service-gallery-thumb">
+                                                        <a class="elem" href="images/gallery/pic2.jpg" title="Title 2" data-lcl-author="" data-lcl-thumb="images/gallery/thumb/pic2.jpg">
+                                                            <img src="images/gallery/thumb/pic2.jpg" alt="">
+                                                            <i class="fa fa-file-image"></i>     
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-3 col-md-3 col-sm-6">
+                                                    <div class="tw-service-gallery-thumb ">
+                                                        <a class="elem" href="images/gallery/pic3.jpg" title="Title 3"  data-lcl-author="" data-lcl-thumb="images/gallery/thumb/pic3.jpg">
+                                                            <img src="images/gallery/thumb/pic3.jpg" alt="">
+                                                            <i class="fa fa-file-image"></i>     
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="col-lg-3 col-md-3 col-sm-6">
+                                                    <div class="tw-service-gallery-thumb">
+                                                        <a class="elem" href="images/gallery/pic4.jpg" title="Title 4"  data-lcl-author="" data-lcl-thumb="images/gallery/thumb/pic4.jpg">
+                                                            <img src="images/gallery/thumb/pic4.jpg" alt="">
+                                                            <i class="fa fa-file-image"></i>     
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>   
+        
+                                        </div> {% endcomment %}
+                                        <h4 class="twm-s-title">Video</h4>
+                                        <div class="video-yt-section">
+                                            {% if job.employee.get_embed_url %}
+                                                <iframe title="Job Video" width="660" height="371" 
+                                                        src="{{ job.employee.get_embed_url }}" 
+                                                        frameborder="0" 
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                                        allowfullscreen>
+                                                </iframe>
+                                            {% else %}
+                                                <p>No video available for this job.</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>   
+            <!-- Job Detail V.2 END -->   
+            
+            <!-- Related Jobs START -->
+            <div class="section-full p-t120 p-b90 site-bg-light-purple twm-related-jobs-carousel-wrap">
+                            
+                <!-- TITLE START-->
+                <div class="section-head center wt-small-separator-outer">
+                    <div class="wt-small-separator site-text-primary">
+                    <div>Top Jobs</div>                                
+                    </div>
+                    <h2 class="wt-title">Related Jobs</h2>
+                </div>                  
+                <!-- TITLE END-->
+
+                <div class="container">
+                    <div class="section-content">
+                        <div class="owl-carousel twm-related-jobs-carousel owl-btn-vertical-center">
+                            {% for related_job in related_jobs %}
+                            <div class="item">
+                                <div class="twm-jobs-grid-style2">
+                                    <div class="twm-media">
+                                        <img src="{{ related_job.employee.logo.url }}" alt="{{ related_job.title }}">
+                                    </div>
+                                    <span class="twm-job-post-duration">{{ related_job.created_at|timesince }} ago</span>
+                                    <div class="twm-jobs-category green">
+                                        <span class="twm-bg-{{ related_job.job_type|lower }}">{{ related_job.job_type }}</span>
+                                    </div>
+                                    <div class="twm-mid-content">
+                                        <a href="{{ related_job.get_absolute_url }}" class="twm-job-title">
+                                            <h4>{{ related_job.title|truncatechars:50 }}</h4>
+                                        </a>
+                                        <p class="twm-job-address">{{ related_job.job_location }}</p>
+                                        <a href="{{ related_job.employee.website }}" class="twm-job-websites site-text-primary">{{ related_job.employee.website }}</a>
+                                    </div>
+                                    <div class="twm-right-content">
+                                        <div class="twm-jobs-amount">{{ related_job.salary_range }} <span>/ Month</span></div>
+                                        <a href="{{ related_job.get_absolute_url }}" class="twm-jobs-browse site-text-primary">Browse Job</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% empty %}
+                                <p>No related jobs found in this category.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+            <!-- Related Jobs END -->
+            
+     
+        </div>
+        <!-- CONTENT END -->
+
+
+
+<!-- Apply Job Popup -->
+<div class="modal fade" id="apply_job_popup" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h4 class="modal-title">Apply For This Job</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+        
+            <div class="modal-body">
+                <div class="apl-job-inpopup">
+                    <div class="panel panel-default">
+                        <div class="panel-body wt-panel-body p-a20">
+                            <div class="twm-tabs-style-1">
+                                
+                                <form id="jobApplicationForm" method="POST" enctype="multipart/form-data" class="p-4 bg-white shadow rounded">
+                                    {% csrf_token %}
+                                    
+                                    <h4 class="mb-3 text-primary">Job Application</h4>
+                                    
+                                    <!-- View Resume Section -->
+                                    <div class="mb-3">
+                                        <label class="fw-bold">Your Resume:</label>
+                                        {% if seeker.resume %}
+                                            <p>
+                                                <a href="{{ seeker.resume.url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                                                    <i class="fas fa-file-alt"></i> View Resume
+                                                </a>
+                                            </p>
+                                        {% else %}
+                                            <p class="text-muted">No resume uploaded yet.</p>
+                                        {% endif %}
+                                    </div>
+                                
+                                    <!-- Resume Upload -->
+                                    <div class="mb-3">
+                                        <label class="fw-bold">If Upload New Resume(Optional):</label>
+                                        <input type="file" name="resume" id="id_resume" class="form-control">
+                                    </div>
+                                       
+                                    <!-- Expected Salary -->
+                                    <div class="mb-3">
+                                        <label class="fw-bold">Expected Salary:</label>
+                                        <input type="number" name="expected_Salary" id="id_expected_Salary" class="form-control" placeholder="Enter expected salary">
+                                    </div>
+                                    
+                                    <!-- Error Message -->
+                                    <p id="form-error" class="text-danger" style="display: none;"></p>
+                                    
+                                    <!-- Submit Button -->
+                                    <div class="text-left">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-paper-plane"></i> Send Application
+                                        </button>
+                                    </div> 
+                                </form>
+ 
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- AJAX Script to Submit Form Without Reload -->
+<script>
+document.getElementById("jobApplicationForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent default form submission
+    
+    let formData = new FormData(this);
+    let errorMsg = document.getElementById("form-error");
+
+    fetch("{% url 'apply_job' job.id %}", {
+        method: "POST",
+        body: formData,
+        headers: {
+            "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Application submitted successfully!");
+            location.reload(); // Reload page to update UI
+        } else {
+            errorMsg.textContent = data.error || "Something went wrong.";
+            errorMsg.style.display = "block";
+        }
+    })
+    .catch(error => {
+        errorMsg.textContent = "An error occurred. Please try again.";
+        errorMsg.style.display = "block";
+    });
+});
+</script>
+
+
+{% endblock %}

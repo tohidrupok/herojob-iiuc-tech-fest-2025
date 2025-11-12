@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approve Managers</title>
+</head>
+<body>
+    <h1>Pending Manager Approvals</h1>
+    {% if pending_managers %}
+        <ul>
+            {% for manager in pending_managers %}
+            <li>
+                
+                {{ manager.username }} - {{ manager.email }} - 
+                {{ manager.role }} 
+                <a href="{% url 'approve_manager' manager.id %}">Approve</a>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No pending manager approvals.</p>
+    {% endif %}
+</body>
+</html>

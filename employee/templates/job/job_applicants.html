@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+      
+        <!-- CONTENT START -->
+        <div class="page-content">
+
+            <!-- INNER PAGE BANNER -->
+            <div class="wt-bnr-inr overlay-wraper bg-center" style="background-image:url('{% static 'images/banner/1.jpeg' %}');">
+                <div class="overlay-main site-bg-white opacity-01"></div>
+                <div class="container">
+                    <div class="wt-bnr-inr-entry">
+                        <div class="banner-title-outer">
+                            <div class="banner-title-name">
+                                <h2 class="wt-title">Company Manage jobs</h2>
+                            </div>
+                        </div>
+                        <!-- BREADCRUMB ROW -->                            
+                        
+                            <div>
+                                <ul class="wt-breadcrumb breadcrumb-style-2">
+                                    <li><a href="index.html">Home</a></li>
+                                    <li>Company Manage jobs</li>
+                                </ul>
+                            </div>
+                        
+                        <!-- BREADCRUMB ROW END -->                        
+                    </div>
+                </div>
+            </div>
+            <!-- INNER PAGE BANNER END -->
+
+
+            <!-- OUR BLOG START -->
+            <div class="section-full p-t120  p-b90 site-bg-white">
+                
+
+                <div class="container">
+                    <div class="row">
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-12 rightSidebar m-b30">
+
+                            <div class="side-bar-st-1">
+                                
+                                
+                                <div class="dashboard-profile-pic">
+                                    <div class="dashboard-profile-photo">
+                                        <img src="{{ profile.logo.url }}" alt=""> 
+                                        <div class="upload-btn-wrapper">
+                                            <div id="upload-image-grid"></div>
+                                            <button class="site-button button-sm">Upload Photo</button>
+                                            <input type="file" name="myfile" id="file-uploader" accept=".jpg, .jpeg, .png">
+                                        </div>
+                                    </div>
+                                   
+                                </div> 
+
+                                
+                                
+                                <script>
+                                    document.getElementById("file-uploader").addEventListener("change", function(event) {
+                                        var file = event.target.files[0];
+                                        if (file) {
+                                            var reader = new FileReader();
+                                            reader.onload = function(){
+                                                document.getElementById("logo-preview").src = reader.result;
+                                            };
+                                            reader.readAsDataURL(file);
+                                    
+                                            // Upload the file automatically using AJAX
+                                            var formData = new FormData();
+                                            formData.append("logo", file);
+                                            formData.append("csrfmiddlewaretoken", "{{ csrf_token }}"); // CSRF token
+                                    
+                                            fetch("{% url 'employer_profile_edit' %}", {  // Using the same view
+                                                method: "POST",
+                                                body: formData
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    document.getElementById("logo-preview").src = data.logo_url;  // Update preview
+                                                } else {
+                                                    alert("Failed to upload logo. Please try again.");
+                                                }
+                                            })
+                                            .catch(error => console.error("Error uploading logo:", error));
+                                        }
+                                    });
+                                </script> 
+
+
+                                <div class="twm-mid-content ">
+                                    <a href="candidate-detail.html" class="twm-job-title">
+                                        <h4>{{ profile.company_name }}</h4>
+                                    </a>
+                                    <p>{{ profile.founded_date }}</p>
+                                </div>
+                               
+                                <div class="twm-nav-list-1">
+                                    <ul>
+                                        <li><a href="{% url 'employer_profile' %}"><i class="fa fa-user"></i> View Profile</a></li>
+                                        <li ><a href="{% url 'employer_profile_edit' %}"><i class="fas fa-user-edit"></i> Edit Profile</a></li>                             
+                                        <li class="active"><a href="{% url 'manage-job' %}"><i class="fa fa-suitcase"></i> Manage Jobs</a></li>
+                                        <li><a href="{% url 'create_job' %}"><i class="fa fa-book-reader"></i> Post A Jobs</a></li>
+                                        <li><a href="employer-resume.html"><i class="fa fa-receipt"></i> Resume</a></li>
+                                        <li><a href="employer-transaction.html"><i class="fa fa-credit-card"></i>Transaction</a></li>
+                                        <li><a href="candidate-grid.html"><i class="fa fa-user-check"></i> Browse Candidates</a></li>
+                                        <li><a href="{% url 'password_change' %}"><i class="fa fa-fingerprint"></i> Change Passeord</a></li>
+                                        <li><a href="{% url 'custom_logout' %}"><i class="fa fa-share-square"></i> Logout</a></li>
+
+                                    </ul>
+                                </div>
+                                
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-8 col-md-12">
+                            {% if applications %}
+                            <!--Filter Short By-->
+                            <div class="product-filter-wrap d-flex justify-content-between align-items-center m-b30">
+                                <span class="woocommerce-result-count-left">Who is Eligible to Apply for: </span>
+                               
+                                <form class="woocommerce-ordering twm-filter-select" method="get">
+                                    <span class="woocommerce-result-count">{{job}}</span>
+                                   
+                                    
+                                </form>
+
+                            </div>
+
+                            <div class="twm-candidates-grid-wrap">
+                                <div class="row">
+                                    {% for application in applications %}
+                                    <div class="col-lg-6 col-md-6">
+                                         <div class="twm-candidates-grid-style1 mb-5">
+                                             <div class="twm-media">
+                                                
+                                                 <div class="twm-media-pic">
+                                                    <img src="{{ application.seeker.my_resume.image.url }}" alt="#">
+                                                 </div>
+                                                 
+                                                 <div class="twm-candidates-tag"><span>Available</span></div>
+                                             </div>
+                                             <div class="twm-mid-content">
+                                                 <a href="candidate-detail.html" class="twm-job-title">
+                                                     <h4>{{ application.seeker.my_resume.name }} </h4>
+                                                 </a>
+                                                 <p>{{ application.seeker.my_resume.title }} </p>
+                                                 
+                                                 <h5 class="fw-bold text-primary text-center border rounded p-2 bg-light">
+                                                    Expected Salary: {{ application.expected_Salary }} BDT
+                                                </h5>
+                                                
+                                                
+                                                 <a href="{% url 'view_profile_public' application.seeker.user.id %}" class="twm-view-prifile site-text-primary">View Profile</a>
+                                                 
+                                                 <div class="twm-fot-content">
+                                                     <div class="twm-left-info">
+                                                        <p class="twm-candidate-address"><i class="feather-map-pin"></i>{{ application.seeker.my_resume.hometown }}</p>
+                                                        <div class="twm-jobs-vacancies">  
+                                                            <td><i class="feather-download"></i>
+                                                                {% if application.resume %}
+                                                                    <a href="{{ application.resume.url }}" target="_blank">Download Resume</a>
+                                                                {% else %}
+                                                                    No Resume Uploaded
+                                                                {% endif %}
+                                                            </td> 
+
+                                                        </span></div>
+                                                     </div>
+                                                    
+                                                </div>
+                                             </div>
+                                             
+                                         </div>
+                                    </div>
+                                    {% endfor %} 
+
+                                    
+                                   
+                                </div>
+                            </div>
+
+                            {% comment %} <div class="pagination-outer">
+                                <div class="pagination-style1">
+                                    <ul class="clearfix">
+                                        <li class="prev"><a href="javascript:;"><span> <i class="fa fa-angle-left"></i> </span></a></li>
+                                        <li><a href="javascript:;">1</a></li>
+                                        <li class="active"><a href="javascript:;">2</a></li>
+                                        <li><a href="javascript:;">3</a></li>
+                                        <li><a class="javascript:;" href="javascript:;"><i class="fa fa-ellipsis-h"></i></a></li>
+                                        <li><a href="javascript:;">5</a></li>
+                                        <li class="next"><a href="javascript:;"><span> <i class="fa fa-angle-right"></i> </span></a></li>
+                                    </ul>
+                                </div>
+                            </div> {% endcomment %}
+                            {% else %}
+                            <p>No applications yet.</p>
+                            {% endif %}
+                        
+                            <a href="{% url 'manage-job' %}" class="btn btn-primary">Back to Job List</a>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>   
+            <!-- OUR BLOG END -->
+
+            {% comment %} <div class="container">
+                <h2>Applicants for {{ job.title }}</h2>
+            
+                {% if applications %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Applicant Name</th>
+                                <th>Resume</th>
+                                <th>Applied On</th>
+                                <th>Expected Salary</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for application in applications %}
+                            <tr>
+                                <td>{{ application.seeker.user.get_full_name }}</td>
+                                <td>
+                                    {% if application.resume %}
+                                        <a href="{{ application.resume.url }}" target="_blank">View Resume</a>
+                                    {% else %}
+                                        No Resume Uploaded
+                                    {% endif %}
+                                </td>
+                                <td>{{ application.applied_at|date:"d/m/Y" }}</td>
+                                <td>{{ application.expected_Salary|default:"Not specified" }}</td>
+                                <td>{{ application.get_status_display }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No applications yet.</p>
+                {% endif %}
+            
+                <a href="{% url 'manage-job' %}" class="btn btn-primary">Back to Job List</a>
+            </div> {% endcomment %}
+ 
+            
+          
+            
+     
+        </div>
+        <!-- CONTENT END -->
+{% endblock %}
+
+
+
+
+
+

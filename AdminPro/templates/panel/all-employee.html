@@ -1,0 +1,148 @@
+{% extends 'panel.html' %}
+{% load static %}
+{% block body %}
+
+{% if user.is_authenticated and user.is_staff and user.is_superuser %}
+        <!-- Page Content Holder -->
+                <!-- Page Content Holder -->
+                <div id="content">
+
+                    <div class="content-admin-main">
+        
+                        <div class="wt-admin-right-page-header clearfix">
+                            <h2>Employee</h2>
+                            <div class="breadcrumbs"><a href="{% url 'home' %}">Home</a><a href="{% url 'superuser_dashboard' %}">Dasboard</a><span>Employee</span></div>
+                        </div>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+        
+                        <div class="twm-pro-view-chart-wrap">
+        
+                            <div class="col-lg-12 col-md-12 mb-4">
+                                <div class="panel panel-default site-bg-white m-t30">
+                                    <div class="panel-heading wt-panel-heading p-a20">
+                                        <h4 class="panel-tittle m-a0"><i class="far fa-list-alt"></i>All Employees</h4>
+                                    </div>
+                                    <div class="panel-body wt-panel-body">
+                                        <div class="twm-D_table p-a20 table-responsive">
+                                            <table id="candidate_data_table" class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Company Name</th>
+                                                        <th>Phone</th>
+                                                        <th>Email</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% if employee %}
+                                                        {% for employee in employee %}
+                                                        <tr id="row-{{ employee.user.id }}">
+                                                            <td>
+                                                                <div class="twm-DT-candidates-list">
+                                                                    <div class="twm-media">
+                                                                        <div class="twm-media-pic">
+                                                                            <img src="{{ employee.logo.url }}" alt="#">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="twm-mid-content">
+                                                                        <a href="#" class="twm-job-title">
+                                                                            <h4>{{ employee.user.username }}</h4>
+                                                                            <p class="twm-candidate-address">
+                                                                                <i class="feather-map-pin"></i> {{ employee.location }}
+                                                                            </p>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>{{ employee.company_name }}</td>
+                                                            <td>{{ employee.phone }}</td>
+                                                            <td>{{ employee.email }}</td>
+                                                            <td>
+                                                                <button id="approve-btn-{{ employee.user.id }}" class="btn {% if employee.user.is_approved %}btn-danger{% else %}btn-success{% endif %}" 
+                                                                        onclick="toggleApproval({{ employee.user.id }}, this)">
+                                                                    {% if employee.user.is_approved %} Remove Approve {% else %} Approve {% endif %}
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <tr><td colspan="5">No applicants for this job yet.</td></tr>
+                                                    {% endif %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
+                                    <script>
+                                    function toggleApproval(userId, button) {
+                                        let action = button.innerText.trim() === "Approve" ? "approve" : "remove_approve";
+                                    
+                                        fetch(`/employee/approve-managers/${userId}/`, {
+                                            method: "POST",
+                                            headers: {
+                                                "X-CSRFToken": getCSRFToken(),
+                                                "Content-Type": "application/x-www-form-urlencoded"
+                                            },
+                                            body: `action=${action}`
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                if (action === "approve") {
+                                                    button.innerText = "Remove Approve";
+                                                    button.classList.remove("btn-success");
+                                                    button.classList.add("btn-danger");
+                                                } else {
+                                                    button.innerText = "Approve";
+                                                    button.classList.remove("btn-danger");
+                                                    button.classList.add("btn-success");
+                                                }
+                                            } else {
+                                                alert("Error: " + (data.error || "Processing request failed!"));
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error("Fetch Error:", error);
+                                            alert("Network Error: Please check your internet connection or server.");
+                                        });
+                                    }
+                                    
+                                    function getCSRFToken() {
+                                        let tokenElement = document.querySelector('[name=csrfmiddlewaretoken]');
+                                        return tokenElement ? tokenElement.value : '';
+                                    }
+                                    </script>
+                                    
+                                    
+                                    
+                                </div>
+                            </div>
+        
+                        </div>
+        
+                        
+                          
+                                                              
+                    </div>
+        
+                </div>
+{% else %}
+<script>
+    alert("Access Denied! You are not authorized to view this page.");
+    window.location.href = "/";
+</script>
+{% endif %}
+
+
+{% endblock %} 
+
+
+

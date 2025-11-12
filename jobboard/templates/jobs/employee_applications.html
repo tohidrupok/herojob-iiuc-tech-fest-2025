@@ -1,0 +1,25 @@
+
+<h2>Job Applications</h2>
+<table>
+    <tr>
+        <th>Job Title</th>
+        <th>Applicant</th>
+        <th>Resume</th>
+        <th>Status</th>
+    </tr>
+    {% for application in applications %}
+    <tr>
+        <td>{{ application.job.title }}</td>
+        <td>{{ application.seeker.user.username }}</td>
+        <td>
+            {% if application.resume %}
+                <a href="{{ application.resume.url }}" target="_blank">View Resume</a>
+            {% else %}
+                No Resume
+            {% endif %}
+        </td>
+        <td>{{ application.status }}</td>
+    </tr>
+    {% endfor %}
+</table>
+

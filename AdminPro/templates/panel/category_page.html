@@ -1,0 +1,140 @@
+{% extends 'panel.html' %}
+{% load static %}
+{% block body %}
+
+{% if user.is_authenticated and user.is_staff and user.is_superuser %}
+<!-- Page Content Holder -->
+<div id="content">
+    <div class="content-admin-main">
+        <!-- Header Section -->
+        <div class="wt-admin-right-page-header clearfix">
+            <h2>Job Categories</h2>
+            <div class="breadcrumbs">
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'superuser_dashboard' %}">Dashboard</a>
+                <span>Categories</span>
+            </div>
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="twm-pro-view-chart-wrap">
+            <div class="col-lg-12 col-md-12 mb-4">
+                <div class="panel panel-default site-bg-white m-t30">
+                    <div class="panel-heading wt-panel-heading p-a20">
+                        <h4 class="panel-title m-a0">
+                            <i class="far fa-list-alt"></i> All Job Categories
+                        </h4>
+                    </div>
+                    <div class="panel-body wt-panel-body">
+                        <div class="twm-D_table p-a20 table-responsive">
+                            
+                            <!-- Display List of Categories -->
+                            <ul class="list-group">
+                                {% for category in categories %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <strong>{{ category.name }}</strong>: {{ category.description }}
+                                        <div>
+                                            <!-- Edit Category Button -->
+                                            <button class="btn btn-sm btn-primary" onclick="editCategory({{ category.id }}, '{{ category.name }}', '{{ category.description }}')">Edit</button>
+                                            <!-- Delete Category Form -->
+                                            <form method="post" style="display:inline;">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="category_id" value="{{ category.id }}">
+                                                <button type="submit" name="delete_category" class="btn btn-sm btn-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </li>
+                                {% empty %}
+                                    <li class="list-group-item">No categories available.</li>
+                                {% endfor %}
+                            </ul>
+
+                            <hr>
+
+                            <!-- Add/Edit Category Form -->
+                            <h2 class="mt-4">{% if edit_category %}Edit{% else %}Add{% endif %} Category</h2>
+                            <form method="post" class="mt-3">
+                                {% csrf_token %}
+                                
+                                <!-- If editing, set hidden category_id field -->
+                                {% if edit_category %}
+                                    <input type="hidden" name="category_id" value="{{ edit_category.id }}">
+                                {% endif %}
+                                
+                                <!-- Render form fields -->
+                                <div class="form-group">
+                                    {{ form.as_p }}
+                                </div>
+
+                                <!-- Submit button for add or edit action -->
+                                <button type="submit" name="{% if edit_category %}edit_category{% else %}add_category{% endif %}" class="btn btn-success">
+                                    {% if edit_category %}Update{% else %}Add{% endif %} Category
+                                </button>
+                            </form>
+
+                            <script>
+                                // JavaScript function to populate the form for editing
+                                function editCategory(id, name, description) {
+                                    // Set the form action to edit
+                                    document.querySelector('h2').textContent = "Edit Category"; // Change header text
+                                    // Set the form fields with the category data
+                                    document.querySelector('input[name="category_id"]').value = id;
+                                    document.querySelector('input[name="name"]').value = name;
+                                    document.querySelector('textarea[name="description"]').value = description;
+                                }
+                            </script>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<script>
+    alert("Access Denied! You are not authorized to view this page.");
+    window.location.href = "/";
+</script>
+
+{% endif %}
+
+
+{% endblock %} 
+
+
+
+ 
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Categories</title>
+</head>
+<body>
+    <h1>Job Categories</h1>
+
+    <!-- Category List -->
+    <ul>
+        {% for category in categories %}
+            <li><strong>{{ category.name }}</strong>: {{ category.description }}</li>
+        {% empty %}
+            <li>No categories yet.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <!-- Add New Category Form -->
+    <h2>Add New Category</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Category</button>
+    </form>
+</body>
+</html>

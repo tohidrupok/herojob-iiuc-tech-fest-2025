@@ -1,0 +1,1472 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+      
+        <!-- CONTENT START -->
+        <div class="page-content">
+
+            <!-- INNER PAGE BANNER -->
+            <div class="wt-bnr-inr overlay-wraper bg-center" style="background-image:url('{% static 'images/banner/1.jpeg' %}');">
+                <div class="overlay-main site-bg-white opacity-01"></div>
+                <div class="container">
+                    <div class="wt-bnr-inr-entry">
+                        <div class="banner-title-outer">
+                            <div class="banner-title-name">
+                                <h2 class="wt-title">Candidate Resume</h2>
+                            </div>
+                        </div>
+                        <!-- BREADCRUMB ROW -->                            
+                        
+                            <div>
+                                <ul class="wt-breadcrumb breadcrumb-style-2">
+                                    <li><a href="index.html">Home</a></li>
+                                    <li>Candidate Resume</li>
+                                </ul>
+                            </div>
+                        
+                        <!-- BREADCRUMB ROW END -->                        
+                    </div>
+                </div>
+            </div>
+            <!-- INNER PAGE BANNER END -->
+
+
+            <!-- OUR BLOG START -->
+            <div class="section-full p-t120  p-b90 site-bg-white">
+                
+
+                <div class="container">
+                    <div class="row">
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-12 rightSidebar m-b30">
+
+                            <div class="side-bar-st-1">
+                                
+                                 
+                                <div class="dashboard-profile-pic">
+                                    <div class="dashboard-profile-photo">
+                                        <img src="{{ resume.image.url }}" alt=""> 
+                                        <div class="upload-btn-wrapper">
+                                            <div id="upload-image-grid"></div>
+                                            <button class="site-button button-sm">Upload Photo</button>
+                                            <input type="file" name="myfile" id="file-uploader" accept=".jpg, .jpeg, .png">
+                                        </div>
+                                    </div>
+                                   
+                                </div> 
+
+                                
+                                
+                                <script>
+                                    document.getElementById("file-uploader").addEventListener("change", function(event) {
+                                        var file = event.target.files[0];
+                                        if (file) {
+                                            var reader = new FileReader();
+                                            reader.onload = function(){
+                                                document.getElementById("logo-preview").src = reader.result;
+                                            };
+                                            reader.readAsDataURL(file);
+                                    
+                                            // Upload the file automatically using AJAX
+                                            var formData = new FormData();
+                                            formData.append("logo", file);
+                                            formData.append("csrfmiddlewaretoken", "{{ csrf_token }}"); // CSRF token
+                                    
+                                            fetch("{% url 'my_resume' %}", {  // Using the same view
+                                                method: "POST",
+                                                body: formData
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    document.getElementById("logo-preview").src = data.logo_url;  // Update preview
+                                                } else {
+                                                    alert("Failed to upload logo. Please try again.");
+                                                }
+                                            })
+                                            .catch(error => console.error("Error uploading logo:", error));
+                                        }
+                                    });
+                                </script> 
+
+                                
+                                <div class="twm-mid-content ">
+                                    <a href="candidate-detail.html" class="twm-job-title">
+                                        <h4>{{ resume.name }} </h4>
+                                    </a>
+                                    <p>{{ resume.title }}</p>
+                                </div>
+                               
+                                <div class="twm-nav-list-1">
+                            
+                                    <ul>
+                                        <li><a href="{% url 'view_profile' %}"><i class="fa fa-user"></i> Profile View</a></li>
+                                        <li ><a href="{% url 'dashboard' %}"><i class="fa fa-tachometer-alt"></i> Dashboard</a></li>         
+                                        <li ><a href="{% url 'upload_resume' %}"><i class="fa fa-upload"></i> Upload Resume</a></li>
+                                        <li class="active" ><a href="{% url 'my_resume' %}"><i class="fa fa-receipt"></i> My Resume</a></li>
+                                        <li><a href="{% url 'dashboard' %}"><i class="fa fa-suitcase"></i> Applied Jobs</a></li>
+                                        <li><a href="#"><i class="fa fa-file-download"></i> Saved Jobs</a></li>
+                                        <li><a href="#"><i class="fa fa-bell"></i> Job Alerts</a></li>
+                                        <li><a href="{% url 'password_change' %}"><i class="fa fa-fingerprint"></i> Change Passeord</a></li>
+                                        <li><a href="{% url 'custom_logout' %}"><i class="fa fa-share-square"></i> Logout</a></li>
+                                    </ul>  
+
+                                </div>
+                                
+                            </div>
+
+                        </div>
+
+                        <div class="col-xl-9 col-lg-8 col-md-12 m-b30">
+                            <div class="twm-right-section-panel site-bg-gray">
+                                
+                                    
+                                    <!--Key Skills-->
+                                    <div class="panel panel-default mb-3">
+                                        <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
+                                            <h4 class="panel-tittle m-a0">Key Skills</h4>
+                                            <a data-bs-toggle="modal" href="#Key_Skills" role="button" title="Edit" class="site-text-primary">
+                                                <span class="fa fa-edit"></span>
+                                            </a>
+                                        </div>
+                                        <div class="panel-body wt-panel-body p-a20 ">
+                                            <div class="tw-sidebar-tags-wrap">
+                                                <div class="tagcloud">
+                                                    {% for skill in skills %}
+                                                    <a href="javascript:void(0)">{{ skill.skill_name }}</a>
+                                                    {% endfor %} 
+                                                </div>
+
+
+                                            </div>            
+                                        </div>
+                                        <!--Modal popup -->
+                                        <div class="modal fade twm-saved-jobs-view" id="Key_Skills" tabindex="-1">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <form method="post" action="{% url 'add_skill' %}">
+                                                        {% csrf_token %}
+                                                        <div class="modal-header">
+                                                            <h2 class="modal-title">Key Skills</h2>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                    
+                                                        <div class="modal-body">
+                                                            <p>It is the first thing recruiters notice in your profile. Write concisely what makes you unique and the right person for the job you are looking for.</p>
+                                                            
+                                                            <!-- Skill Name Input -->
+                                                            <div class="form-group">
+                                                                <label for="skill_name" class="form-label">Skill Name</label>
+                                                                <input 
+                                                                    type="text" 
+                                                                    id="skill_name" 
+                                                                    name="skill_name" 
+                                                                    class="form-control" 
+                                                                    placeholder="e.g., Python, JavaScript, Project Management" 
+                                                                    required>
+                                                            </div>
+                                                    
+                                                           
+                                                    
+                                                            <!-- Last Used Year Input -->
+                                                            <div class="form-group">
+                                                                <label for="last_used_year" class="form-label">Last Used Year</label>
+                                                                <input 
+                                                                    type="number" 
+                                                                    id="last_used_year" 
+                                                                    name="last_used_year" 
+                                                                    class="form-control" 
+                                                                    placeholder="e.g., 2023" 
+                                                                    min="1900" max="2100" 
+                                                                    required>
+                                                            </div>
+                                                    
+                                                            <!-- Experience Years Input -->
+                                                            <div class="form-group">
+                                                                <label for="experience_years" class="form-label">Experience (in years)</label>
+                                                                <input 
+                                                                    type="number" 
+                                                                    id="experience_years" 
+                                                                    name="experience_years" 
+                                                                    class="form-control" 
+                                                                    placeholder="e.g., 2.5" 
+                                                                    step="0.1" 
+                                                                    min="0" 
+                                                                    required>
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="site-button">Save</button>
+                                                        </div>
+                                                    </form>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Employment-->
+                                    <div class="panel panel-default mb-3">
+                                        <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
+                                            <h4 class="panel-tittle m-a0">Work Experience</h4>
+                                            <a data-bs-toggle="modal" href="#Employment" role="button" title="Edit" class="site-text-primary">
+                                                <span class="fa fa-plus"></span>
+                                            </a>
+                                        </div>
+                                        <div class="panel-body wt-panel-body p-a20 ">
+
+                                            <div class="twm-panel-inner">
+                                                <ul>
+                                                    {% for employment in employments %}
+                                                        <li>
+                                                            <strong>{{ employment.role }}</strong> at {{ employment.company_name }}
+                                                            <a href="{% url 'edit_employment' employment.pk %}" style="margin-left: 10px;">
+                                                                <i class="fas fa-edit" title="Edit"></i>
+                                                            </a>
+                                                            <!-- Delete form -->
+                                                            <form action="{% url 'delete_employment' employment.pk %}" method="post" style="display: inline;">
+                                                                {% csrf_token %}
+                                                                <button type="submit" style="border: none; background: none; color: #dc3545;">
+                                                                    <i class="fas fa-trash" title="Delete"></i>
+                                                                </button>
+                                                            </form> 
+                                                            
+                                                            <br>
+                                                            From {{ employment.start_date }} to {{ employment.end_date|default:"Present" }}<br>
+                                                            Responsibilities: {{ employment.responsibilities }}
+                                                       
+                                                        
+                                                    </li>
+                                                    <br>
+                                                    {% endfor %}
+                                                   
+                                                </ul> 
+                                            </div>           
+                                        </div>
+
+                                        <!--Employment -->
+                                        <div class="modal fade twm-saved-jobs-view" id="Employment" tabindex="-1">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <form method="post" action="{% url 'add_employment' %}">
+                                                        {% csrf_token %}
+                                                        <div class="modal-header">
+                                                            <h2 class="modal-title">Add Employment</h2>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                    
+                                                        <div class="modal-body">
+                                                            <div class="row g-3"> <!-- Added g-3 for spacing between form groups -->
+                                                    
+                                                                <!-- Company Name Input -->
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="company_name" class="form-label">Your Organization</label>
+                                                                        <div class="ls-inputicon-box">
+                                                                            <input 
+                                                                                type="text" 
+                                                                                id="company_name" 
+                                                                                name="company_name" 
+                                                                                class="form-control" 
+                                                                                placeholder="e.g., Google, Microsoft" 
+                                                                                required>
+                                                                            <i class="fs-input-icon fa fa-building"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                    
+                                                                <!-- Role Input -->
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="role" class="form-label">Your Designation</label>
+                                                                        <div class="ls-inputicon-box">
+                                                                            <input 
+                                                                                type="text" 
+                                                                                id="role" 
+                                                                                name="role" 
+                                                                                class="form-control" 
+                                                                                placeholder="e.g., Software Engineer, Project Manager" 
+                                                                                required>
+                                                                            <i class="fs-input-icon fa fa-address-card"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                    
+                                                                <!-- Start Date Input -->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="start_date" class="form-label">Started Working From</label>
+                                                                        <div class="ls-inputicon-box">
+                                                                            <input 
+                                                                                type="date" 
+                                                                                id="start_date" 
+                                                                                name="start_date" 
+                                                                                class="form-control" 
+                                                                                required>
+                                                                            <i class="fs-input-icon far fa-calendar"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                    
+                                                                <!-- End Date Input -->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="end_date" class="form-label">Worked Till</label>
+                                                                        <div class="ls-inputicon-box">
+                                                                            <input 
+                                                                                type="date" 
+                                                                                id="end_date" 
+                                                                                name="end_date" 
+                                                                                class="form-control">
+                                                                            <i class="fs-input-icon far fa-calendar"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                    
+                                                                <!-- Responsibilities Input -->
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group mb-0">
+                                                                        <label for="responsibilities" class="form-label">Describe your Job Profile</label>
+                                                                        <textarea 
+                                                                            id="responsibilities" 
+                                                                            name="responsibilities" 
+                                                                            class="form-control" 
+                                                                            rows="3" 
+                                                                            placeholder="Briefly describe your responsibilities" 
+                                                                            required></textarea>
+                                                                    </div>
+                                                                </div>
+                                                    
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="site-button">Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!--Education-->
+                                    <div class="panel panel-default mb-3">
+                                        <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
+                                            <h4 class="panel-tittle m-a0">Education</h4>
+                                            <a data-bs-toggle="modal" href="#Education" role="button" title="Edit" class="site-text-primary">
+                                                <span class="fa fa-plus"></span>
+                                            </a>
+                                        </div>
+                                        <div class="panel-body wt-panel-body p-a20 ">
+                                            <div class="twm-panel-inner">
+                                                <p>Mention your employment details including your current and previous company work experience</p>
+                                                
+                                                <div>
+                                                    
+                                                    <ul>
+                                                        {% for education in educations %}
+                                                        <li style="margin-bottom: 15px; list-style: none;">
+                                                            <strong>{{ education.degree }}</strong> in {{ education.field_of_study }}
+                                                            <!-- Edit button -->
+                                                            <a href="{% url 'edit_education' education.pk %}" style="margin-left: 10px; text-decoration: none; color: #007bff;">
+                                                                <i class="fas fa-edit" title="Edit"></i>
+                                                            </a>
+                                                
+                                                            <!-- Delete form -->
+                                                            <form action="{% url 'delete_education' education.pk %}" method="post" style="display: inline;">
+                                                                {% csrf_token %}
+                                                                <button type="submit" style="border: none; background: none; color: #dc3545;">
+                                                                    <i class="fas fa-trash" title="Delete"></i>
+                                                                </button>
+                                                            </form> 
+                                                            <br>
+                                                            <span>{{ education.university }} - {{ education.graduation_year }}</span>
+                                                
+                                                            
+                                                        </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                
+                                            </div>       
+                                        </div>
+
+                                        <!--Education -->
+                                        <div class="modal fade twm-saved-jobs-view" id="Education" tabindex="-1">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <form method="post" action="{% url 'add_education' %}">
+                                                        {% csrf_token %}
+                                                        <div class="modal-header">
+                                                            <h2 class="modal-title">Add Education</h2>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                        
+                                                        <div class="modal-body">
+                                                            <div class="row g-3"> <!-- Added g-3 for spacing between form groups -->
+                                        
+                                                                <!-- Degree Input -->
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="degree" class="form-label">Degree</label>
+                                                                        <div class="ls-inputicon-box">  
+                                                                            <input 
+                                                                                type="text" 
+                                                                                id="degree" 
+                                                                                name="degree" 
+                                                                                class="form-control" 
+                                                                                placeholder="e.g., Bachelor of Science (B.Sc.), Master of Arts (M.A.)"
+                                                                                required>
+                                                                            <i class="fs-input-icon fa fa-user-graduate"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                        
+                                                                <!-- University Input -->
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="university" class="form-label">University/Institute</label>
+                                                                        <div class="ls-inputicon-box">  
+                                                                            <input 
+                                                                                type="text" 
+                                                                                id="university" 
+                                                                                name="university" 
+                                                                                class="form-control" 
+                                                                                placeholder="e.g., University of Cambridge, Stanford University"
+                                                                                required>
+                                                                            <i class="fs-input-icon fas fa-book-reader"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                        
+                                                                <!-- Graduation Year Input -->
+                                                                <div class="col-xl-6 col-lg-6">
+                                                                    <div class="form-group">
+                                                                        <label for="graduation_year" class="form-label">Graduation Year</label>
+                                                                        <div class="ls-inputicon-box">  
+                                                                            <input 
+                                                                                type="number" 
+                                                                                id="graduation_year" 
+                                                                                name="graduation_year" 
+                                                                                class="form-control" 
+                                                                                placeholder="e.g., 2025"
+                                                                                min="1900" max="2100"
+                                                                                required>
+                                                                            <i class="fs-input-icon fas fa-calendar"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                        
+                                                                <!-- Field of Study Input -->
+                                                                <div class="col-xl-6 col-lg-6">
+                                                                    <div class="form-group">
+                                                                        <label for="field_of_study" class="form-label">Field of Study</label>
+                                                                        <div class="ls-inputicon-box">  
+                                                                            <input 
+                                                                                type="text" 
+                                                                                id="field_of_study" 
+                                                                                name="field_of_study" 
+                                                                                class="form-control" 
+                                                                                placeholder="e.g., Computer Science, Economics"
+                                                                                required>
+                                                                            <i class="fs-input-icon fa fa-book"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                        
+                                                            </div>
+                                                        </div>
+                                        
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="site-button">Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        
+
+                                    </div>
+
+                                    <!--IT Skills-->
+                                    <div class="panel panel-default mb-3">
+                                        <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
+                                            <h4 class="panel-tittle m-a0">IT Skills</h4>
+                                            <a data-bs-toggle="modal" href="#IT_skills" role="button" title="Edit" class="site-text-primary">
+                                                <span class="fa fa-plus"></span>
+                                            </a>
+                                        </div>
+                                        <div class="panel-body wt-panel-body p-a20 ">
+                                            <div class="twm-panel-inner">
+                                                <p>Mention your employment detail including your current and previous company work experience</p>
+                                                <div class="table-responsive">
+                                                    <table class="table twm-table table-striped table-borderless">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Skills</th>
+                                                            
+                                                            <th>Last Used</th>
+                                                            <th>Experience</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                
+                                                    <tbody>
+                                                        <!--1-->
+                                                        {% for skill in skills %}
+                                                        <tr>
+                                                            <td>{{ skill.skill_name }}</td>
+                                                            
+                                                            <td>{{ skill.last_used_year }}</td>
+                                                            <td>{{ skill.experience_years }}</td>
+                                                            <td>
+                                                                <a href="{% url 'edit_skill' skill.pk %}" style="margin-left: 10px;">
+                                                                    <i class="fas fa-edit" title="Edit"></i>
+                                                                </a>
+                                                           
+                                                            </td>
+                                                            <td>
+                                                                <a href="{% url 'edit_skill' skill.pk %}" style="margin-left: 10px;">
+                                                                    <i class="fas fa-edit" title="Edit"></i>
+                                                                </a>
+                                                                <!-- Delete form -->
+                                                                <form action="{% url 'delete_skill' skill.pk %}" method="post" style="display: inline;">
+                                                                    {% csrf_token %}
+                                                                    <button type="submit" style="border: none; background: none; color: #dc3545;">
+                                                                        <i class="fas fa-trash" title="Delete"></i>
+                                                                    </button>
+                                                                </form> 
+                                                           
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                        
+                                                        
+                                                    </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>       
+                                        </div>
+
+                                        <!--IT_skills -->
+                                        <div class="modal fade twm-saved-jobs-view" id="IT_skills" tabindex="-1">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <form method="post" action="{% url 'add_skill' %}">
+                                                        {% csrf_token %}
+                                                        <div class="modal-header">
+                                                            <h2 class="modal-title">Key Skills</h2>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                    
+                                                        <div class="modal-body">
+                                                            <p>It is the first thing recruiters notice in your profile. Write concisely what makes you unique and the right person for the job you are looking for.</p>
+                                                            
+                                                            <!-- Skill Name Input -->
+                                                            <div class="form-group">
+                                                                <label for="skill_name" class="form-label">Skill Name</label>
+                                                                <input 
+                                                                    type="text" 
+                                                                    id="skill_name" 
+                                                                    name="skill_name" 
+                                                                    class="form-control" 
+                                                                    placeholder="e.g., Python, JavaScript, Project Management" 
+                                                                    required>
+                                                            </div>
+                                                    
+                                                           
+                                                    
+                                                            <!-- Last Used Year Input -->
+                                                            <div class="form-group">
+                                                                <label for="last_used_year" class="form-label">Last Used Year</label>
+                                                                <input 
+                                                                    type="number" 
+                                                                    id="last_used_year" 
+                                                                    name="last_used_year" 
+                                                                    class="form-control" 
+                                                                    placeholder="e.g., 2023" 
+                                                                    min="1900" max="2100" 
+                                                                    required>
+                                                            </div>
+                                                    
+                                                            <!-- Experience Years Input -->
+                                                            <div class="form-group">
+                                                                <label for="experience_years" class="form-label">Experience (in years)</label>
+                                                                <input 
+                                                                    type="number" 
+                                                                    id="experience_years" 
+                                                                    name="experience_years" 
+                                                                    class="form-control" 
+                                                                    placeholder="e.g., 2.5" 
+                                                                    step="0.1" 
+                                                                    min="0" 
+                                                                    required>
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="site-button">Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!--Project-->
+                                    <div class="panel panel-default mb-3">
+                                        <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
+                                            <h4 class="panel-tittle m-a0">Project</h4>
+                                            <a data-bs-toggle="modal" href="#Pro_ject" role="button" title="Edit" class="site-text-primary">
+                                                <span class="fa fa-plus"></span>
+                                            </a>
+                                        </div>
+                                        <div class="panel-body wt-panel-body p-a20 ">
+                                            <div class="twm-panel-inner">
+                                                <ul>
+                                                    {% for project in projects %}
+                                                        <li>
+                                                            <strong>{{ project.project_name }}</strong>
+                                                            <a href="{% url 'edit_project' project.pk %}" style="margin-left: 10px;">
+                                                                <i class="fas fa-edit" title="Edit"></i>
+                                                            </a>
+                                                            <!-- Delete form -->
+                                                            <form action="{% url 'delete_project' project.pk %}" method="post" style="display: inline;">
+                                                                {% csrf_token %}
+                                                                <button type="submit" style="border: none; background: none; color: #dc3545;">
+                                                                    <i class="fas fa-trash" title="Delete"></i>
+                                                                </button>
+                                                            </form> <br>
+
+                                                            Role: {{ project.role_in_project }}<br>
+                                                            From {{ project.start_date }} to {{ project.end_date|default:"Present" }}<br>
+                                                            Description: {{ project.project_description }}
+                                                            
+                                                        </li> 
+                                                        <br>
+                                                    {% endfor %}
+                                                     
+                                            
+                                                </ul>
+                                            </div>       
+                                        </div>
+
+                                        <!--Project -->
+                                        <div class="modal fade twm-saved-jobs-view" id="Pro_ject" tabindex="-1">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <form method="post" action="{% url 'add_project' %}">
+                                                        {% csrf_token %}
+                                                    
+                                                        <div class="modal-header">
+                                                            <h2 class="modal-title">Add Project</h2>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                    
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <!-- Project Title -->
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="id_project_name">Project Title</label>
+                                                                        <div class="ls-inputicon-box"> 
+                                                                            <input class="form-control" type="text" id="id_project_name" name="project_name" placeholder="Enter Project Title">
+                                                                            <i class="fs-input-icon fa fa-address-card"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                    
+                                                                <!-- Project Description -->
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="id_project_description">Detail of Projects</label>
+                                                                        <textarea class="form-control" id="id_project_description" name="project_description" rows="3" placeholder="Describe your Job"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                    
+                                                                <!-- Role in Project -->
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label for="id_role_in_project">Role in Project</label>
+                                                                        <div class="ls-inputicon-box"> 
+                                                                            <input class="form-control" type="text" id="id_role_in_project" name="role_in_project" placeholder="Enter Role">
+                                                                            <i class="fs-input-icon fa fa-user"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                             
+                                                    
+                                                                {% comment %} <!-- Start Date -->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="id_start_date">Started Working From</label>
+                                                                        <div class="ls-inputicon-box"> 
+                                                                            <input class="form-control datepicker" id="id_start_date" name="start_date" type="text" placeholder="dd/mm/yyyy">
+                                                                            <i class="fs-input-icon far fa-calendar"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div> {% endcomment %}
+                                                                <!-- Start Date Input -->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="id_start_date">Started Working From</label>
+                                                                        <div class="ls-inputicon-box">
+                                                                            <input 
+                                                                                type="date" 
+                                                                                id="id_start_date" 
+                                                                                name="start_date" 
+                                                                                class="form-control" 
+                                                                                >
+                                                                            <i class="fs-input-icon far fa-calendar"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                    
+                                                                <!-- End Date -->
+                                                                {% comment %} <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="id_end_date">Worked Till</label> 
+                                                                        <div class="ls-inputicon-box"> 
+                                                                            <input class="form-control datepicker" id="id_end_date" name="end_date" type="text" placeholder="dd/mm/yyyy">
+                                                                            <i class="fs-input-icon far fa-calendar"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div> {% endcomment %}
+
+                                                                <!-- End Date Input -->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="end_date" class="form-label">Worked Till</label>
+                                                                        <div class="ls-inputicon-box">
+                                                                            <input 
+                                                                                type="date" 
+                                                                                id="id_end_date" 
+                                                                                name="end_date" 
+                                                                                class="form-control">
+                                                                            <i class="fs-input-icon far fa-calendar"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div> 
+
+                                                            </div>
+                                                        </div>
+                                                    
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="site-button">Save</button>
+                                                        </div>
+                                                    </form>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!--certification Details-->
+                                    <div class="twm-list-wrap">
+                                        <div class="twm-list-inner d-flex justify-content-between">
+                                            <b>Certification</b>
+                                            <a data-bs-toggle="modal" href="#Certification_modal" role="button" title="Edit" class="site-text-primary">
+                                                <span class="fa fa-plus"></span>
+                                            </a>
+                                        </div>
+                                        <p>Add details of Certification you have filed.</p>
+                                    
+                                        <ul class="certification-list">
+                                            {% for certification in certifications %}
+                                            <li class="certification-item">
+                                                <strong>{{ certification.certification_name }}</strong> by {{ certification.issuing_organization }}<br>
+                                                Issued on {{ certification.issue_date }}
+                                
+                                              
+                                                {% if certification.certification_name_link %}
+                                                <strong>  Certification Link:</strong> <a href="{{ certification.certification_name_link }}" target="_blank">View Certification</a>
+                                                {% endif %}
+
+                                                <a href="{% url 'edit_certification' certification.pk %}" style="margin-left: 10px;">
+                                                    <i class="fas fa-edit" title="Edit"></i>
+                                                </a>
+
+                                                <!-- Delete form -->
+                                                <form action="{% url 'delete_certification' certification.pk %}" method="post" style="display: inline;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" style="border: none; background: none; color: #dc3545;">
+                                                        <i class="fas fa-trash" title="Delete"></i>
+                                                    </button>
+                                                </form> 
+
+                                
+                                            </li><br>
+                                            {% endfor %} 
+                                        </ul>
+                                    
+                                    </div>
+                                    
+                                    <!--Certification Modal -->
+                                    <div class="modal fade twm-saved-jobs-view" id="Certification_modal" tabindex="-1">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <form method="post" action="{% url 'add_certification' %}">
+                                                    {% csrf_token %}
+                                                    <div class="modal-header">
+                                                        <h2 class="modal-title">Certification</h2>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <!-- Certification Name Input -->
+                                                            <div class="col-xl-12 col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="certification_name">Certification Name</label>
+                                                                    <div class="ls-inputicon-box"> 
+                                                                        <input 
+                                                                            type="text" 
+                                                                            id="certification_name" 
+                                                                            name="certification_name" 
+                                                                            class="form-control" 
+                                                                            placeholder="Enter Certification Name" 
+                                                                            required>
+                                                                        <i class="fs-input-icon fa fa-address-card"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                
+                                                            <!-- Issuing Organization Input -->
+                                                            <div class="col-xl-12 col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="issuing_organization">Certification Body</label>
+                                                                    <div class="ls-inputicon-box"> 
+                                                                        <input 
+                                                                            type="text" 
+                                                                            id="issuing_organization" 
+                                                                            name="issuing_organization" 
+                                                                            class="form-control" 
+                                                                            placeholder="Enter Certification Body" 
+                                                                            required>
+                                                                        <i class="fs-input-icon fa fa-address-card"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                
+                                                            <!-- Issue Date Input -->
+                                                            <div class="col-xl-12 col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="issue_date">Year On Label</label>
+                                                                    <div class="ls-inputicon-box">  
+                                                                        <input 
+                                                                            type="date" 
+                                                                            id="issue_date" 
+                                                                            name="issue_date" 
+                                                                            class="form-control" 
+                                                                            required>
+                                                                        <i class="fs-input-icon fa fa-calendar-alt"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                
+                                                            <!-- Certification Link Input -->
+                                                            <div class="col-xl-12 col-lg-12">
+                                                                <div class="form-group">
+                                                                    <label for="certification_name_link">Certification URL</label>
+                                                                    <div class="ls-inputicon-box"> 
+                                                                        <input 
+                                                                            type="url" 
+                                                                            id="certification_name_link" 
+                                                                            name="certification_name_link" 
+                                                                            class="form-control" 
+                                                                            placeholder="Enter Certification URL (Optional)">
+                                                                        <i class="fs-input-icon fa fa-link"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="site-button">Save</button>
+                                                    </div>
+                                                </form>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% comment %} <!-- Edit Button -->
+                                    <a data-bs-toggle="modal" href="#Personal_Details" role="button" title="Edit" class="site-text-primary edit-personal-details"
+                                    data-url="{% url 'edit_personal_details' resume.id %}">
+                                    <span class="fa fa-edit"></span>
+                                    </a> {% endcomment %}
+
+
+
+
+                                    <!--Personal Details-->
+                                    <div class="panel panel-default mb-3">
+                                        <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
+                                            <h4 class="panel-tittle m-a0">Personal Details</h4>
+                                            <a data-bs-toggle="modal" href="#Personal_Details" role="button" title="Edit" class="site-text-primary">
+                                                <span class="fa fa-edit"></span>
+                                            </a>
+                                        </div>
+                                        <div class="panel-body wt-panel-body p-a20 ">
+                                            <div class="twm-panel-inner">
+                                                <div class="row">
+
+                                                    <div class="col-md-6">
+                                                        <div class="twm-s-detail-section">
+                                                            <div class="twm-title">Full Name</div>
+                                                            <span class="twm-s-info-discription">{{ resume.name }}</span>
+                                                        </div>
+                                                    </div> 
+                                                    <div class="col-md-6">
+                                                        <div class="twm-s-detail-section">
+                                                            <div class="twm-title">Title</div>
+                                                            <span class="twm-s-info-discription">{{ resume.title }}</span>
+                                                        </div>
+                                                    </div> 
+
+                                                    <div class="col-md-6">
+                                                        <div class="twm-s-detail-section">
+                                                            <div class="twm-title">Date of Birth</div>
+                                                            <span class="twm-s-info-discription">{{ resume.date_of_birth }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="twm-s-detail-section">
+                                                            <div class="twm-title">Permanent Address</div>
+                                                            <span class="twm-s-info-discription">{{ resume.permanent_address }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="twm-s-detail-section">
+                                                            <div class="twm-title">Gender</div>
+                                                            <span class="twm-s-info-discription">{{ resume.gender }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="twm-s-detail-section">
+                                                            <div class="twm-title">Area Pin Code</div>
+                                                            <span class="twm-s-info-discription">{{ resume.area_pin_code }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="twm-s-detail-section">
+                                                            <div class="twm-title">Marital Status</div>
+                                                            <span class="twm-s-info-discription">{{ resume.marital_status }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="twm-s-detail-section">
+                                                            <div class="twm-title">Hometown</div>
+                                                            <span class="twm-s-info-discription">{{ resume.hometown }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    
+
+                                                    <div class="col-md-6">
+                                                        <div class="twm-s-detail-section">
+                                                            <div class="twm-title">Languages</div>
+                                                            <span class="twm-s-info-discription">{{ resume.languages }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="twm-s-detail-section">
+                                                            <div class="twm-title">Email</div>
+                                                            <span class="twm-s-info-discription">{{ resume.email }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="twm-s-detail-section">
+                                                            <div class="twm-title">Phone Number</div>
+                                                            <span class="twm-s-info-discription">{{ resume.phone_number }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>       
+                                        </div>
+
+                                        <!-- Modal for Editing Personal Details -->
+                                        <div class="modal fade twm-saved-jobs-view" id="Personal_Details" tabindex="-1">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <form id="personalDetailsForm" method="POST" action="{% url 'update_personal_details' resume.id %}">
+                                                        {% csrf_token %}
+                                            
+                                                        <div class="modal-header">
+                                                            <h2 class="modal-title">Personal Detail</h2>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                            
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <!-- Name -->
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Full Name</label>
+                                                                        <input class="form-control" type="text" name="name" id="name" value="{{ resume.name }}">
+                                                                    </div>
+                                                                </div>
+                                            
+                                                                <!-- Title -->
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Title</label>
+                                                                        <input class="form-control" type="text" name="title" id="title" value="{{ resume.title }}">
+                                                                    </div>
+                                                                </div>
+                                            
+                                                                <!-- Date of Birth -->
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Date of Birth</label>
+                                                                        
+                                                                        <input class="form-control" type="date" name="date_of_birth" id="date_of_birth" value="{{ resume.date_of_birth|date:'Y-m-d' }}" >
+                                            
+                                            
+                                                                    </div>
+                                                                </div>
+                                            
+                                                                <!-- Permanent Address -->
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Permanent Address</label>
+                                                                        <input class="form-control" type="text" name="permanent_address" id="permanent_address" value="{{ resume.permanent_address }}">
+                                                                    </div>
+                                                                </div>
+                                            
+                                                                <!-- Gender -->
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Gender</label>
+                                                                        <select class="form-control" name="gender" id="gender">
+                                                                            <option value="Male" {% if resume.gender == 'Male' %}selected{% endif %}>Male</option>
+                                                                            <option value="Female" {% if resume.gender == 'Female' %}selected{% endif %}>Female</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                            
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Area Post Code</label>
+                                                                        <input class="form-control" type="text" name="area_pin_code" id="area_pin_code" value="{{ resume.area_pin_code }}">
+                                                                    </div>
+                                                                </div> 
+                                            
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Marital Status</label>
+                                                                        <select class="form-control" name="marital_status" id="marital_status">
+                                                                            <option value="Single" {% if resume.marital_status == 'Single' %}selected{% endif %}>Single</option>
+                                                                            <option value="Married" {% if resume.marital_status == 'Married' %}selected{% endif %}>Married</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div> 
+                                            
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Hometown</label>
+                                                                        <input class="form-control" type="text" name="hometown" id="hometown" value="{{ resume.hometown }}">
+                                                                    </div>
+                                                                </div> 
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Languages</label>
+                                                                        <input class="form-control" type="text" name="languages" id="languages" value="{{ resume.languages }}">
+                                                                    </div>
+                                                                </div> 
+                                            
+                                            
+                                                                <!-- Email -->
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Email</label>
+                                                                        <input class="form-control" type="email" name="email" id="email" value="{{ resume.email }}">
+                                                                    </div>
+                                                                </div>
+                                            
+                                                                <!-- Phone Number -->
+                                                                <div class="col-xl-12 col-lg-12">
+                                                                    <div class="form-group">
+                                                                        <label>Phone Number</label>
+                                                                        <input class="form-control" type="text" name="phone_number" id="phone_number" value="{{ resume.phone_number }}">
+                                                                    </div>
+                                                                </div>
+                                            
+                                                                
+                                            
+                                                            </div>
+                                                        </div>
+                                            
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="site-button" data-bs-dismiss="modal">Close</button>
+                                                            <button type="submit" class="site-button">Save</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            
+                                            <!-- jQuery & AJAX -->
+                                            <script>
+                                                $(document).ready(function () {
+                                                    $("#personalDetailsForm").submit(function (event) {
+                                                        event.preventDefault();
+                                                
+                                                        // Convert date format (if needed)
+                                                        let dateInput = $("#date_of_birth").val();
+                                                        if (dateInput) {
+                                                            let formattedDate = new Date(dateInput).toISOString().split("T")[0]; // Convert to YYYY-MM-DD for djangoooo
+                                                            $("#date_of_birth").val(formattedDate);
+                                                        }
+                                                
+                                                        let formData = $(this).serialize();
+                                                        let formAction = $(this).attr("action");
+                                                
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            url: formAction,
+                                                            data: formData,
+                                                            dataType: "json",
+                                                            success: function (response) {
+                                                                if (response.success) {
+                                                                    alert("Personal details updated successfully!");
+                                                                    window.location.href = "/my_resume"; // Redirect to 'my_resume'
+                                                                } else {
+                                                                    alert("Error updating details. Please check your inputs.");
+                                                                }
+                                                            },
+                                                            error: function () {
+                                                                alert("Something went wrong. Please try again.");
+                                                            }
+                                                        });
+                                                    });
+                                                });
+                                                
+                                                
+                                            </script> 
+
+       
+
+                                    </div>
+
+                                    {% load static %}
+                                    <form method="POST" action="" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        
+                                        <div class="panel panel-default mb-4">
+                                        
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading wt-panel-heading p-3 bg-primary text-white rounded-top">
+                                                <h4 class="panel-title m-0">Social Network</h4>
+                                            </div>
+                                            <div class="panel-body wt-panel-body p-4 bg-white rounded-bottom">
+                                                <div class="row g-3">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="fw-bold">Linkedin Profile</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text"><i class="fab fa-linkedin-in"></i></span>
+                                                                {{ form.linkedin_profile }}
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="fw-bold">Github Profile </label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text"><i class="fab fa-github"></i></span>
+                                                                {{ form.github_profile }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="fw-bold">Others/ Portfolio Link</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text"><i class="fas fa-briefcase"></i></span>
+                                                                {{ form.portfolio_link }}
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="fw-bold">Expected Salary</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text"><i class="fas fa-briefcase"></i></span>
+                                                                {{ form.expected_salary }}
+                                                            </div>
+                                                        </div>
+                                                    </div>  
+                                                    
+                                                     <!-- Date of Birth -->
+                                                     
+                                                     <div class="col-md-4"> 
+                                                        <div class="form-group">
+                                                            <label class="fw-bold">Availability to Join<br>(mm/dd/yyyy)</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                                                {{ form.availability_to_join }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+
+                                                    
+                                                    <div class="col-12 text-end">
+                                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                    </div>
+
+                                                    <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
+                                                        <h4 class="panel-tittle m-a0">Profile Summary</h4>
+                                                        
+                                                    </div>
+                                                    
+                                                     <div class="input-group">
+                                                                <span class="input-group-text"></span>
+                                                                {{ form.profile_summary }}
+                                                    </div>
+
+                                                    
+                                                    <div class="col-12 text-end">
+                                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form> 
+
+
+                                    
+
+                                    <!--Accomplishments-->
+                                    <div class="panel panel-default mb-3">
+                                        <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
+                                            <h4 class="panel-tittle m-a0">Accomplishments</h4>
+                                        </div>
+                                        <div class="panel-body wt-panel-body p-a20 ">
+                                            <div class="twm-panel-inner">
+                                                <div class="twm-list-wrap">
+                                                    <div class="twm-list-inner d-flex justify-content-between">
+                                                        <b>Online Profiles</b>
+                                                        
+                                                    </div>
+                                                    <p>Add links to Online profiles (e.g. LinkedIn, GitHub, Portfolio, etc.).</p>
+                                                    <ul class="online-profiles">
+                                                        {% if resume.linkedin_profile %}
+                                                        <li>
+                                                            <span class="fab fa-linkedin site-text-primary"></span>
+                                                            <strong> LinkedIn:</strong>
+                                                            <a href="{{ resume.linkedin_profile }}" target="_blank">{{ resume.linkedin_profile }}</a>
+                                                        </li>
+                                                        {% endif %}
+                                                        {% if resume.github_profile %}
+                                                        <li>
+                                                            <span class="fab fa-github site-text-primary"></span>
+                                                            <strong> GitHub:</strong>
+                                                            <a href="{{ resume.github_profile }}" target="_blank">{{ resume.github_profile }}</a>
+                                                        </li>
+                                                        {% endif %}
+                                                        {% if resume.portfolio_link %}
+                                                        <li>
+                                                            <span class="fa fa-globe site-text-primary"></span>
+                                                            <strong> Portfolio:</strong>
+                                                            <a href="{{ resume.portfolio_link }}" target="_blank">{{ resume.portfolio_link }}</a>
+                                                        </li>
+                                                        {% endif %}
+                                                    </ul>
+                                                </div>
+                                                                                                              
+
+                                                
+                                           
+                                            </div>       
+                                        </div>
+                                      
+                                    </div>
+                                   
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>   
+            <!-- OUR BLOG END -->
+                         
+        </div>
+        <!-- CONTENT END -->
+
+
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Details</title>
+
+    <!-- Google Translate Script -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',  // Default language
+                includedLanguages: 'en,ar,bn,fr,de,es,it,pt',  // List of languages you want to support
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</head>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<body>
+
+    <!-- Google Translate Dropdown -->
+    <div id="google_translate_element"></div>
+
+    <h1>Resume for {{ resume.email }}</h1>
+
+    <h2>Personal Details</h2>
+    <p><strong>Date of Birth:</strong> {{ resume.date_of_birth }}</p>
+    <p><strong>Gender:</strong> {{ resume.gender }}</p>
+    <p><strong>Marital Status:</strong> {{ resume.marital_status }}</p>
+    <p><strong>Passport Number:</strong> {{ resume.passport_number }}</p>
+    <p><strong>Languages:</strong> {{ resume.languages }}</p>
+    <p><strong>Permanent Address:</strong> {{ resume.permanent_address }}</p>
+    <p><strong>Area Pin Code:</strong> {{ resume.area_pin_code }}</p>
+    <p><strong>Hometown:</strong> {{ resume.hometown }}</p>
+    <p><strong>Phone Number:</strong> {{ resume.phone_number }}</p>
+
+    <h2>Career Details</h2>
+    <p><strong>Desired Industry:</strong> {{ resume.desired_industry }}</p>
+    <p><strong>Desired Location:</strong> {{ resume.desired_location }}</p>
+    <p><strong>Functional Area:</strong> {{ resume.functional_area }}</p>
+    <p><strong>Job Type:</strong> {{ resume.job_type }}</p>
+    <p><strong>Expected Salary:</strong> {{ resume.expected_salary }}</p>
+    <p><strong>Availability to Join:</strong> {{ resume.availability_to_join }}</p>
+
+    <h2>Profile Summary</h2>
+    <p>{{ resume.profile_summary }}</p>
+
+    <h2>Online Profiles</h2>
+    <p><strong>LinkedIn:</strong> <a href="{{ resume.linkedin_profile }}">{{ resume.linkedin_profile }}</a></p>
+    <p><strong>GitHub:</strong> <a href="{{ resume.github_profile }}">{{ resume.github_profile }}</a></p>
+    <p><strong>Portfolio:</strong> <a href="{{ resume.portfolio_link }}">{{ resume.portfolio_link }}</a></p>
+
+    <h2>Educations</h2>
+    <ul>
+        {% for education in educations %}
+            <li>
+                <strong>{{ education.degree }}</strong> from {{ education.university }} ({{ education.graduation_year }})<br>
+                Field of Study: {{ education.field_of_study }}
+                <a href="{% url 'edit_education' education.pk %}" style="margin-left: 10px;">
+                    <i class="fas fa-edit" title="Edit"></i>
+                </a>
+            </li>
+        {% endfor %}
+        <a href="{% url 'add_education' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Education
+        </a> 
+
+    </ul>
+
+    <h2>Employment History</h2>
+    <ul>
+        {% for employment in employments %}
+            <li>
+                <strong>{{ employment.role }}</strong> at {{ employment.company_name }}<br>
+                From {{ employment.start_date }} to {{ employment.end_date|default:"Present" }}<br>
+                Responsibilities: {{ employment.responsibilities }}
+           
+            <a href="{% url 'edit_employment' employment.pk %}" style="margin-left: 10px;">
+                <i class="fas fa-edit" title="Edit"></i>
+            </a>
+        </li>
+        {% endfor %}
+        <a href="{% url 'add_employment' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Employment
+        </a>
+    </ul>
+
+    <h2>Skills</h2>
+    <ul>
+        {% for skill in skills %}
+            <li>
+                <strong>{{ skill.skill_name }}</strong> (Last Used: {{ skill.last_used_year }}, Experience: {{ skill.experience_years }} years)
+           
+            <a href="{% url 'edit_skill' skill.pk %}" style="margin-left: 10px;">
+                <i class="fas fa-edit" title="Edit"></i>
+            </a>
+        </li>
+        {% endfor %}
+        <a href="{% url 'add_skill' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Skill
+        </a> 
+
+    </ul>
+
+    <h2>Projects</h2>
+    <ul>
+        {% for project in projects %}
+            <li>
+                <strong>{{ project.project_name }}</strong><br>
+                Role: {{ project.role_in_project }}<br>
+                From {{ project.start_date }} to {{ project.end_date|default:"Present" }}<br>
+                Description: {{ project.project_description }}
+                <a href="{% url 'edit_project' project.pk %}" style="margin-left: 10px;">
+                    <i class="fas fa-edit" title="Edit"></i>
+                </a>
+            </li>
+        {% endfor %}
+        <a href="{% url 'add_project' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Project
+        </a> 
+
+    </ul>
+
+    <h2>Certifications</h2>
+    <ul>
+        {% for certification in certifications %}
+            <li>
+                <strong>{{ certification.certification_name }}</strong> by {{ certification.issuing_organization }}<br>
+                Issued on {{ certification.issue_date }}
+                <a href="{% url 'edit_certification' certification.pk %}" style="margin-left: 10px;">
+                    <i class="fas fa-edit" title="Edit"></i>
+                </a>
+            </li>
+        {% endfor %} 
+
+        <a href="{% url 'add_certification' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Certification
+        </a> 
+
+    </ul>
+    
+</body>
+</html> {% endcomment %}
+
+
+
+
+{% endblock %}

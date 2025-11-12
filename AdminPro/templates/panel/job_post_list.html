@@ -1,0 +1,180 @@
+{% extends 'panel.html' %}
+{% load static %}
+{% block body %}
+
+{% if user.is_authenticated and user.is_staff and user.is_superuser %}
+        <!-- Page Content Holder -->
+        <div id="content">
+
+            <div class="content-admin-main">
+
+                <div class="wt-admin-right-page-header clearfix">
+                    <h2>Job Deshboard</h2>
+                    <div class="breadcrumbs"><a href="{% url 'home' %}">Home</a><a href="{% url 'superuser_dashboard' %}">Dasboard</a><span>Manage Jobs</span></div>
+                </div>
+
+                <div class="twm-pro-view-chart-wrap">
+
+                    <div class="col-lg-12 col-md-12 mb-4">
+                        <div class="panel panel-default site-bg-white m-t30">
+                            <div class="panel-heading wt-panel-heading p-a20">
+                                <h4 class="panel-tittle m-a0"><i class="far fa-bookmark"></i>Manage Jobs</h4>
+                            </div>
+                            {% if messages %}
+                                            <div class="alert-container">
+                                                {% for message in messages %}
+                                                    <div class="alert alert-{% if message.tags %}{{ message.tags }}{% else %}info{% endif %}" role="alert">
+                                                        {{ message }}
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                            {% endif %}
+                            <div class="panel-body wt-panel-body">
+                                <div class="twm-D_table p-a20 table-responsive">
+                                    <table id="jobs_bookmark_table" class="table table-bordered twm-bookmark-list-wrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Job Title</th>
+                                                <th>Job Applied</th>
+                                                <th>Job Types</th>
+                                                <th>Post Timing</th>
+                                                <th>Applied Date</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for job in job_posts %}
+                                            <!--1-->
+                                            <tr>
+                                                <td>
+                                                    <div class="twm-bookmark-list">
+                                                        <div class="twm-media">
+                                                            <div class="twm-media-pic">
+                                                               <img src="{{ job.employee.logo.url}}" alt="#">
+                                                            </div>
+                                                        </div>
+                                                        <div class="twm-mid-content">
+                                                            <a href="#" class="twm-job-title">
+                                                                <h4>{{ job.title }}</h4>
+                                                            </a>
+                                                            <p class="twm-bookmark-address">
+                                                                <i class="feather-map-pin"></i>{{ job.job_location }}
+                                                            </p>
+                                                            <a href="#" class="twm-job-websites site-text-primary">{{ job.employee.company_website }}</a>
+                                                            
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a href="{% url 'superuser_job_applicants' job.id %}" class="site-text-primary">
+                                                        {{ job.applications.count }} Applied
+                                                    </a>
+                                                </td> 
+
+                                                <td><div class="twm-jobs-category"><span class="twm-bg-green">{{ job.job_type }}</span></div></td>
+                                                <td><div class="twm-job-post-duration">{{ job.created_at|timesince }}</div></td>
+                                                <td>{{ job.application_deadline }}</td>
+                                                <td>
+                                                    <span class="{% if job.status == 'pending' %}text-warning{% elif job.status == 'published' %}text-success{% elif job.status == 'rejected' %}text-danger{% else %}text-muted{% endif %}">
+                                                        {{ job.status }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <div class="twm-table-controls">
+                                                        <ul class="twm-DT-controls-icon list-unstyled d-flex flex-wrap justify-content-start">
+                                                            <!-- Publish Button -->
+                                                            <li class="mx-2 mb-2">
+                                                                <a href="{% url 'publish_job' job.id %}" 
+                                                                   class="btn btn-success btn-sm" 
+                                                                   title="Publish" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                                   <span class="fa fa-check-circle"></span> 
+                                                                </a>
+                                                            </li>
+                                                            
+                                                            <!-- Reject Button -->
+                                                            <li class="mx-2 mb-2">
+                                                                <a href="{% url 'reject_job' job.id %}" 
+                                                                   class="btn btn-danger btn-sm" 
+                                                                   title="Reject" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                                   <span class="fa fa-ban"></span> 
+                                                                </a>
+                                                            </li>
+                                                            
+                                                            <!-- View Job Button -->
+                                                            <li class="mx-2 mb-2">
+                                                                <a href="{{ job.get_absolute_url }}" 
+                                                                   class="btn btn-primary btn-sm" 
+                                                                   title="View Job" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                                   <span class="fa fa-eye"></span> 
+                                                                </a>
+                                                            </li>
+                                                            
+                                                            <!-- Delete Button -->
+                                                            <li class="mx-2 mb-2">
+                                                                <a href="{% url 'delete_job' job.id %}" 
+                                                                   class="btn btn-warning btn-sm" 
+                                                                   onclick="return confirm('Are you sure you want to delete this job?');"
+                                                                   title="Delete" data-bs-toggle="tooltip" data-bs-placement="top">
+                                                                   <span class="far fa-trash-alt"></span> 
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <p>No job posts available.</p>
+                                            {% endfor %}
+                                        </tbody>
+                                        
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                                                      
+            </div>
+
+    	</div>
+{% else %}
+<script>
+    alert("Access Denied! You are not authorized to view this page.");
+    window.location.href = "/";
+</script>
+{% endif %}
+
+
+{% endblock %} 
+
+
+
+<!-- templates/job_post_list.html -->
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <title>Job Posts</title>
+</head>
+<body>
+    <h1>All Job Posts</h1>
+
+    {% for job in job_posts %}
+        <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+            <h2>{{ job.title }}</h2>
+            <p><strong>Company Industry:</strong> {{ job.company_industry_type }}</p>
+            <p><strong>Vacancies:</strong> {{ job.no_of_vacancy }}</p>
+            <p><strong>Deadline:</strong> {{ job.application_deadline }}</p>
+            <p><strong>Location:</strong> {{ job.job_location }}</p>
+            <p><strong>Salary:</strong> {{ job.salary_range }}</p>
+            <p><strong>Status:</strong> {{ job.status }}</p>
+            <a href="{{ job.get_absolute_url }}">View Details</a>
+        </div>
+    {% empty %}
+        <p>No job posts available.</p>
+    {% endfor %}
+</body>
+</html> {% endcomment %}

@@ -1,0 +1,400 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+      
+        <!-- CONTENT START -->
+        <div class="page-content">
+
+            <!-- INNER PAGE BANNER -->
+            <div class="wt-bnr-inr overlay-wraper bg-center" style="background-image:url('{% static 'images/banner/1.jpeg' %}');">
+                <div class="overlay-main site-bg-white opacity-01"></div>
+                <div class="container">
+                    <div class="wt-bnr-inr-entry">
+                        <div class="banner-title-outer">
+                            <div class="banner-title-name">
+                                <h2 class="wt-title">Company Manage jobs</h2>
+                            </div>
+                        </div>
+                        <!-- BREADCRUMB ROW -->                            
+                        
+                            <div>
+                                <ul class="wt-breadcrumb breadcrumb-style-2">
+                                    <li><a href="index.html">Home</a></li>
+                                    <li>Company Manage jobs</li>
+                                </ul>
+                            </div>
+                        
+                        <!-- BREADCRUMB ROW END -->                        
+                    </div>
+                </div>
+            </div>
+            <!-- INNER PAGE BANNER END -->
+
+
+            <!-- OUR BLOG START -->
+            <div class="section-full p-t120  p-b90 site-bg-white">
+                
+
+                <div class="container">
+                    <div class="row">
+                        
+                        <div class="col-xl-3 col-lg-4 col-md-12 rightSidebar m-b30">
+
+                            <div class="side-bar-st-1">
+                                
+                                
+                                <div class="dashboard-profile-pic">
+                                    <div class="dashboard-profile-photo">
+                                        <img src="{{ profile.logo.url }}" alt=""> 
+                                        <div class="upload-btn-wrapper">
+                                            <div id="upload-image-grid"></div>
+                                            <button class="site-button button-sm">Upload Photo</button>
+                                            <input type="file" name="myfile" id="file-uploader" accept=".jpg, .jpeg, .png">
+                                        </div>
+                                    </div>
+                                   
+                                </div> 
+
+                                
+                                
+                                <script>
+                                    document.getElementById("file-uploader").addEventListener("change", function(event) {
+                                        var file = event.target.files[0];
+                                        if (file) {
+                                            var reader = new FileReader();
+                                            reader.onload = function(){
+                                                document.getElementById("logo-preview").src = reader.result;
+                                            };
+                                            reader.readAsDataURL(file);
+                                    
+                                            // Upload the file automatically using AJAX
+                                            var formData = new FormData();
+                                            formData.append("logo", file);
+                                            formData.append("csrfmiddlewaretoken", "{{ csrf_token }}"); // CSRF token
+                                    
+                                            fetch("{% url 'employer_profile_edit' %}", {  // Using the same view
+                                                method: "POST",
+                                                body: formData
+                                            })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    document.getElementById("logo-preview").src = data.logo_url;  // Update preview
+                                                } else {
+                                                    alert("Failed to upload logo. Please try again.");
+                                                }
+                                            })
+                                            .catch(error => console.error("Error uploading logo:", error));
+                                        }
+                                    });
+                                </script> 
+
+
+                                <div class="twm-mid-content ">
+                                    <a href="candidate-detail.html" class="twm-job-title">
+                                        <h4>{{ profile.company_name }}</h4>
+                                    </a>
+                                    <p>{{ profile.founded_date }}</p>
+                                </div>
+                               
+                                <div class="twm-nav-list-1">
+                                    <ul>
+                                        <li><a href="{% url 'employer_profile' %}"><i class="fa fa-user"></i> View Profile</a></li>
+                                        <li class="active"><a href="{% url 'employer_profile_edit' %}"><i class="fas fa-user-edit"></i> Edit Profile</a></li>                             
+                                        <li ><a href="{% url 'manage-job' %}"><i class="fa fa-suitcase"></i> Manage Jobs</a></li> 
+                                        <li><a href="{% url 'create_job' %}"><i class="fa fa-book-reader"></i> Post A Jobs</a></li>
+                                        <li><a href="{% url 'password_change' %}"><i class="fa fa-fingerprint"></i> Change Passeord</a></li>
+                                        <li><a href="{% url 'custom_logout' %}"><i class="fa fa-share-square"></i> Logout</a></li>
+
+                                    </ul>
+                                </div>
+                                
+                            </div>
+
+                        </div>
+
+                        <div class="col-xl-9 col-lg-8 col-md-12 m-b30">
+                            <!--Filter Short By-->
+                            <style>
+                                .custom-form-container {
+                                    background: #fff;
+                                    border-radius: 10px;
+                                    padding: 30px;
+                                    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+                                }
+                            
+                                .custom-form-title {
+                                    font-size: 22px;
+                                    font-weight: 600;
+                                    margin-bottom: 20px;
+                                    color: #333;
+                                    border-bottom: 2px solid #007bff;
+                                    display: inline-block;
+                                    padding-bottom: 5px;
+                                }
+                            
+                                .custom-form-group {
+                                    margin-bottom: 20px;
+                                }
+                            
+                                .custom-form-group label {
+                                    font-weight: 500;
+                                    margin-bottom: 5px;
+                                    display: block;
+                                }
+                            
+                                .custom-input-box {
+                                    position: relative;
+                                    display: flex;
+                                    align-items: center;
+                                }
+                            
+                                .custom-input-box input,
+                                .custom-input-box textarea,
+                                .custom-input-box select {
+                                    width: 100%;
+                                    padding: 12px;
+                                    padding-left: 40px;
+                                    border: 1px solid #ddd;
+                                    border-radius: 6px;
+                                    font-size: 16px;
+                                    transition: 0.3s;
+                                }
+                            
+                                .custom-input-box input:focus,
+                                .custom-input-box textarea:focus,
+                                .custom-input-box select:focus {
+                                    border-color: #007bff;
+                                    outline: none;
+                                    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+                                }
+                            
+                                .custom-input-box i {
+                                    position: absolute;
+                                    left: 12px;
+                                    font-size: 16px;
+                                    color: #007bff;
+                                }
+                            
+                                .custom-submit-btn {
+                                    background: #007bff;
+                                    color: white;
+                                    border: none;
+                                    padding: 12px 20px;
+                                    border-radius: 6px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    transition: 0.3s;
+                                }
+                            
+                                .custom-submit-btn:hover {
+                                    background: #0056b3;
+                                }
+                            </style>
+                            
+                            <div class="custom-form-container">
+                                <form method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                            
+                                    <!-- Company Profile -->
+                                    <h4 class="custom-form-title">Company Profile</h4>
+                            
+                                    <div class="custom-form-group">
+                                        <label>Company Name</label>
+                                        <div class="custom-input-box">
+                                            <i class="fa fa-building"></i>
+                                            {{ form.company_name }}
+                                        </div>
+                                    </div>
+                            
+                                    <div class="custom-form-group">
+                                        <label>Phone</label>
+                                        <div class="custom-input-box">
+                                            <i class="fa fa-phone-alt"></i>
+                                            {{ form.phone }}
+                                        </div>
+                                    </div>
+                            
+                                    <div class="custom-form-group">
+                                        <label>Email Address</label>
+                                        <div class="custom-input-box">
+                                            <i class="fas fa-at"></i>
+                                            {{ form.email }}
+                                        </div>
+                                    </div>
+                            
+                                    <div class="custom-form-group">
+                                        <label>Founding Date</label>
+                                        <div class="custom-input-box">
+                                            <i class="fa fa-calendar"></i>
+                                            {{ form.founded_date }}
+                                        </div>
+                                    </div>
+                            
+                                    <div class="custom-form-group">
+                                        <label>Description</label>
+                                        <div class="custom-input-box">
+                                            {{ form.company_description }}
+                                        </div>
+                                    </div>
+                            
+                                    
+                            
+                                    <div class="custom-form-group">
+                                        <label>Location</label>
+                                        <div class="custom-input-box">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            {{ form.location }}
+                                        </div>
+                                    </div>
+
+                                    {% comment %} <div class="custom-form-group">
+                                        <label>Logo</label>
+                                        <div class="custom-input-box">
+                                            <h4>{{ form.logo }}</h4>
+                                        </div>
+                                    </div>  {% endcomment %}
+                                    
+                                    <button type="submit" class="custom-submit-btn">Save Changes</button>
+                                    <hr>
+                                    <!-- Social Network -->
+                                    <h4 class="custom-form-title" style="margin-top:30px;">Social Network</h4>
+                                    <div class="custom-form-group">
+                                        <label>Your Company youtube Videos</label>
+                                        <div class="custom-input-box">
+                                            <i class="fas fa-video"></i>
+                                            {{ form.twitter_link }}
+                                        </div>
+                                    </div> 
+                                    <hr>
+                                    <div class="custom-form-group">
+                                        <label>Company Website</label>
+                                        <div class="custom-input-box">
+                                            <i class="fas fa-globe"></i>
+                                            {{ form.company_website }}
+                                        </div>
+                                    </div>
+                            
+                                    <div class="custom-form-group">
+                                        <label>Facebook</label>
+                                        <div class="custom-input-box">
+                                            <i class="fab fa-facebook-f"></i>
+                                            {{ form.facebook_link }}
+                                        </div>
+                                    </div>
+                            
+                                    
+                            
+                                    <div class="custom-form-group">
+                                        <label>YouTube</label>
+                                        <div class="custom-input-box">
+                                            <i class="fab fa-youtube"></i>
+                                            {{ form.google_link }}
+                                        </div>
+                                    </div>
+                            
+                                    <div class="custom-form-group">
+                                        <label>LinkedIn</label>
+                                        <div class="custom-input-box">
+                                            <i class="fab fa-linkedin-in"></i>
+                                            {{ form.linkedin_link }}
+                                        </div>
+                                    </div>
+                            
+                                    <button type="submit" class="custom-submit-btn">Save Changes</button>
+                                </form>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>   
+            <!-- OUR BLOG END -->
+          
+            
+     
+        </div>
+        <!-- CONTENT END -->
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
