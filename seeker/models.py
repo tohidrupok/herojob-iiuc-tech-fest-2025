@@ -127,3 +127,53 @@ class Certification(models.Model):
         return f"{self.certification_name} by {self.issuing_organization}"
 
 
+class LearningResource(models.Model):
+    COST_CHOICES = [
+        ('Free', 'Free'),
+        ('Paid', 'Paid'),
+    ]
+
+    title = models.CharField(max_length=255)
+    platform = models.CharField(max_length=100)
+    url = models.URLField()
+    related_skills = models.TextField(
+        help_text="Enter skills separated by commas, e.g. HTML, CSS, JavaScript"
+    )
+    cost = models.CharField(max_length=10, choices=COST_CHOICES, default='Free')
+
+    def __str__(self):
+        return f"{self.title} ({self.platform})"
+    
+
+
+class LearningResource(models.Model):
+    COST_CHOICES = [
+        ('Free', 'Free'),
+        ('Paid', 'Paid'),
+    ]
+
+    title = models.CharField(max_length=255)
+    platform = models.CharField(max_length=100)
+    url = models.URLField()
+    related_skills = models.TextField(
+        help_text="Enter skills separated by commas, e.g. HTML, CSS, JavaScript"
+    ) 
+       
+    description = models.TextField(
+        blank=True,
+        null=True,
+        help_text="Short description of the learning resource"
+    )
+
+    cost = models.CharField(max_length=10, choices=COST_CHOICES, default='Free')
+    image = models.ImageField(
+        upload_to='learning_resources/',
+        blank=True,
+        null=True,
+        default='default/resource_default.png',
+        help_text="Optional: Upload an image or logo for this resource"
+    )
+
+    def __str__(self):
+        return f"{self.title} ({self.platform})"
+

@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block body %}
-<!-- CONTENT START -->
 <div class="page-content">
 
     <!-- INNER PAGE BANNER -->
@@ -27,10 +26,11 @@
     </div>
     <!-- INNER PAGE BANNER END -->
 
-    <!-- OUR BLOG START -->
+    <!-- JOB LIST SECTION START -->
     <div class="section-full p-t120 p-b90 site-bg-white">
         <div class="container">
             <div class="row">
+                <!--Filter & Info Bar-->
                 <div class="product-filter-wrap d-flex justify-content-between align-items-center m-b30">
                     <span class="woocommerce-result-count-left">Showing Top Recommended Jobs</span>
                     <form class="woocommerce-ordering twm-filter-select" method="get">
@@ -51,6 +51,7 @@
                                     <img src="{% static 'images/default-job.png' %}" alt="Job Image">
                                     {% endif %}
                                 </div>
+
                                 <div class="twm-mid-content">
                                     <a href="{{ item.job.get_absolute_url }}" class="twm-job-title">
                                         <h4>{{ item.job.title }}
@@ -59,14 +60,20 @@
                                     </a>
                                     <p class="twm-job-address">{{ item.job.job_location }}</p>
                                     <p class="twm-job-address">{{ item.job.employee.company_name }}</p>
-                                    
-                                    <!-- 🔥 Show matched skills -->
+
+                                    <!-- 🔥 Matching skills display -->
                                     {% if item.matches %}
-                                    <p class="text-success">
-                                        <strong>Matches:</strong> {{ item.matches|join:", " }}
-                                    </p>
+                                    <div class="mt-2">
+                                        <strong class="text-success">Matches:</strong>
+                                        {% for skill in item.matches %}
+                                        <span class="badge bg-success text-white me-1">{{ skill }}</span>
+                                        {% endfor %}
+                                    </div>
                                     {% endif %}
+
+                                    
                                 </div>
+
                                 <div class="twm-right-content">
                                     <div class="twm-jobs-category green">
                                         <span class="twm-bg-green">Recommended</span>
@@ -74,6 +81,9 @@
                                     <div class="twm-jobs-amount">
                                         <span>Vacancies: {{ item.job.no_of_vacancy }}</span>
                                     </div>
+                                    <a href="{{ item.job.get_absolute_url }}" class="twm-jobs-browse site-text-primary">
+                                        Browse Job
+                                    </a>
                                 </div>
                             </div>
                         </li>
@@ -87,10 +97,8 @@
             </div>
         </div>
     </div>
-    <!-- OUR BLOG END -->
-
+    <!-- JOB LIST SECTION END -->
 </div>
-<!-- CONTENT END -->
 {% endblock %}
 
 

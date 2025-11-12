@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Resume, Education, Employment, Skill, Project, Certification
+from .models import Resume, Education, Employment, Skill, Project, Certification, LearningResource
 from .forms import ResumeForm, EducationForm, EmploymentForm, SkillForm, ProjectForm, CertificationForm, SeekerProfileForm, PersonalDetailsForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required 
@@ -561,4 +561,35 @@ def job_recommendations(request):
 
     return render(request, 'recommendations.html', {
         'jobs': recommended_jobs
+    })
+
+
+def learning_recommendations(request):
+    user_resume = Resume.objects.filter(user=request.user).prefetch_related('skills').first()
+
+    if not user_resume:
+        return render(request, 'learning_recommendations.html', {
+            'message': 'Please complete your resume first.'
+        })
+
+    # Get user skills from resume
+    user_skills = set(user_resume.skills.values_list('skill_name', flat=True))
+
+    recommended_resources = []
+    all_resources = LearningResource.objects.all()
+
+    for resource in all_resources:
+        # Split comma-separated skills from the resource
+        resource_skills = {s.strip().lower() for s in resource.related_skills.split(',') if s.strip()}
+        # Find matching skills
+        matching_skills = {s for s in user_skills if s.lower() in resource_skills}
+
+        if matching_skills:
+            recommended_resources.append({
+                'resource': resource,
+                'matches': list(matching_skills)
+            })
+
+    return render(request, 'learning_recommendations.html', {
+        'resources': recommended_resources
     })

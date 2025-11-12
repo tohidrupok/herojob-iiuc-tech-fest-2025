@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="page-content">
+
+    <!-- INNER PAGE BANNER -->
+    <div class="wt-bnr-inr overlay-wraper bg-center"
+        style="background-image:url('{% static 'images/banner/1.jpeg' %}');">
+        <div class="overlay-main site-bg-white opacity-01"></div>
+        <div class="container">
+            <div class="wt-bnr-inr-entry">
+                <div class="banner-title-outer">
+                    <div class="banner-title-name">
+                        <h2 class="wt-title">Recommended Learning Resources</h2>
+                    </div>
+                </div>
+                <div>
+                    <ul class="wt-breadcrumb breadcrumb-style-2">
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li>Learning Resources</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- INNER PAGE BANNER END -->
+
+    <!-- LEARNING RESOURCES SECTION START -->
+    <div class="section-full p-t120 p-b90 site-bg-white">
+        <div class="container">
+            <div class="row">
+                <!--Filter & Info Bar-->
+                <div class="product-filter-wrap d-flex justify-content-between align-items-center m-b30">
+                    <span class="woocommerce-result-count-left">Your Personalized Learning Path</span>
+                    <form class="woocommerce-ordering twm-filter-select" method="get">
+                        <span class="woocommerce-result-count">Grow Your Skills & Career!</span>
+                    </form>
+                </div>
+
+                <div class="twm-jobs-list-wrap">
+                    {% if resources %}
+                    <ul>
+                        {% for item in resources %}
+                        <li>
+                            <div class="twm-jobs-list-style1 mb-5 d-flex align-items-start p-3 shadow-sm rounded">
+                                
+                                <!-- Resource Image -->
+                                <div class="twm-media me-4">
+                                    {% if item.resource.image %}
+                                        <img src="{{ item.resource.image.url }}" alt="{{ item.resource.title }}"
+                                             style="width:180px; height:auto; border-radius:8px; object-fit:cover;">
+                                    {% else %}
+                                        <img src="{% static 'default/resource_default.png' %}" alt="No Image"
+                                             style="width:180px; height:auto; border-radius:8px; object-fit:cover;">
+                                    {% endif %}
+                                </div>
+
+                                <!-- Resource Content -->
+                                <div class="twm-mid-content flex-grow-1">
+                                    <h4>{{ item.resource.title }}
+                                        <span class="twm-job-post-duration text-primary">({{ item.resource.platform }})</span>
+                                    </h4>
+
+                                    {% if item.resource.description %}
+                                        <p>{{ item.resource.description|truncatewords:15 }}</p>
+                                    {% endif %}
+
+                                    <p><strong>Cost:</strong> {{ item.resource.cost }}</p>
+
+                                    {% if item.matches %}
+                                        <p class="text-success"><strong>Related Skills:</strong> 
+                                            {% for skill in item.matches %}
+                                                <span class="badge bg-success text-white me-1">{{ skill }}</span>
+                                            {% endfor %}
+                                        </p>
+                                    {% endif %}
+
+                                    <a href="{{ item.resource.url }}" target="_blank" class="btn btn-primary btn-sm mt-2">
+                                        Visit Resource
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p>No learning resources found. Try adding more skills to your resume.</p>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- LEARNING RESOURCES SECTION END -->
+
+</div>
+{% endblock %}
