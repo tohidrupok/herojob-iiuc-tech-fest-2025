@@ -274,17 +274,31 @@ def blog_detail(request, post_id):
  
 
 
+
 def learing_list(request):
     # সব learning resources ক্রম অনুযায়ী
     tips = LearningResource.objects.all().order_by('-created_at')
 
-    # Pagination
-    paginator = Paginator(tips, 10)  # প্রতি পেজ 10টি resource
+    # Search and Filter
+    query = request.GET.get('q', '')
+    cost = request.GET.get('cost', '')
+
+    if query:
+        tips = tips.filter(Q(title__icontains=query) | Q(description__icontains=query))
+    if cost:
+        tips = tips.filter(cost__iexact=cost)
+
+    # Pagination (প্রতি পেজ 10টি resource)
+    paginator = Paginator(tips, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     # Categories: Free, Paid অনুযায়ী count
-    categories = LearningResource.objects.values('cost').annotate(tip_count=Count('id'))
+    categories = (
+        LearningResource.objects.values('cost')
+        .annotate(tip_count=Count('id'))
+        .order_by('cost')
+    )
 
     # Recent tips
     recent_tips = LearningResource.objects.all().order_by('-created_at')[:5]
@@ -293,8 +307,11 @@ def learing_list(request):
         'page_obj': page_obj,
         'categories': categories,
         'recent_tips': recent_tips,
+        'query': query,
+        'cost': cost,
     }
     return render(request, 'blog/learing_list.html', context)
+
 
 def learning_tip_detail(request, id):
     tip = get_object_or_404(LearningResource, id=id)

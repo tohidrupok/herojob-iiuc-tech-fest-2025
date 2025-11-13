@@ -26,36 +26,40 @@
                 <!-- MAIN CONTENT -->
                 <div class="col-lg-8 col-md-12">
                     <div class="masonry-wrap row d-flex">
-                       {% for tip in page_obj %}
-<div class="masonry-item col-lg-6 col-md-12">
-    <div class="blog-post twm-blog-post-1-outer position-relative">
-        
-        <!-- COST BADGE -->
-        <div class="position-absolute top-2 right-2 p-2 rounded bg-primary text-white" style="z-index:10;">
-            {{ tip.cost }}
-        </div>
+                       {% if page_obj %}
+                           {% for tip in page_obj %}
+                            <div class="masonry-item col-lg-6 col-md-12">
+                                <div class="blog-post twm-blog-post-1-outer position-relative">
+                                    
+                                    <!-- COST BADGE -->
+                                    <div class="position-absolute top-2 right-2 p-2 rounded bg-primary text-white" style="z-index:10;">
+                                        {{ tip.cost }}
+                                    </div>
 
-        <div class="wt-post-media">
-            {% if tip.image %}
-            <img src="{{ tip.image.url }}" alt="{{ tip.title }}">
-            {% else %}
-            <img src="{% static 'images/default.jpg' %}" alt="Default">
-            {% endif %}
-        </div>
+                                    <div class="wt-post-media">
+                                        {% if tip.image %}
+                                        <img src="{{ tip.image.url }}" alt="{{ tip.title }}">
+                                        {% else %}
+                                        <img src="{% static 'images/default.jpg' %}" alt="Default">
+                                        {% endif %}
+                                    </div>
 
-        <div class="wt-post-info">
-            <h4 class="post-title">{{ tip.title|truncatechars:60 }}</h4>
-            <p>{{ tip.description|truncatechars:150 }}</p>
-            
-            {% if tip.url %}
-            <a href="{{ tip.url }}" target="_blank" class="site-button-link site-text-primary">
-                Go to Course
-            </a>
-            {% endif %}
-        </div>
-    </div>
-</div>
-{% endfor %}
+                                    <div class="wt-post-info">
+                                        <h4 class="post-title">{{ tip.title|truncatechars:60 }}</h4>
+                                        <p>{{ tip.description|truncatechars:150 }}</p>
+                                        
+                                        {% if tip.url %}
+                                        <a href="{{ tip.url }}" target="_blank" class="site-button-link site-text-primary">
+                                            Go to Course
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                           {% endfor %}
+                        {% else %}
+                            <p>No tips found.</p>
+                        {% endif %}
                     </div>
 
                     <!-- Pagination -->
@@ -63,17 +67,17 @@
                         <div class="pagination-style1">
                             <ul class="clearfix">
                                 {% if page_obj.has_previous %}
-                                    <li class="prev"><a href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-angle-left"></i></a></li>
+                                    <li class="prev"><a href="?{% if query %}q={{ query }}&{% endif %}{% if cost %}cost={{ cost }}&{% endif %}page={{ page_obj.previous_page_number }}"><i class="fa fa-angle-left"></i></a></li>
                                 {% endif %}
                                 {% for num in page_obj.paginator.page_range %}
                                     {% if page_obj.number == num %}
                                         <li class="active"><a href="javascript:;">{{ num }}</a></li>
                                     {% else %}
-                                        <li><a href="?page={{ num }}">{{ num }}</a></li>
+                                        <li><a href="?{% if query %}q={{ query }}&{% endif %}{% if cost %}cost={{ cost }}&{% endif %}page={{ num }}">{{ num }}</a></li>
                                     {% endif %}
                                 {% endfor %}
                                 {% if page_obj.has_next %}
-                                    <li class="next"><a href="?page={{ page_obj.next_page_number }}"><i class="fa fa-angle-right"></i></a></li>
+                                    <li class="next"><a href="?{% if query %}q={{ query }}&{% endif %}{% if cost %}cost={{ cost }}&{% endif %}page={{ page_obj.next_page_number }}"><i class="fa fa-angle-right"></i></a></li>
                                 {% endif %}
                             </ul>
                         </div>
@@ -87,11 +91,10 @@
 
                         <!-- Search -->
                         <div class="widget search-bx">
-                            <form method="post" role="search">
-                                {% csrf_token %}
+                            <form method="get" role="search">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search learning tips...">
-                                    <button class="btn" type="button"><i class="feather-search"></i></button>
+                                    <input type="text" name="q" class="form-control" placeholder="Search learning tips..." value="{{ query }}">
+                                    <button class="btn" type="submit"><i class="feather-search"></i></button>
                                 </div>
                             </form>
                         </div>
@@ -100,8 +103,9 @@
                         <div class="widget all_services_list">
                             <h4 class="section-head-small mb-4">Categories</h4>
                             <ul>
-                                <li><a href="?cost=Free">Free</a></li>
-                                <li><a href="?cost=Paid">Paid</a></li>
+                                <li><a href="?cost=Free{% if query %}&q={{ query }}{% endif %}">Free</a></li>
+                                <li><a href="?cost=Paid{% if query %}&q={{ query }}{% endif %}">Paid</a></li>
+                                <li><a href="">All</a></li>
                             </ul>
                         </div>
 
