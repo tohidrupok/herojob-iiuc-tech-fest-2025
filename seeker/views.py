@@ -57,7 +57,7 @@ def my_resume(request):
     # Fetch related data
     educations = resume.educations.all().order_by('-id')
     employments = resume.employments.all().order_by('-id')
-    skills = resume.skills.all().order_by('-id')
+    skills = resume.skills.filter(skill_type='experience').order_by('-id')
     projects = resume.projects.all().order_by('-id')
     certifications = resume.certifications.all().order_by('-id')
     
@@ -404,7 +404,7 @@ def view_profile(request):
         # Fetch related data
         educations = resume.educations.all().order_by('-id')
         employments = resume.employments.all().order_by('-id')
-        skills = resume.skills.all().order_by('-id')
+        skills = resume.skills.filter(skill_type='experience').order_by('-id')
         projects = resume.projects.all().order_by('-id')
         certifications = resume.certifications.all().order_by('-id')
         total_years_of_experience = sum([employment.duration() for employment in employments])

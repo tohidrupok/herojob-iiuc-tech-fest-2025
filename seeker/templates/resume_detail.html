@@ -167,7 +167,14 @@
                                                                     required>
                                                             </div>
                                                     
-                                                           
+                                                               <!-- Skill Type Select -->
+                                                            <div class="form-group">
+                                                                <label for="skill_type" class="form-label">Skill Type</label>
+                                                                <select id="skill_type" name="skill_type" class="form-control" required>
+                                                                    <option value="experience">Experience Skill</option>
+                                                                    <option value="desire">Desire Skill</option>
+                                                                </select>
+                                                            </div>
                                                     
                                                             <!-- Last Used Year Input -->
                                                             <div class="form-group">
@@ -179,7 +186,7 @@
                                                                     class="form-control" 
                                                                     placeholder="e.g., 2023" 
                                                                     min="1900" max="2100" 
-                                                                    required>
+                                                                    >
                                                             </div>
                                                     
                                                             <!-- Experience Years Input -->
@@ -193,7 +200,7 @@
                                                                     placeholder="e.g., 2.5" 
                                                                     step="0.1" 
                                                                     min="0" 
-                                                                    required>
+                                                                    >
                                                             </div>
                                                         </div>
                                                     
@@ -207,7 +214,29 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const skillTypeSelect = document.getElementById('skill_type');
+                                            const lastUsedYearGroup = document.getElementById('last_used_year').closest('.form-group');
+                                            const experienceYearsGroup = document.getElementById('experience_years').closest('.form-group');
 
+                                            function toggleExperienceFields() {
+                                                if(skillTypeSelect.value === 'experience') {
+                                                    lastUsedYearGroup.style.display = 'block';
+                                                    experienceYearsGroup.style.display = 'block';
+                                                } else {
+                                                    lastUsedYearGroup.style.display = 'none';
+                                                    experienceYearsGroup.style.display = 'none';
+                                                }
+                                            }
+
+                                            // Initial check
+                                            toggleExperienceFields();
+
+                                            // Event listener
+                                            skillTypeSelect.addEventListener('change', toggleExperienceFields);
+                                        });
+                                    </script>
                                     <!--Employment-->
                                     <div class="panel panel-default mb-3">
                                         <div class="panel-heading wt-panel-heading p-a20 panel-heading-with-btn ">
@@ -511,7 +540,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>Skills</th>
-                                                            
+                                                            <th>Skill Type</th>
                                                             <th>Last Used</th>
                                                             <th>Experience</th>
                                                             <th>Action</th>
@@ -523,15 +552,16 @@
                                                         {% for skill in skills %}
                                                         <tr>
                                                             <td>{{ skill.skill_name }}</td>
-                                                            
+                                                            <td>{{ skill.get_skill_type_display }}</td>
                                                             <td>{{ skill.last_used_year }}</td>
-                                                            <td>{{ skill.experience_years }}</td>
                                                             <td>
-                                                                <a href="{% url 'edit_skill' skill.pk %}" style="margin-left: 10px;">
-                                                                    <i class="fas fa-edit" title="Edit"></i>
-                                                                </a>
-                                                           
+                                                                {% if skill.experience_years %}
+                                                                    {{ skill.experience_years }} Years
+                                                                {% else %}
+                                                                    0 Years
+                                                                {% endif %}
                                                             </td>
+                                                            
                                                             <td>
                                                                 <a href="{% url 'edit_skill' skill.pk %}" style="margin-left: 10px;">
                                                                     <i class="fas fa-edit" title="Edit"></i>

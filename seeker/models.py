@@ -94,11 +94,21 @@ class Employment(models.Model):
 
 
 class Skill(models.Model):
+    EXPERIENCE_CHOICES = [
+        ('experience', 'Experience Skill'),
+        ('desire', 'Desire Skill'),
+    ]
     resume = models.ForeignKey(Resume, related_name='skills', on_delete=models.CASCADE)
     skill_name = models.CharField(max_length=100)
     
-    last_used_year = models.IntegerField()
-    experience_years = models.FloatField()
+    last_used_year = models.IntegerField(blank=True, null=True)
+    experience_years = models.FloatField(blank=True, null=True)
+
+    skill_type = models.CharField(
+        max_length=20,
+        choices=EXPERIENCE_CHOICES,
+        default='experience'
+    )
 
     def __str__(self):
         return self.skill_name
