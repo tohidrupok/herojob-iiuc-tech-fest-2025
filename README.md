@@ -93,30 +93,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-Then create the database manually:
-
-sql
-Copy code
-CREATE DATABASE herojob_db;
-5. Run Migrations
-bash
-Copy code
-python manage.py makemigrations
-python manage.py migrate
-6. Create Superuser
-bash
-Copy code
-python manage.py createsuperuser
-7. (Optional) Load Sample Data
-If available:
-
-bash
-Copy code
-python manage.py loaddata jobs.json
-python manage.py loaddata resources.json
-8. Run the Server
-bash
-Copy code
+5. Run the Server
 python manage.py runserver
 Then visit:
 👉 http://127.0.0.1:8000/
@@ -127,8 +104,7 @@ Access the admin dashboard at:
 Use your superuser credentials to log in.
 
 📂 Project Structure
-php
-Copy code
+
 herojob-iiuc-tech-fest-2025/
 ├── herojob/                # Main Django project folder
 ├── apps/                   # Custom apps (users, jobs, etc.)
@@ -152,3 +128,4 @@ Realtime chat between employers & candidates
 @md.asrafulmolla
 @rasheduzzamanrakib
 Team Falcon (IIUC Tech Fest 2025)
+
