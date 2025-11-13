@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+<div class="page-content">
+
+    <!-- Banner -->
+    <div class="wt-bnr-inr overlay-wraper bg-center" style="background-image:url('{% static "images/banner/learning.jpg" %}');">
+        <div class="overlay-main site-bg-white opacity-01"></div>
+        <div class="container">
+            <div class="wt-bnr-inr-entry">
+                <h2 class="wt-title">{{ tip.title }}</h2>
+                <ul class="wt-breadcrumb breadcrumb-style-2">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'learing_list' %}">Learning Tips</a></li>
+                    <li>{{ tip.title }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resource Detail -->
+    <div class="section-full p-t120 p-b90 site-bg-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    <div class="blog-post twm-blog-post-1-outer">
+                        <div class="wt-post-media">
+                            {% if tip.image %}
+                            <img src="{{ tip.image.url }}" alt="{{ tip.title }}">
+                            {% else %}
+                            <img src="{% static 'images/default.jpg' %}" alt="Default">
+                            {% endif %}
+                        </div>
+                        <div class="wt-post-info">
+                            <h4>{{ tip.title }}</h4>
+                            <p><strong>Platform:</strong> {{ tip.platform }}</p>
+                            <p><strong>Skills:</strong> {{ tip.related_skills }}</p>
+                            <p>{{ tip.description }}</p>
+
+                            {% if tip.url %}
+                            <a href="{{ tip.url }}" target="_blank" class="site-button-link site-text-primary">
+                                Go to Course
+                            </a>
+                            {% endif %}
+
+                            <p><strong>Cost:</strong> {{ tip.cost }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4 col-md-12 rightSidebar">
+                    <div class="side-bar">
+
+                        <div class="widget recent-posts-entry">
+                            <h4 class="section-head-small mb-4">Recent Learning Tips</h4>
+                            <div class="section-content">
+                                <div class="widget-post-bx">
+                                    {% for recent in recent_tips %}
+                                    <div class="widget-post clearfix">
+                                        <div class="wt-post-media">
+                                            <img src="{{ recent.image.url }}" alt="{{ recent.title }}">
+                                        </div>
+                                        <div class="wt-post-info">
+                                            <span class="post-date">{{ recent.created_at|date:"M d, Y" }}</span>
+                                            <span class="post-title">
+                                                <a href="{% url 'learning_tip_detail' recent.id %}">{{ recent.title|truncatechars:50 }}</a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
