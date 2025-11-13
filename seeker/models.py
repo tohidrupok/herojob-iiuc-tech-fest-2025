@@ -136,6 +136,7 @@ class LearningResource(models.Model):
     title = models.CharField(max_length=255)
     platform = models.CharField(max_length=100)
     url = models.URLField()
+    created_at = models.DateTimeField(auto_now_add=True)
     related_skills = models.TextField(
         help_text="Enter skills separated by commas, e.g. HTML, CSS, JavaScript"
     )
@@ -173,7 +174,8 @@ class LearningResource(models.Model):
         default='default/resource_default.png',
         help_text="Optional: Upload an image or logo for this resource"
     )
+    
+    created_at = models.DateTimeField(auto_now_add=True)  
 
     def __str__(self):
         return f"{self.title} ({self.platform})"
-
