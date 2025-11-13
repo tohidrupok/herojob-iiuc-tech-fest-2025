@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('jagosecurepanel24/', admin.site.urls),
+    path('herojobsecurepanel25/', admin.site.urls),
     path('', include('accounts.urls')),
     path('seeker/', include('seeker.urls')),
     path('employee/', include('employee.urls')),

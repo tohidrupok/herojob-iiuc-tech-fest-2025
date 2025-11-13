@@ -56,7 +56,7 @@
                         
                     </div>
                     <div class="twm-bnr-bottom-section">
-                        <div class="twm-browse-jobs style="color: #000; font-weight: 600; font-size: 18px;">IIUC! P HERO!</div>
+                        <div class="twm-browse-jobs style="color: #000; font-weight: 600; font-size: 18px;">IIUC!</div>
                     </div>
                 </div>
 
@@ -67,155 +67,26 @@
                     <div class="twm-bnr-h7-carousal">
                         <div class="swiper h-page7-jobs-slider">
                             <div class="swiper-wrapper">
-                              <div class="swiper-slide">
-                                <!--1-->
-                                <div class="job-categories-home-7">
-                                    <div class="job-categories-home-7-top">
-                                        <div class="twm-media cat-bg-clr-3">
-                                            <div class="flaticon-hr"></div>
-                                        </div>                                   
-                                        <div class="twm-content">
-                                            <div class="twm-jobs-available">45 Jobs</div>
+                            {% for category in top_categories %}
+                                <div class="swiper-slide">
+                                    <div class="job-categories-home-7">
+                                        <div class="job-categories-home-7-top">
+                                            <!-- Optional: You can add logic to vary icon class dynamically if needed -->
+                                            <div class="twm-media cat-bg-clr-{{ forloop.counter }}">
+                                                <div class="flaticon-hr"></div>
+                                            </div>                                   
+                                            <div class="twm-content">
+                                                <div class="twm-jobs-available">
+                                                    {{ category.job_count }} Job{{ category.job_count|pluralize }}
+                                                </div>
+                                            </div>
                                         </div>
+                                        <a href="{% url 'job_list' %}?category={{ category.id }}">{{ category.name }}</a>                              
                                     </div>
-                                    <a href="#">Human Resource</a>                              
                                 </div>
-                              </div>
-                              <div class="swiper-slide">
-                                <!--2-->
-                                <div class="job-categories-home-7">
-                                    <div class="job-categories-home-7-top">
-                                        <div class="twm-media cat-bg-clr-3">
-                                            <div class="flaticon-user"></div>
-                                        </div>                                   
-                                        <div class="twm-content">
-                                            <div class="twm-jobs-available">70 Jobs</div>
-                                        </div>
-                                    </div>
-                                    <a href="#">Management</a>                              
-                                </div>
-                              </div>
+                            {% endfor %}
+                        </div>
 
-                              <div class="swiper-slide">
-                                <!--3-->
-                                <div class="job-categories-home-7">
-                                    <div class="job-categories-home-7-top">
-                                        <div class="twm-media cat-bg-clr-3">
-                                            <div class="flaticon-bank"></div>
-                                        </div>                                   
-                                        <div class="twm-content">
-                                            <div class="twm-jobs-available">65 Jobs</div>
-                                        </div>
-                                    </div>
-                                    <a href="#">Accountant</a>                              
-                                </div>
-                              </div>
-                              <div class="swiper-slide">
-                                <!--4-->
-                                <div class="job-categories-home-7">
-                                    <div class="job-categories-home-7-top">
-                                        <div class="twm-media cat-bg-clr-3">
-                                            <div class="flaticon-dashboard"></div>
-                                        </div>                                   
-                                        <div class="twm-content">
-                                            <div class="twm-jobs-available">55 Jobs</div>
-                                        </div>
-                                    </div>
-                                    <a href="#">Software</a>                              
-                                </div>
-                              </div>
-
-                              <div class="swiper-slide">
-                                <!--5-->
-                                <div class="job-categories-home-7">
-                                    <div class="job-categories-home-7-top">
-                                        <div class="twm-media cat-bg-clr-3">
-                                            <div class="flaticon-dashboard"></div>
-                                        </div>                                   
-                                        <div class="twm-content">
-                                            <div class="twm-jobs-available">55 Jobs</div>
-                                        </div>
-                                    </div>
-                                    <a href="#">Software</a>                              
-                                </div>
-                              </div>
-                              <div class="swiper-slide">
-                                <!--6-->
-                                <div class="job-categories-home-7">
-                                    <div class="job-categories-home-7-top">
-                                        <div class="twm-media cat-bg-clr-3">
-                                            <div class="flaticon-bars"></div>
-                                        </div>                                   
-                                        <div class="twm-content">
-                                            <div class="twm-jobs-available">55 Jobs</div>
-                                        </div>
-                                    </div>
-                                    <a href="#">Marketing & Sales</a>                              
-                                </div>
-                              </div>
-
-                              <div class="swiper-slide">
-                                <!--7-->
-                                <div class="job-categories-home-7">
-                                    <div class="job-categories-home-7-top">
-                                        <div class="twm-media cat-bg-clr-3">
-                                            <div class="flaticon-project-management"></div>
-                                        </div>                                   
-                                        <div class="twm-content">
-                                            <div class="twm-jobs-available">86 Jobs</div>
-                                        </div>
-                                    </div>
-                                    <a href="#">Educational</a>                              
-                                </div>
-                              </div>
-                              <div class="swiper-slide">
-                                <!--8-->
-                                <div class="job-categories-home-7">
-                                    <div class="job-categories-home-7-top">
-                                        <div class="twm-media cat-bg-clr-3">
-                                            <div class="flaticon-project-management"></div>
-                                        </div>                                   
-                                        <div class="twm-content">
-                                            <div class="twm-jobs-available">86 Jobs</div>
-                                        </div>
-                                    </div>
-                                    <a href="#">Educational</a>                              
-                                </div>
-                              </div>
-
-                              <div class="swiper-slide">
-                                <!--9-->
-                                <div class="job-categories-home-7">
-                                    <div class="job-categories-home-7-top">
-                                        <div class="twm-media cat-bg-clr-3">
-                                            <div class="flaticon-coding"></div>
-                                        </div>                                   
-                                        <div class="twm-content">
-                                            <div class="twm-jobs-available">86 Jobs</div>
-                                        </div>
-                                    </div>
-                                    <a href="#">UI/UX Designer</a>                              
-                                </div>
-                              </div>
-
-                              <div class="swiper-slide">
-                                <!--10-->
-                                <div class="job-categories-home-7">
-                                    <div class="job-categories-home-7-top">
-                                        <div class="twm-media cat-bg-clr-3">
-                                            <div class="flaticon-camera-tripod"></div>
-                                        </div>                                   
-                                        <div class="twm-content">
-                                            <div class="twm-jobs-available">86 Jobs</div>
-                                        </div>
-                                    </div>
-                                    <a href="#">Media Reporter</a>                              
-                                </div>
-                              </div>
-
-                              
-                              
-                            </div>
                             
                           </div>
                     </div>
