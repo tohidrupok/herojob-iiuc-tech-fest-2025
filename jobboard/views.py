@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import JobPost, JobApplication, JobCategory, BlogPost, BlogCategory
+from seeker.models import LearningResource
 from accounts.models import EmployerProfile, CustomUser
 from .forms import JobApplicationForm, JobPostForm
 from django.contrib.auth.decorators import login_required
@@ -271,4 +272,12 @@ def blog_detail(request, post_id):
     post = get_object_or_404(BlogPost, id=post_id, published=True)
     return render(request, 'blog/blog_detail.html', {'post': post})
  
- 
+
+
+def learing_list(request):
+    courses = LearningResource.objects.all()
+      
+    paginator = Paginator(courses, 100)  
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'blog/learing_list.html', {'page_obj': page_obj})
